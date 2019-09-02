@@ -14,21 +14,21 @@ From the documentation for Ruby's <code>Exception</code> class:
 
 #### Creating Exceptions
 
-Create an exception:
+Create a new exception:
 
 ```#run_irb
 x = Exception.new
 p x
 ```
 
-Create an exception with a message:
+Create a new exception with a message:
 
 ```#run_irb
 x = Exception.new('Boo!')
 p x
 ```
 
-Create an exception with a non-string argument (which is then converted to a string):
+Create a new exception with a non-string argument (which is then converted to a string):
 
 ```#run_irb
 x = Exception.new(:symbol)
@@ -46,7 +46,7 @@ x = Exception.exception('Boo!')
 p x
 ```
 
-Create an exception of the same class as an existing exception, but with a different message:
+Create a new exception of the same class as an existing exception, but with a different message:
 
 ```#run_irb
 x = Exception.exception('x message')
@@ -55,9 +55,10 @@ p x.__id__
 y = x.exception('y message')
 p y
 p y.__id__
+p x.__id__ == y.__id__
 ```
 
-<code>Exception#exception</code> returns <code>self</code> when passed no argument:
+Method <code>:exception</code> returns <code>self</code> when passed no argument:
 
 ```#run_irb
 x = Exception.new
@@ -69,13 +70,25 @@ p y.__id__
 p x.__id__ == y.__id__
 ```
 
-<code>Exception#exception</code> returns <code>self</code> when passed <code>self</code> as an argument:
+Method <code>:exception</code> returns <code>self</code> when passed <code>self</code> as an argument:
 
 ```#run_irb
 x = Exception.new
 p x
 p x.__id__
 y = x.exception(x)
+p y
+p y.__id__
+p x.__id__ == y.__id__
+```
+
+Method <code>:exception</code> returns a new exception with a new message when passed anything else as an argument:
+
+```#run_irb
+x = Exception.new
+p x
+p x.__id__
+y = x.exception('Boo!')
 p y
 p y.__id__
 p x.__id__ == y.__id__
@@ -96,25 +109,24 @@ Get an exception's message:
 p x.to_s
 ```
 
-#### Rescuing Exceptions
-    
-#### Messages
+Get an exception's message:
 
-    #message
-    #full_message
-    
+```#run_irb
+p x.message
+```
+
 #### Backtraces
 
     #backtrace
     #backtrace_locations
     #set_backtrace
 
+#### Equality
+
+#### Rescuing Exceptions
+    
 ### More Methods
     
-####  Method :==
-
-    #==
-
 #### Method :cause
 
     #cause

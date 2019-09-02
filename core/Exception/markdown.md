@@ -22,11 +22,10 @@ p `irb --version`.chomp
 - [The Basics](#the-basics)
   - [Creating Exceptions](#creating-exceptions)
   - [Examining Exceptions](#examining-exceptions)
-  - [Rescuing Exceptions](#rescuing-exceptions)
-  - [Messages](#messages)
   - [Backtraces](#backtraces)
+  - [Equality](#equality)
+  - [Rescuing Exceptions](#rescuing-exceptions)
 - [More Methods](#more-methods)
-  - [Method :==](#method-)
   - [Method :cause](#method-cause)
   - [Method :to_tty?](#method-to_tty)
 - [Global Variables](#global-variables)
@@ -39,7 +38,7 @@ p `irb --version`.chomp
 
 #### Creating Exceptions
 
-Create an exception:
+Create a new exception:
 
 ```ruby
 x = Exception.new
@@ -47,7 +46,7 @@ p x
 #<Exception: Exception>
 ```
 
-Create an exception with a message:
+Create a new exception with a message:
 
 ```ruby
 x = Exception.new('Boo!')
@@ -55,7 +54,7 @@ p x
 #<Exception: Boo!>
 ```
 
-Create an exception with a non-string argument (which is then converted to a string):
+Create a new exception with a non-string argument (which is then converted to a string):
 
 ```ruby
 x = Exception.new(:symbol)
@@ -77,53 +76,72 @@ p x
 #<Exception: Boo!>
 ```
 
-Create an exception of the same class as an existing exception, but with a different message:
+Create a new exception of the same class as an existing exception, but with a different message:
 
 ```ruby
 x = Exception.exception('x message')
 p x
 #<Exception: x message>
 p x.__id__
-44553760
+46062760
 y = x.exception('y message')
 p y
 #<Exception: y message>
 p y.__id__
-44636400
+46073680
+p x.__id__ == y.__id__
+false
 ```
 
-<code>Exception#exception</code> returns <code>self</code> when passed no argument:
+Method <code>:exception</code> returns <code>self</code> when passed no argument:
 
 ```ruby
 x = Exception.new
 p x
 #<Exception: Exception>
 p x.__id__
-44663300
+46143440
 y = x.exception
 p y
 #<Exception: Exception>
 p y.__id__
-44663300
+46143440
 p x.__id__ == y.__id__
 true
 ```
 
-<code>Exception#exception</code> returns <code>self</code> when passed <code>self</code> as an argument:
+Method <code>:exception</code> returns <code>self</code> when passed <code>self</code> as an argument:
 
 ```ruby
 x = Exception.new
 p x
 #<Exception: Exception>
 p x.__id__
-44810180
+46225120
 y = x.exception(x)
 p y
 #<Exception: Exception>
 p y.__id__
-44810180
+46225120
 p x.__id__ == y.__id__
 true
+```
+
+Method <code>:exception</code> returns a new exception with a new message when passed anything else as an argument:
+
+```ruby
+x = Exception.new
+p x
+#<Exception: Exception>
+p x.__id__
+46321360
+y = x.exception('Boo!')
+p y
+#<Exception: Boo!>
+p y.__id__
+46390280
+p x.__id__ == y.__id__
+false
 ```
 
 #### Examining Exceptions
@@ -143,25 +161,25 @@ p x.to_s
 "Boo!"
 ```
 
-#### Rescuing Exceptions
-    
-#### Messages
+Get an exception's message:
 
-    #message
-    #full_message
-    
+```ruby
+p x.message
+"Boo!"
+```
+
 #### Backtraces
 
     #backtrace
     #backtrace_locations
     #set_backtrace
 
+#### Equality
+
+#### Rescuing Exceptions
+    
 ### More Methods
     
-####  Method :==
-
-    #==
-
 #### Method :cause
 
     #cause
