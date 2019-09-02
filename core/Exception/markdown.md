@@ -22,9 +22,8 @@ p `irb --version`.chomp
 - [The Basics](#the-basics)
   - [Creating Exceptions](#creating-exceptions)
   - [Examining Exceptions](#examining-exceptions)
-  - [Backtraces](#backtraces)
+  - [Rescued Exceptions](#rescued-exceptions)
   - [Equality](#equality)
-  - [Rescuing Exceptions](#rescuing-exceptions)
 - [More Methods](#more-methods)
   - [Method :cause](#method-cause)
   - [Method :to_tty?](#method-to_tty)
@@ -83,12 +82,12 @@ x = Exception.exception('x message')
 p x
 #<Exception: x message>
 p x.__id__
-46062760
+44876840
 y = x.exception('y message')
 p y
 #<Exception: y message>
 p y.__id__
-46073680
+46010040
 p x.__id__ == y.__id__
 false
 ```
@@ -100,12 +99,12 @@ x = Exception.new
 p x
 #<Exception: Exception>
 p x.__id__
-46143440
+46079800
 y = x.exception
 p y
 #<Exception: Exception>
 p y.__id__
-46143440
+46079800
 p x.__id__ == y.__id__
 true
 ```
@@ -117,12 +116,12 @@ x = Exception.new
 p x
 #<Exception: Exception>
 p x.__id__
-46225120
+46161480
 y = x.exception(x)
 p y
 #<Exception: Exception>
 p y.__id__
-46225120
+46161480
 p x.__id__ == y.__id__
 true
 ```
@@ -134,12 +133,12 @@ x = Exception.new
 p x
 #<Exception: Exception>
 p x.__id__
-46321360
+46257720
 y = x.exception('Boo!')
 p y
 #<Exception: Boo!>
 p y.__id__
-46390280
+46302120
 p x.__id__ == y.__id__
 false
 ```
@@ -168,16 +167,161 @@ p x.message
 "Boo!"
 ```
 
-#### Backtraces
+For an exception with no message, method <code>:message</code> returns the class name.
 
-    #backtrace
-    #backtrace_locations
-    #set_backtrace
+```ruby
+x = Exception.new
+p x.message
+"Exception"
+```
+
+#### Rescued Exceptions
+
+Rescue an exception:
+
+```ruby
+rescued = nil
+begin
+    raise Exception.new('Boo!')
+  rescue Exception => x
+    rescued = x
+  end
+```
+
+Show its class and message:
+
+```ruby
+```
+  p rescued.class
+  p rescued.message
+```
+
+Method <code>:backtrace</code> returns an array of strings.  This one is large:
+
+```ruby
+  backtrace = rescued.backtrace
+  p backtrace.class
+Array
+  p backtrace.size
+20
+```
+  The whole thing:
+
+```ruby
+  puts backtrace
+irb_input:154:in `irb_binding'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `eval'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `evaluate'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/context.rb:385:in `evaluate'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:493:in `block (2 levels) in eval_input'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:647:in `signal_status'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:490:in `block in eval_input'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/ruby-lex.rb:246:in `block (2 levels) in each_top_level_statement'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/ruby-lex.rb:232:in `loop'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/ruby-lex.rb:232:in `block in each_top_level_statement'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/ruby-lex.rb:231:in `catch'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/ruby-lex.rb:231:in `each_top_level_statement'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:489:in `eval_input'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:428:in `block in run'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:427:in `catch'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:427:in `run'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:383:in `start'
+C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
+C:/Ruby26-x64/bin/irb.cmd:31:in `load'
+C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
+```
+
+Set backtrace, in this case to an empty array:
+
+```ruby
+  rescued.set_backtrace([])
+  puts rescued.backtrace
+```
+
+The original backtrace information is still available via method <code>:backtrace_locations</code>, but the result is an array of <code>Thread::Backtrace::Location</code>, not an array of <code>String</code>.
+
+```ruby
+  p rescued.backtrace_locations.first.class
+Thread::Backtrace::Location
+  puts rescued.backtrace_locations
+irb_input:154:in `irb_binding'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `eval'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `evaluate'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/context.rb:385:in `evaluate'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:493:in `block (2 levels) in eval_input'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:647:in `signal_status'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:490:in `block in eval_input'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/ruby-lex.rb:246:in `block (2 levels) in each_top_level_statement'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/ruby-lex.rb:232:in `loop'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/ruby-lex.rb:232:in `block in each_top_level_statement'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/ruby-lex.rb:231:in `catch'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/ruby-lex.rb:231:in `each_top_level_statement'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:489:in `eval_input'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:428:in `block in run'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:427:in `catch'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:427:in `run'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:383:in `start'
+C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
+C:/Ruby26-x64/bin/irb.cmd:31:in `load'
+C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
+```
 
 #### Equality
 
-#### Rescuing Exceptions
-    
+Two exceptions are equal under <code>:==</code> if they have the same class, message, and backtrace:
+
+```ruby
+  clone = rescued.clone
+  p rescued == clone
+true
+```
+
+Different class:
+
+```ruby
+  x = RuntimeError.new(rescued.message)
+  x.set_backtrace(rescued.backtrace)
+  p rescued.class == x.class
+false
+  p rescued.message == x.message
+true
+  p rescued.backtrace == x.backtrace
+true
+  p rescued == x
+false
+```
+
+Different message:
+
+```ruby
+  x = rescued.exception('Foo!')
+  x.set_backtrace(rescued.backtrace)
+  p rescued.class == x.class
+true
+  p rescued.message == x.message
+false
+  p rescued.backtrace == x.backtrace
+true
+  p rescued == x
+false
+```
+
+Different backtrace:
+
+```ruby
+  x = clone.exception
+  backtrace = rescued.backtrace_locations.map { |x| x.to_s }
+  x.set_backtrace(backtrace)
+  p rescued.class == x.class
+true
+  p rescued.message == x.message
+true
+  p rescued.backtrace == x.backtrace
+false
+  p rescued == x
+false
+```
+
 ### More Methods
     
 #### Method :cause

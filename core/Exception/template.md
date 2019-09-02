@@ -115,16 +115,104 @@ Get an exception's message:
 p x.message
 ```
 
-#### Backtraces
+For an exception with no message, method <code>:message</code> returns the class name.
 
-    #backtrace
-    #backtrace_locations
-    #set_backtrace
+```#run_irb
+x = Exception.new
+p x.message
+```
+
+#### Rescued Exceptions
+
+Rescue an exception:
+
+```#run_irb
+rescued = nil
+begin
+  raise Exception.new('Boo!')
+rescue Exception => x
+  rescued = x
+end
+```
+
+Show its class and message:
+
+```#run_irb
+```
+  p rescued.class
+  p rescued.message
+```
+
+Method <code>:backtrace</code> returns an array of strings.  This one is large:
+
+```#run_irb
+  backtrace = rescued.backtrace
+  p backtrace.class
+  p backtrace.size
+```
+  The whole thing:
+
+```#run_irb
+  puts backtrace
+```
+
+Set backtrace, in this case to an empty array:
+
+```#run_irb
+  rescued.set_backtrace([])
+  puts rescued.backtrace
+```
+
+The original backtrace information is still available via method <code>:backtrace_locations</code>, but the result is an array of <code>Thread::Backtrace::Location</code>, not an array of <code>String</code>.
+
+```#run_irb
+  p rescued.backtrace_locations.first.class
+  puts rescued.backtrace_locations
+```
 
 #### Equality
 
-#### Rescuing Exceptions
-    
+Two exceptions are equal under <code>:==</code> if they have the same class, message, and backtrace:
+
+```#run_irb
+  clone = rescued.clone
+  p rescued == clone
+```
+
+Different class:
+
+```#run_irb
+  x = RuntimeError.new(rescued.message)
+  x.set_backtrace(rescued.backtrace)
+  p rescued.class == x.class
+  p rescued.message == x.message
+  p rescued.backtrace == x.backtrace
+  p rescued == x
+```
+
+Different message:
+
+```#run_irb
+  x = rescued.exception('Foo!')
+  x.set_backtrace(rescued.backtrace)
+  p rescued.class == x.class
+  p rescued.message == x.message
+  p rescued.backtrace == x.backtrace
+  p rescued == x
+```
+
+Different backtrace:
+
+```#run_irb
+  x = clone.exception
+  backtrace = rescued.backtrace_locations.map { |x| x.to_s }
+  x.set_backtrace(backtrace)
+  p rescued.class == x.class
+  p rescued.message == x.message
+  p rescued.backtrace == x.backtrace
+  p rescued == x
+```
+
 ### More Methods
     
 #### Method :cause
