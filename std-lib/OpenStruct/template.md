@@ -6,7 +6,7 @@ From the documentation for Ruby's OpenStruct class:
 
 >An OpenStruct is a data structure, similar to a Hash, that allows the definition of arbitrary attributes with their accompanying values.
 
-It's much like a Struct, but with more bells and whistles: you can, for example, add and delete attributes.
+It's much like a <code>Struct</code>, but with more bells and whistles: you can, for example, add and delete attributes.
 
 To demonstrate, I'll use Ruby and the Ruby Interactive Shell, <code>irb</code>, beginning with their versions:
 
@@ -26,7 +26,7 @@ require 'ostruct'
 p OpenStruct.superclass
 ```
 
-Create an OpenStruct object, then display it (method :to_s is an alias of method :inspect):
+Create an OpenStruct object, then display it (method <code>:to_s</code> is an alias of method <code>:inspect</code>):
 
 ```#run_irb
 person = OpenStruct.new(:name => 'Burdette Lamar', :city => 'Houston', :state => 'TX')
@@ -46,7 +46,7 @@ person.country = 'USA'
 p person.country
 ```
 
-Remove an attribute (method :delete_field returns the deleted value):
+Remove an attribute (method <code>:delete_field</code> returns the deleted value):
 
 ```#run_irb
 p person.delete_field(:country)
@@ -62,7 +62,7 @@ p person
 
 ### Accessing Attributes
 
-Create an attribute with an accessor method, or method :[]= with an augument (symbol or string):
+Create an attribute with an accessor method, or method <code>:[]=</code> with an augument (symbol or string):
 
 ```#run_irb
 p person.hair_color = :gray
@@ -70,7 +70,7 @@ p person[:eye_color] = :brown
 p person['hair_style'] = :ponytail
 ```
 
-Get an attribute's value with its accessor method or method :[] with an argument:
+Get an attribute's value with its accessor method or method <code>:[]</code>:
 
 ```#run_irb
 p person.hair_color
@@ -78,7 +78,7 @@ p person[:eye_color]
 p person['hair_style']
 ```
 
-Change an attribute's value with its accessor method or method :[]= and an argument:
+Change an attribute's value with its accessor method or method <code>:[]=</code>:
 
 ```#run_irb
 p person.hair_color = :silver
@@ -114,16 +114,15 @@ person = OpenStruct.new(:name => 'Burdette Lamar', :city => 'Houston', :state =>
 p person.methods(false)
 ```
 
-Accessing an attribute with method :[] does not create accessor methods:
+Accessing an attribute with method <code>:[]</code> does not create accessor methods:
 
 ```#run_irb
 p person[:name]
 p person['name']
 p person.methods(false)
-[]
 ```
 
-But accessing it with method :[]= does create accessor methods:
+But accessing it with method <code>:[]=</code> does create accessor methods:
 
 ```#run_irb
 person[:name] = 'Lamar, Burdette'
@@ -139,7 +138,7 @@ person.city = 'Boston'
 p person.methods(false)
 ```
 
-Dig for content in objects that support method :dig:
+Dig for content in objects that support method <code>:dig</code>:
 
 ```#run_irb
 MyStruct = Struct.new(:foo)
@@ -177,7 +176,7 @@ p ostruct
 
 ### Iteration
 
-Iterate with method :each_pair:
+Iterate with method <code>:each_pair</code>:
 
 ```#run_irb
 person.each_pair do |name, value|
@@ -228,14 +227,14 @@ p a
 p b
 ```
 
-Methods :== and :eql? test equality.
+Methods <code>:==</code> and <code>:eql?</code> test equality.
 
 ```#run_irb
 p a == b
 p a.eql?(b)
 ```
 
-Method :hash returns an integer value, not a hash:
+Method <code>:hash</code> returns an integer hash value, not a hash:
 
 ```#run_irb
 p a.hash
