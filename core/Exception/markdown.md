@@ -21,9 +21,6 @@ p `irb --version`.chomp
 ### Contents
 - [The Basics](#the-basics)
   - [Creating Exceptions](#creating-exceptions)
-    - [Method Exception.new](#method-exceptionnew)
-    - [Method Exception.exception](#method-exceptionexception)
-    - [Method Exception#exception](#method-exceptionexception)
   - [Examining Exceptions](#examining-exceptions)
   - [Rescuing Exceptions](#rescuing-exceptions)
   - [Messages](#messages)
@@ -42,8 +39,6 @@ p `irb --version`.chomp
 
 #### Creating Exceptions
 
-##### Method Exception.new
-
 Create an exception:
 
 ```ruby
@@ -60,9 +55,18 @@ p x
 #<Exception: Boo!>
 ```
 
-##### Method Exception.exception
+Create an exception with a non-string argument (which is then converted to a string):
 
-<code>Exception.exception</code> behaves the same as <code>Exception#exception</code>:
+```ruby
+x = Exception.new(:symbol)
+p x
+#<Exception: symbol>
+x = Exception.new(Range.new(0, 4))
+p x
+#<Exception: 0..4>
+```
+
+<code>Exception.exception</code> behaves the same as <code>Exception.new</code>:
 
 ```ruby
 x = Exception.exception
@@ -73,12 +77,71 @@ p x
 #<Exception: Boo!>
 ```
 
-##### Method Exception#exception
+Create an exception of the same class as an existing exception, but with a different message:
+
+```ruby
+x = Exception.exception('x message')
+p x
+#<Exception: x message>
+p x.__id__
+44553760
+y = x.exception('y message')
+p y
+#<Exception: y message>
+p y.__id__
+44636400
+```
+
+<code>Exception#exception</code> returns <code>self</code> when passed no argument:
+
+```ruby
+x = Exception.new
+p x
+#<Exception: Exception>
+p x.__id__
+44663300
+y = x.exception
+p y
+#<Exception: Exception>
+p y.__id__
+44663300
+p x.__id__ == y.__id__
+true
+```
+
+<code>Exception#exception</code> returns <code>self</code> when passed <code>self</code> as an argument:
+
+```ruby
+x = Exception.new
+p x
+#<Exception: Exception>
+p x.__id__
+44810180
+y = x.exception(x)
+p y
+#<Exception: Exception>
+p y.__id__
+44810180
+p x.__id__ == y.__id__
+true
+```
 
 #### Examining Exceptions
 
-    #inspect
-    #to_s
+Get a string showing an exception's class and message:
+ 
+```ruby
+x = Exception.new('Boo!')
+p x.inspect
+"#<Exception: Boo!>"
+```
+
+Get an exception's message:
+
+```ruby
+p x.to_s
+"Boo!"
+```
 
 #### Rescuing Exceptions
     

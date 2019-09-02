@@ -14,8 +14,6 @@ From the documentation for Ruby's <code>Exception</code> class:
 
 #### Creating Exceptions
 
-##### Method Exception.new
-
 Create an exception:
 
 ```#run_irb
@@ -30,9 +28,16 @@ x = Exception.new('Boo!')
 p x
 ```
 
-##### Method Exception.exception
+Create an exception with a non-string argument (which is then converted to a string):
 
-<code>Exception.exception</code> behaves the same as <code>Exception#exception</code>:
+```#run_irb
+x = Exception.new(:symbol)
+p x
+x = Exception.new(Range.new(0, 4))
+p x
+```
+
+<code>Exception.exception</code> behaves the same as <code>Exception.new</code>:
 
 ```#run_irb
 x = Exception.exception
@@ -41,12 +46,55 @@ x = Exception.exception('Boo!')
 p x
 ```
 
-##### Method Exception#exception
+Create an exception of the same class as an existing exception, but with a different message:
+
+```#run_irb
+x = Exception.exception('x message')
+p x
+p x.__id__
+y = x.exception('y message')
+p y
+p y.__id__
+```
+
+<code>Exception#exception</code> returns <code>self</code> when passed no argument:
+
+```#run_irb
+x = Exception.new
+p x
+p x.__id__
+y = x.exception
+p y
+p y.__id__
+p x.__id__ == y.__id__
+```
+
+<code>Exception#exception</code> returns <code>self</code> when passed <code>self</code> as an argument:
+
+```#run_irb
+x = Exception.new
+p x
+p x.__id__
+y = x.exception(x)
+p y
+p y.__id__
+p x.__id__ == y.__id__
+```
 
 #### Examining Exceptions
 
-    #inspect
-    #to_s
+Get a string showing an exception's class and message:
+ 
+```#run_irb
+x = Exception.new('Boo!')
+p x.inspect
+```
+
+Get an exception's message:
+
+```#run_irb
+p x.to_s
+```
 
 #### Rescuing Exceptions
     
