@@ -6,7 +6,7 @@ From the documentation for Ruby's OpenStruct class:
 
 >An OpenStruct is a data structure, similar to a Hash, that allows the definition of arbitrary attributes with their accompanying values.
 
-It's much like a Struct, but with more bells and whistles: you can, for example, add and delete attributes.
+It's much like a <code>Struct</code>, but with more bells and whistles: you can, for example, add and delete attributes.
 
 To demonstrate, I'll use Ruby and the Ruby Interactive Shell, <code>irb</code>, beginning with their versions:
 
@@ -70,7 +70,7 @@ p person[:eye_color] = :brown
 p person['hair_style'] = :ponytail
 ```
 
-Get an attribute's value with its accessor method or method <code>:[]</code> with an argument:
+Get an attribute's value with its accessor method or method <code>:[]</code>:
 
 ```#run_irb
 p person.hair_color
@@ -78,7 +78,7 @@ p person[:eye_color]
 p person['hair_style']
 ```
 
-Change an attribute's value with its accessor method or method <code>:[]=</code> and an argument:
+Change an attribute's value with its accessor method or method <code>:[]=</code>:
 
 ```#run_irb
 p person.hair_color = :silver
@@ -120,7 +120,6 @@ Accessing an attribute with method <code>:[]</code> does not create accessor met
 p person[:name]
 p person['name']
 p person.methods(false)
-[]
 ```
 
 But accessing it with method <code>:[]=</code> does create accessor methods:
