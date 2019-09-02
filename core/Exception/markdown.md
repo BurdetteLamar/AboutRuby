@@ -26,7 +26,7 @@ p `irb --version`.chomp
   - [Method :==](#method-)
   - [Method :cause](#method-cause)
   - [Method :to_tty?](#method-to_tty)
-- [Global Variables $! and $A](#global-variables-and-a)
+- [Global Variables](#global-variables)
 - [Descendant Classes](#descendant-classes)
   - [Built-In Descendant Classes](#built-in-descendant-classes)
   - [Custom Descendant Classes](#custom-descendant-classes)
@@ -65,7 +65,7 @@ p `irb --version`.chomp
 
     ::to_tty?
 
-### Global Variables $! and $A
+### Global Variables
 
 When an exception has been raised but not yet handled (in rescue, ensure, at_exit and END blocks) the global variable $! will contain the current exception and $@ contains the current exception’s backtrace.
 

@@ -43,7 +43,7 @@ From the documentation for Ruby's <code>Exception</code> class:
 
     ::to_tty?
 
-### Global Variables $! and $A
+### Global Variables
 
 When an exception has been raised but not yet handled (in rescue, ensure, at_exit and END blocks) the global variable $! will contain the current exception and $@ contains the current exception’s backtrace.
 
