@@ -20,6 +20,12 @@ p `irb --version`.chomp
 
 ### Contents
 - [The Basics](#the-basics)
+  - [Creating Exceptions](#creating-exceptions)
+    - [Method Exception.new](#method-exceptionnew)
+    - [Method Exception.exception](#method-exceptionexception)
+    - [Method Exception#exception](#method-exceptionexception)
+  - [Examining Exceptions](#examining-exceptions)
+  - [Rescuing Exceptions](#rescuing-exceptions)
   - [Messages](#messages)
   - [Backtraces](#backtraces)
 - [More Methods](#more-methods)
@@ -34,16 +40,52 @@ p `irb --version`.chomp
 
 ### The Basics
 
-    ::exception
-    ::new
-    #exception
+#### Creating Exceptions
+
+##### Method Exception.new
+
+Create an exception:
+
+```ruby
+x = Exception.new
+p x
+#<Exception: Exception>
+```
+
+Create an exception with a message:
+
+```ruby
+x = Exception.new('Boo!')
+p x
+#<Exception: Boo!>
+```
+
+##### Method Exception.exception
+
+<code>Exception.exception</code> behaves the same as <code>Exception#exception</code>:
+
+```ruby
+x = Exception.exception
+p x
+#<Exception: Exception>
+x = Exception.exception('Boo!')
+p x
+#<Exception: Boo!>
+```
+
+##### Method Exception#exception
+
+#### Examining Exceptions
+
     #inspect
     #to_s
 
+#### Rescuing Exceptions
+    
 #### Messages
 
-    #full_message
     #message
+    #full_message
     
 #### Backtraces
 
@@ -60,6 +102,20 @@ p `irb --version`.chomp
 #### Method :cause
 
     #cause
+    
+    https://www.honeybadger.io/blog/nested-errors-in-ruby-with-exception-cause/
+    
+def fail_and_reraise
+  raise NoMethodError
+rescue
+  raise RuntimeError
+end
+
+begin
+  fail_and_reraise
+rescue => e
+  puts "#{ e } caused by #{ e.cause }"
+end
 
 #### Method :to_tty?
 

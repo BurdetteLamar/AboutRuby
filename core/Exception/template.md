@@ -12,16 +12,48 @@ From the documentation for Ruby's <code>Exception</code> class:
 
 ### The Basics
 
-    ::exception
-    ::new
-    #exception
+#### Creating Exceptions
+
+##### Method Exception.new
+
+Create an exception:
+
+```#run_irb
+x = Exception.new
+p x
+```
+
+Create an exception with a message:
+
+```#run_irb
+x = Exception.new('Boo!')
+p x
+```
+
+##### Method Exception.exception
+
+<code>Exception.exception</code> behaves the same as <code>Exception#exception</code>:
+
+```#run_irb
+x = Exception.exception
+p x
+x = Exception.exception('Boo!')
+p x
+```
+
+##### Method Exception#exception
+
+#### Examining Exceptions
+
     #inspect
     #to_s
 
+#### Rescuing Exceptions
+    
 #### Messages
 
-    #full_message
     #message
+    #full_message
     
 #### Backtraces
 
@@ -38,6 +70,20 @@ From the documentation for Ruby's <code>Exception</code> class:
 #### Method :cause
 
     #cause
+    
+    https://www.honeybadger.io/blog/nested-errors-in-ruby-with-exception-cause/
+    
+def fail_and_reraise
+  raise NoMethodError
+rescue
+  raise RuntimeError
+end
+
+begin
+  fail_and_reraise
+rescue => e
+  puts "#{ e } caused by #{ e.cause }"
+end
 
 #### Method :to_tty?
 
