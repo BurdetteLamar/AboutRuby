@@ -1,3 +1,4 @@
+<!-- >>>>>> BEGIN GENERATED FILE (include): SOURCE std-lib/OpenStruct/template.md -->
 ## OpenStruct
 
 ### What's an OpenStruct?
@@ -6,7 +7,7 @@ From the documentation for Ruby's OpenStruct class:
 
 >An OpenStruct is a data structure, similar to a Hash, that allows the definition of arbitrary attributes with their accompanying values.
 
-It's much like a Struct, but with more bells and whistles: you can, for example, add and delete attributes.
+It's much like a <code>Struct</code>, but with more bells and whistles: you can, for example, add and delete attributes.
 
 To demonstrate, I'll use Ruby and the Ruby Interactive Shell, <code>irb</code>, beginning with their versions:
 
@@ -35,7 +36,7 @@ p OpenStruct.superclass
 Object
 ```
 
-Create an OpenStruct object, then display it (method :to_s is an alias of method :inspect):
+Create an OpenStruct object, then display it (method <code>:to_s</code> is an alias of method <code>:inspect</code>):
 
 ```ruby
 person = OpenStruct.new(:name => 'Burdette Lamar', :city => 'Houston', :state => 'TX')
@@ -58,7 +59,7 @@ p person.country
 "USA"
 ```
 
-Remove an attribute (method :delete_field returns the deleted value):
+Remove an attribute (method <code>:delete_field</code> returns the deleted value):
 
 ```ruby
 p person.delete_field(:country)
@@ -77,7 +78,7 @@ p person
 
 ### Accessing Attributes
 
-Create an attribute with an accessor method, or method :[]= with an augument (symbol or string):
+Create an attribute with an accessor method, or method <code>:[]=</code> with an augument (symbol or string):
 
 ```ruby
 p person.hair_color = :gray
@@ -88,7 +89,7 @@ p person['hair_style'] = :ponytail
 :ponytail
 ```
 
-Get an attribute's value with its accessor method or method :[] with an argument:
+Get an attribute's value with its accessor method or method <code>:[]</code>:
 
 ```ruby
 p person.hair_color
@@ -99,7 +100,7 @@ p person['hair_style']
 :ponytail
 ```
 
-Change an attribute's value with its accessor method or method :[]= and an argument:
+Change an attribute's value with its accessor method or method <code>:[]=</code>:
 
 ```ruby
 p person.hair_color = :silver
@@ -145,7 +146,7 @@ p person.methods(false)
 []
 ```
 
-Accessing an attribute with method :[] does not create accessor methods:
+Accessing an attribute with method <code>:[]</code> does not create accessor methods:
 
 ```ruby
 p person[:name]
@@ -154,10 +155,9 @@ p person['name']
 "Burdette Lamar"
 p person.methods(false)
 []
-[]
 ```
 
-But accessing it with method :[]= does create accessor methods:
+But accessing it with method <code>:[]=</code> does create accessor methods:
 
 ```ruby
 person[:name] = 'Lamar, Burdette'
@@ -177,7 +177,7 @@ p person.methods(false)
 [:state=, :city=, :name, :city, :state, :name=]
 ```
 
-Dig for content in objects that support method :dig:
+Dig for content in objects that support method <code>:dig</code>:
 
 ```ruby
 MyStruct = Struct.new(:foo)
@@ -221,7 +221,7 @@ p ostruct
 
 ### Iteration
 
-Iterate with method :each_pair:
+Iterate with method <code>:each_pair</code>:
 
 ```ruby
 person.each_pair do |name, value|
@@ -281,7 +281,7 @@ p b
 #<OpenStruct b=1, a=0>
 ```
 
-Methods :== and :eql? test equality.
+Methods <code>:==</code> and <code>:eql?</code> test equality.
 
 ```ruby
 p a == b
@@ -290,13 +290,13 @@ p a.eql?(b)
 true
 ```
 
-Method :hash returns an integer value, not a hash:
+Method <code>:hash</code> returns an integer hash value, not a hash:
 
 ```ruby
 p a.hash
-1011708047
+139044561
 p b.hash
-1011708047
+139044561
 ```
 
 ### More
@@ -305,3 +305,4 @@ p b.hash
 - [Source code](https://github.com/ruby/ruby/blob/master/lib/ostruct.rb)
 - [Related gems](https://rubygems.org/search?query=openstruct)
 - [Performance](https://www.google.com/search?q=ruby+openstruct+performance)
+<!-- <<<<<< END GENERATED FILE (include): SOURCE std-lib/OpenStruct/template.md -->
