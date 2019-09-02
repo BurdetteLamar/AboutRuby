@@ -8,12 +8,7 @@ From the documentation for Ruby's OpenStruct class:
 
 It's much like a <code>Struct</code>, but with more bells and whistles: you can, for example, add and delete attributes.
 
-To demonstrate, I'll use Ruby and the Ruby Interactive Shell, <code>irb</code>, beginning with their versions:
-
-```#run_irb
-p `ruby --version`.chomp
-p `irb --version`.chomp
-```
+@[:markdown](../../include_files/begin_irb.md)
 
 @[:page_toc](### Contents)
 
@@ -234,11 +229,12 @@ p a == b
 p a.eql?(b)
 ```
 
-Method <code>:hash</code> returns an integer hash value, not a hash:
+Method <code>:hash</code> returns an integer hash value, not a hash.  The value varies from run to run, so here we just show that it's an integer:
 
 ```#run_irb
-p a.hash
-p b.hash
+p a.hash.instance_of?(Integer)
+p b.hash.instance_of?(Integer)
+p a.hash == b.hash
 ```
 
 ### More

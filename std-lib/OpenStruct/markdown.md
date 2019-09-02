@@ -1,4 +1,5 @@
 <!-- >>>>>> BEGIN GENERATED FILE (include): SOURCE std-lib/OpenStruct/template.md -->
+<!-- >>>>>> BEGIN INCLUDED FILE (markdown): SOURCE include_files/begin_irb.md -->
 ## OpenStruct
 
 ### What's an OpenStruct?
@@ -9,7 +10,7 @@ From the documentation for Ruby's OpenStruct class:
 
 It's much like a <code>Struct</code>, but with more bells and whistles: you can, for example, add and delete attributes.
 
-To demonstrate, I'll use Ruby and the Ruby Interactive Shell, <code>irb</code>, beginning with their versions:
+To demonstrate, we'll use Ruby and the Ruby Interactive Shell, <code>irb</code>, beginning with their versions:
 
 ```ruby
 p `ruby --version`.chomp
@@ -17,6 +18,7 @@ p `ruby --version`.chomp
 p `irb --version`.chomp
 "irb 1.0.0 (2018-12-18)"
 ```
+<!-- <<<<<< END INCLUDED FILE (markdown): SOURCE include_files/begin_irb.md -->
 
 ### Contents
 - [The Basics](#the-basics)
@@ -290,13 +292,15 @@ p a.eql?(b)
 true
 ```
 
-Method <code>:hash</code> returns an integer hash value, not a hash:
+Method <code>:hash</code> returns an integer hash value, not a hash.  The value varies from run to run, so here we just show that it's an integer:
 
 ```ruby
-p a.hash
-139044561
-p b.hash
-139044561
+p a.hash.instance_of?(Integer)
+true
+p b.hash.instance_of?(Integer)
+true
+p a.hash == b.hash
+true
 ```
 
 ### More
