@@ -2,7 +2,7 @@
 
 ### What's an OpenStruct?
 
-From the documentation for Ruby's OpenStruct class:
+From the documentation for Ruby's <code>OpenStruct/code> class:
 
 >An OpenStruct is a data structure, similar to a Hash, that allows the definition of arbitrary attributes with their accompanying values.
 
