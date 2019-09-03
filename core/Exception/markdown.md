@@ -252,10 +252,18 @@ C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
 
 #### Equality
 
-Two exceptions are equal under <code>:==</code> if they have the same class, message, and backtrace:
+Two exceptions are equal under <code>:==</code> if they have the same class, message, and backtrace.
+
+All the same:
 
 ```ruby
   clone = rescued.clone
+  p rescued.class == x.class
+true
+  p rescued.message == x.message
+true
+  p rescued.backtrace == x.backtrace
+true
   p rescued == clone
 true
 ```

@@ -164,10 +164,15 @@ The original backtrace information is still available via method <code>:backtrac
 
 #### Equality
 
-Two exceptions are equal under <code>:==</code> if they have the same class, message, and backtrace:
+Two exceptions are equal under <code>:==</code> if they have the same class, message, and backtrace.
+
+All the same:
 
 ```#run_irb
   clone = rescued.clone
+  p rescued.class == x.class
+  p rescued.message == x.message
+  p rescued.backtrace == x.backtrace
   p rescued == clone
 ```
 
