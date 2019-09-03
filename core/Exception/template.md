@@ -51,10 +51,8 @@ Create a new exception of the same class as an existing exception, but with a di
 ```#run_irb
 x = Exception.exception('x message')
 p x
-p x.__id__
 y = x.exception('y message')
 p y
-p y.__id__
 p x.__id__ == y.__id__
 ```
 
@@ -63,10 +61,8 @@ Method <code>:exception</code> returns <code>self</code> when passed no argument
 ```#run_irb
 x = Exception.new
 p x
-p x.__id__
 y = x.exception
 p y
-p y.__id__
 p x.__id__ == y.__id__
 ```
 
@@ -75,10 +71,8 @@ Method <code>:exception</code> returns <code>self</code> when passed <code>self<
 ```#run_irb
 x = Exception.new
 p x
-p x.__id__
 y = x.exception(x)
 p y
-p y.__id__
 p x.__id__ == y.__id__
 ```
 
@@ -87,10 +81,8 @@ Method <code>:exception</code> returns a new exception with a new message when p
 ```#run_irb
 x = Exception.new
 p x
-p x.__id__
 y = x.exception('Boo!')
 p y
-p y.__id__
 p x.__id__ == y.__id__
 ```
 
@@ -217,10 +209,9 @@ Different backtrace:
     
 #### Method :cause
 
-    #cause
-    
-    https://www.honeybadger.io/blog/nested-errors-in-ruby-with-exception-cause/
-    
+When an exception is raised, method <code>:cause</code> returns the previously-raised exception, as shown by this code from [Starr Horne](https://www.honeybadger.io/blog/nested-errors-in-ruby-with-exception-cause/):
+
+```#run_irb
 def fail_and_reraise
   raise NoMethodError
 rescue
@@ -232,6 +223,7 @@ begin
 rescue => e
   puts "#{ e } caused by #{ e.cause }"
 end
+```
 
 #### Method :to_tty?
 
@@ -245,7 +237,7 @@ When an exception has been raised but not yet handled (in rescue, ensure, at_exi
 
 #### Built-In Descendant Classes
 
-####  Custom Descendant Classes
+#### Custom Descendant Classes
 
 ### More
 
@@ -253,3 +245,6 @@ When an exception has been raised but not yet handled (in rescue, ensure, at_exi
 - [Source code](https://github.com/ruby/ruby/blob/8b2e1ca10ecf92ad402decd6b1eab586eded0ddb/error.c)
 - [Related gems](https://rubygems.org/search?query=exception)
 - [Performance](https://www.google.com/search?q=ruby++exception+performance)
+
+BEST PRACTICE
+

@@ -81,13 +81,9 @@ Create a new exception of the same class as an existing exception, but with a di
 x = Exception.exception('x message')
 p x
 #<Exception: x message>
-p x.__id__
-44876840
 y = x.exception('y message')
 p y
 #<Exception: y message>
-p y.__id__
-46010040
 p x.__id__ == y.__id__
 false
 ```
@@ -98,13 +94,9 @@ Method <code>:exception</code> returns <code>self</code> when passed no argument
 x = Exception.new
 p x
 #<Exception: Exception>
-p x.__id__
-46079800
 y = x.exception
 p y
 #<Exception: Exception>
-p y.__id__
-46079800
 p x.__id__ == y.__id__
 true
 ```
@@ -115,13 +107,9 @@ Method <code>:exception</code> returns <code>self</code> when passed <code>self<
 x = Exception.new
 p x
 #<Exception: Exception>
-p x.__id__
-46161480
 y = x.exception(x)
 p y
 #<Exception: Exception>
-p y.__id__
-46161480
 p x.__id__ == y.__id__
 true
 ```
@@ -132,13 +120,9 @@ Method <code>:exception</code> returns a new exception with a new message when p
 x = Exception.new
 p x
 #<Exception: Exception>
-p x.__id__
-46257720
 y = x.exception('Boo!')
 p y
 #<Exception: Boo!>
-p y.__id__
-46302120
 p x.__id__ == y.__id__
 false
 ```
@@ -209,7 +193,7 @@ Array
 
 ```ruby
   puts backtrace
-irb_input:154:in `irb_binding'
+irb_input:146:in `irb_binding'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `eval'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `evaluate'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/context.rb:385:in `evaluate'
@@ -244,7 +228,7 @@ The original backtrace information is still available via method <code>:backtrac
   p rescued.backtrace_locations.first.class
 Thread::Backtrace::Location
   puts rescued.backtrace_locations
-irb_input:154:in `irb_binding'
+irb_input:146:in `irb_binding'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `eval'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `evaluate'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/context.rb:385:in `evaluate'
@@ -326,21 +310,22 @@ false
     
 #### Method :cause
 
-    #cause
-    
-    https://www.honeybadger.io/blog/nested-errors-in-ruby-with-exception-cause/
-    
+When an exception is raised, method <code>:cause</code> returns the previously-raised exception, as shown by this code from [Starr Horne](https://www.honeybadger.io/blog/nested-errors-in-ruby-with-exception-cause/):
+
+```ruby
 def fail_and_reraise
-  raise NoMethodError
-rescue
-  raise RuntimeError
-end
+    raise NoMethodError
+  rescue
+    raise RuntimeError
+  end
 
 begin
-  fail_and_reraise
-rescue => e
-  puts "#{ e } caused by #{ e.cause }"
-end
+    fail_and_reraise
+  rescue => e
+    puts "#{ e } caused by #{ e.cause }"
+  end
+RuntimeError caused by NoMethodError
+```
 
 #### Method :to_tty?
 
@@ -354,7 +339,7 @@ When an exception has been raised but not yet handled (in rescue, ensure, at_exi
 
 #### Built-In Descendant Classes
 
-####  Custom Descendant Classes
+#### Custom Descendant Classes
 
 ### More
 
@@ -362,4 +347,7 @@ When an exception has been raised but not yet handled (in rescue, ensure, at_exi
 - [Source code](https://github.com/ruby/ruby/blob/8b2e1ca10ecf92ad402decd6b1eab586eded0ddb/error.c)
 - [Related gems](https://rubygems.org/search?query=exception)
 - [Performance](https://www.google.com/search?q=ruby++exception+performance)
+
+BEST PRACTICE
+
 <!-- <<<<<< END GENERATED FILE (include): SOURCE core/Exception/template.md -->
