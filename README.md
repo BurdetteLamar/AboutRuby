@@ -8,8 +8,8 @@ Each topic has Ruby code snippets that demonstrate behaviors by running in <code
 
 ## Contents
 - core
-  - [Exception](core/Exception/markdown.md)
+  - [Exception](core/Exception/markdown.md#exception)
 - std-lib
-  - [OpenStruct](std-lib/OpenStruct/markdown.md)
+  - [OpenStruct](std-lib/OpenStruct/markdown.md#openstruct)
 <!-- <<<<<< END INCLUDED FILE (markdown): SOURCE include_files/contents.md -->
 <!-- <<<<<< END GENERATED FILE (include): SOURCE README.template.md -->

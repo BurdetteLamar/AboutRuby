@@ -20,7 +20,7 @@ namespace :build do
         contents.push("- #{section_name}")
         current_section_name = section_name
       end
-      link_path = File.join(section_name,topic_name,'markdown.md')
+      link_path = File.join(section_name,topic_name, "markdown.md##{topic_name.downcase}")
       contents.push("  - [#{topic_name}](#{link_path})")
       Dir.chdir(template_dir_path) do
         markdown_helper.include(template_file_name, markdown_file_name)
