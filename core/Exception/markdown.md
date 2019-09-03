@@ -174,25 +174,25 @@ begin
 Show its class and message:
 
 ```ruby
-  p rescued.class
+p rescued.class
 Exception
-  p rescued.message
+p rescued.message
 "Boo!"
 ```
 
 Method <code>:backtrace</code> returns an array of strings.  This one is large:
 
 ```ruby
-  backtrace = rescued.backtrace
-  p backtrace.class
+backtrace = rescued.backtrace
+p backtrace.class
 Array
-  p backtrace.size
+p backtrace.size
 20
 ```
   The whole thing:
 
 ```ruby
-  puts backtrace
+puts backtrace
 irb_input:145:in `irb_binding'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `eval'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `evaluate'
@@ -218,16 +218,16 @@ C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
 Set backtrace, in this case to an empty array:
 
 ```ruby
-  rescued.set_backtrace([])
-  puts rescued.backtrace
+rescued.set_backtrace([])
+puts rescued.backtrace
 ```
 
 The original backtrace information is still available via method <code>:backtrace_locations</code>, but the result is an array of <code>Thread::Backtrace::Location</code>, not an array of <code>String</code>.
 
 ```ruby
-  p rescued.backtrace_locations.first.class
+p rescued.backtrace_locations.first.class
 Thread::Backtrace::Location
-  puts rescued.backtrace_locations
+puts rescued.backtrace_locations
 irb_input:145:in `irb_binding'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `eval'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `evaluate'
@@ -257,60 +257,60 @@ Two exceptions are equal under <code>:==</code> if they have the same class, mes
 All the same:
 
 ```ruby
-  clone = rescued.clone
-  p rescued.class == x.class
+clone = rescued.clone
+p rescued.class == x.class
 true
-  p rescued.message == x.message
+p rescued.message == x.message
 true
-  p rescued.backtrace == x.backtrace
+p rescued.backtrace == x.backtrace
 true
-  p rescued == clone
+p rescued == clone
 true
 ```
 
 Different class:
 
 ```ruby
-  x = RuntimeError.new(rescued.message)
-  x.set_backtrace(rescued.backtrace)
-  p rescued.class == x.class
+x = RuntimeError.new(rescued.message)
+x.set_backtrace(rescued.backtrace)
+p rescued.class == x.class
 false
-  p rescued.message == x.message
+p rescued.message == x.message
 true
-  p rescued.backtrace == x.backtrace
+p rescued.backtrace == x.backtrace
 true
-  p rescued == x
+p rescued == x
 false
 ```
 
 Different message:
 
 ```ruby
-  x = rescued.exception('Foo!')
-  x.set_backtrace(rescued.backtrace)
-  p rescued.class == x.class
+x = rescued.exception('Foo!')
+x.set_backtrace(rescued.backtrace)
+p rescued.class == x.class
 true
-  p rescued.message == x.message
+p rescued.message == x.message
 false
-  p rescued.backtrace == x.backtrace
+p rescued.backtrace == x.backtrace
 true
-  p rescued == x
+p rescued == x
 false
 ```
 
 Different backtrace:
 
 ```ruby
-  x = clone.exception
-  backtrace = rescued.backtrace_locations.map { |x| x.to_s }
-  x.set_backtrace(backtrace)
-  p rescued.class == x.class
+x = clone.exception
+backtrace = rescued.backtrace_locations.map { |x| x.to_s }
+x.set_backtrace(backtrace)
+p rescued.class == x.class
 true
-  p rescued.message == x.message
+p rescued.message == x.message
 true
-  p rescued.backtrace == x.backtrace
+p rescued.backtrace == x.backtrace
 false
-  p rescued == x
+p rescued == x
 false
 ```
 
@@ -340,7 +340,7 @@ RuntimeError caused by NoMethodError
 Determine whether an Exception will be written to a tty:
 
 ```ruby
-  p Exception.to_tty?
+p Exception.to_tty?
 false
 ```
 
@@ -349,12 +349,12 @@ false
 In a <code>rescue</code>, <code>ensure</code>, <code>at_exit</code>, or <code>END</code> block, the already-raised but not-yet-handled exception is accessible via global variables.  <code>$!</code> has the raised exception, and <code>$@</code> has its backtrace
 
 ```ruby
-  begin
-      raise Exception.new('Boo!')
-    rescue Exception => x
-      p $!
-      puts $@
-    end
+begin
+    raise Exception.new('Boo!')
+  rescue Exception => x
+    p $!
+    puts $@
+  end
 #<Exception: Boo!>
 irb_input:267:in `irb_binding'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `eval'
