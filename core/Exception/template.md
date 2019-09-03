@@ -251,7 +251,7 @@ In a <code>rescue</code>, <code>ensure</code>, <code>at_exit</code>, or <code>EN
   end
 ```
 
-### Built-In Sublasses
+### Built-In Subclasses
 
 See the built-in subclasses of class <code>Exception</code>, at [its documentation](https://ruby-doc.org/core-2.6.3/Exception.html).
 

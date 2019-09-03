@@ -28,7 +28,7 @@ p `irb --version`.chomp
   - [Method :cause](#method-cause)
   - [Method :to_tty?](#method-to_tty)
 - [Global Variables](#global-variables)
-- [Built-In Sublasses](#built-in-sublasses)
+- [Built-In Subclasses](#built-in-subclasses)
 - [More](#more)
 
 ### The Basics
@@ -376,7 +376,7 @@ C:/Ruby26-x64/bin/irb.cmd:31:in `load'
 C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
 ```
 
-### Built-In Sublasses
+### Built-In Subclasses
 
 See the built-in subclasses of class <code>Exception</code>, at [its documentation](https://ruby-doc.org/core-2.6.3/Exception.html).
 
