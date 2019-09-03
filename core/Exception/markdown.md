@@ -346,7 +346,37 @@ false
 
 ### Global Variables
 
-When an exception has been raised but not yet handled (in rescue, ensure, at_exit and END blocks) the global variable $! will contain the current exception and $@ contains the current exception’s backtrace.
+In a <code>rescue</code>, <code>ensure</code>, <code>at_exit</code>, or <code>END</code> block, the already-raised but not-yet-handled exception is accessible via global variables.  <code>$!</code> has the raised exception, and <code>$@</code> has its backtrace
+
+```ruby
+  begin
+      raise Exception.new('Boo!')
+    rescue Exception => x
+      p $!
+      puts $@
+    end
+#<Exception: Boo!>
+irb_input:269:in `irb_binding'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `eval'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `evaluate'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/context.rb:385:in `evaluate'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:493:in `block (2 levels) in eval_input'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:647:in `signal_status'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:490:in `block in eval_input'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/ruby-lex.rb:246:in `block (2 levels) in each_top_level_statement'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/ruby-lex.rb:232:in `loop'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/ruby-lex.rb:232:in `block in each_top_level_statement'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/ruby-lex.rb:231:in `catch'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb/ruby-lex.rb:231:in `each_top_level_statement'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:489:in `eval_input'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:428:in `block in run'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:427:in `catch'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:427:in `run'
+C:/Ruby26-x64/lib/ruby/2.6.0/irb.rb:383:in `start'
+C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
+C:/Ruby26-x64/bin/irb.cmd:31:in `load'
+C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
+```
 
 ### Descendant Classes
 

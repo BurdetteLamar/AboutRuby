@@ -240,7 +240,16 @@ Determine whether an Exception will be written to a tty:
 
 ### Global Variables
 
-When an exception has been raised but not yet handled (in rescue, ensure, at_exit and END blocks) the global variable $! will contain the current exception and $@ contains the current exception’s backtrace.
+In a <code>rescue</code>, <code>ensure</code>, <code>at_exit</code>, or <code>END</code> block, the already-raised but not-yet-handled exception is accessible via global variables.  <code>$!</code> has the raised exception, and <code>$@</code> has its backtrace
+
+```#run_irb
+  begin
+    raise Exception.new('Boo!')
+  rescue Exception => x
+    p $!
+    puts $@
+  end
+```
 
 ### Descendant Classes
 
