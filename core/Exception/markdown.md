@@ -337,7 +337,12 @@ RuntimeError caused by NoMethodError
 
 #### Method :to_tty?
 
-    ::to_tty?
+Determine whether an Exception will be written to a tty:
+
+```ruby
+  p Exception.to_tty?
+false
+```
 
 ### Global Variables
 

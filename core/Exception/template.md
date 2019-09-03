@@ -232,7 +232,11 @@ end
 
 #### Method :to_tty?
 
-    ::to_tty?
+Determine whether an Exception will be written to a tty:
+
+```#run_irb
+  p Exception.to_tty?
+```
 
 ### Global Variables
 
