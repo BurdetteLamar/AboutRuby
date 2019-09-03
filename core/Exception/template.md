@@ -130,7 +130,6 @@ end
 Show its class and message:
 
 ```#run_irb
-```
   p rescued.class
   p rescued.message
 ```

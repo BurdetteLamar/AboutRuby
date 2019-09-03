@@ -174,9 +174,10 @@ begin
 Show its class and message:
 
 ```ruby
-```
   p rescued.class
+Exception
   p rescued.message
+"Boo!"
 ```
 
 Method <code>:backtrace</code> returns an array of strings.  This one is large:
@@ -355,7 +356,7 @@ In a <code>rescue</code>, <code>ensure</code>, <code>at_exit</code>, or <code>EN
       puts $@
     end
 #<Exception: Boo!>
-irb_input:268:in `irb_binding'
+irb_input:267:in `irb_binding'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `eval'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `evaluate'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/context.rb:385:in `evaluate'
