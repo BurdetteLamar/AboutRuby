@@ -255,6 +255,12 @@ In a <code>rescue</code>, <code>ensure</code>, <code>at_exit</code>, or <code>EN
 
 See the built-in subclasses of class <code>Exception</code>, at [its documentation](https://ruby-doc.org/core-2.6.3/Exception.html).
 
+### Custom Exceptions
+
+Many Rubyists believe that it's good practice to use custom exceptions, rather than the built-in exceptions.  Read all about it:
+
+- [Custom exceptions](https://www.google.com/search?q=ruby+custom+exceptions)
+
 ### More
 
 - [Documentation](https://ruby-doc.org/core-2.6.3/Exception.html)

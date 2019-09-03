@@ -29,6 +29,7 @@ p `irb --version`.chomp
   - [Method :to_tty?](#method-to_tty)
 - [Global Variables](#global-variables)
 - [Built-In Subclasses](#built-in-subclasses)
+- [Custom Exceptions](#custom-exceptions)
 - [More](#more)
 
 ### The Basics
@@ -191,7 +192,7 @@ Array
 
 ```ruby
   puts backtrace
-irb_input:144:in `irb_binding'
+irb_input:145:in `irb_binding'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `eval'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `evaluate'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/context.rb:385:in `evaluate'
@@ -226,7 +227,7 @@ The original backtrace information is still available via method <code>:backtrac
   p rescued.backtrace_locations.first.class
 Thread::Backtrace::Location
   puts rescued.backtrace_locations
-irb_input:144:in `irb_binding'
+irb_input:145:in `irb_binding'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `eval'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `evaluate'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/context.rb:385:in `evaluate'
@@ -354,7 +355,7 @@ In a <code>rescue</code>, <code>ensure</code>, <code>at_exit</code>, or <code>EN
       puts $@
     end
 #<Exception: Boo!>
-irb_input:267:in `irb_binding'
+irb_input:268:in `irb_binding'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `eval'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `evaluate'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/context.rb:385:in `evaluate'
@@ -379,6 +380,12 @@ C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
 ### Built-In Subclasses
 
 See the built-in subclasses of class <code>Exception</code>, at [its documentation](https://ruby-doc.org/core-2.6.3/Exception.html).
+
+### Custom Exceptions
+
+Many Rubyists believe that it's good practice to use custom exceptions, rather than the built-in exceptions.  Read all about it:
+
+- [Custom exceptions](https://www.google.com/search?q=ruby+custom+exceptions)
 
 ### More
 
