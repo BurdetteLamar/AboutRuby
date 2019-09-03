@@ -2,6 +2,10 @@
 <!-- >>>>>> BEGIN INCLUDED FILE (markdown): SOURCE include_files/contents.md -->
 # About Ruby
 
+Ruby topics, with emphasis on working demo code.
+
+Each topic has Ruby code snippets that demonstrate behaviors by running in <code>irb</code>.
+
 ## Contents
 - core
   - [Exception](core/Exception/markdown.md)
