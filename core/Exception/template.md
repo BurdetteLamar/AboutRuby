@@ -251,18 +251,14 @@ In a <code>rescue</code>, <code>ensure</code>, <code>at_exit</code>, or <code>EN
   end
 ```
 
-### Descendant Classes
+### Built-In Sublasses
 
-#### Built-In Descendant Classes
-
-#### Custom Descendant Classes
+See the built-in subclasses of class <code>Exception</code>, at [its documentation](https://ruby-doc.org/core-2.6.3/Exception.html).
 
 ### More
 
 - [Documentation](https://ruby-doc.org/core-2.6.3/Exception.html)
 - [Source code](https://github.com/ruby/ruby/blob/8b2e1ca10ecf92ad402decd6b1eab586eded0ddb/error.c)
 - [Related gems](https://rubygems.org/search?query=exception)
+- [Best practices](https://www.google.com/search?q=ruby+exceptions+best+practice)
 - [Performance](https://www.google.com/search?q=ruby++exception+performance)
-
-BEST PRACTICE
-

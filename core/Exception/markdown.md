@@ -28,9 +28,7 @@ p `irb --version`.chomp
   - [Method :cause](#method-cause)
   - [Method :to_tty?](#method-to_tty)
 - [Global Variables](#global-variables)
-- [Descendant Classes](#descendant-classes)
-  - [Built-In Descendant Classes](#built-in-descendant-classes)
-  - [Custom Descendant Classes](#custom-descendant-classes)
+- [Built-In Sublasses](#built-in-sublasses)
 - [More](#more)
 
 ### The Basics
@@ -193,7 +191,7 @@ Array
 
 ```ruby
   puts backtrace
-irb_input:146:in `irb_binding'
+irb_input:144:in `irb_binding'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `eval'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `evaluate'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/context.rb:385:in `evaluate'
@@ -228,7 +226,7 @@ The original backtrace information is still available via method <code>:backtrac
   p rescued.backtrace_locations.first.class
 Thread::Backtrace::Location
   puts rescued.backtrace_locations
-irb_input:146:in `irb_binding'
+irb_input:144:in `irb_binding'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `eval'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `evaluate'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/context.rb:385:in `evaluate'
@@ -356,7 +354,7 @@ In a <code>rescue</code>, <code>ensure</code>, <code>at_exit</code>, or <code>EN
       puts $@
     end
 #<Exception: Boo!>
-irb_input:269:in `irb_binding'
+irb_input:267:in `irb_binding'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `eval'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `evaluate'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/context.rb:385:in `evaluate'
@@ -378,19 +376,15 @@ C:/Ruby26-x64/bin/irb.cmd:31:in `load'
 C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
 ```
 
-### Descendant Classes
+### Built-In Sublasses
 
-#### Built-In Descendant Classes
-
-#### Custom Descendant Classes
+See the built-in subclasses of class <code>Exception</code>, at [its documentation](https://ruby-doc.org/core-2.6.3/Exception.html).
 
 ### More
 
 - [Documentation](https://ruby-doc.org/core-2.6.3/Exception.html)
 - [Source code](https://github.com/ruby/ruby/blob/8b2e1ca10ecf92ad402decd6b1eab586eded0ddb/error.c)
 - [Related gems](https://rubygems.org/search?query=exception)
+- [Best practices](https://www.google.com/search?q=ruby+exceptions+best+practice)
 - [Performance](https://www.google.com/search?q=ruby++exception+performance)
-
-BEST PRACTICE
-
 <!-- <<<<<< END GENERATED FILE (include): SOURCE core/Exception/template.md -->
