@@ -391,7 +391,7 @@ Many Rubyists believe that it's good practice to use custom exceptions, rather t
 ### More
 
 - [Documentation](https://ruby-doc.org/core-2.6.3/Exception.html)
-- [Source code](https://github.com/ruby/ruby/blob/8b2e1ca10ecf92ad402decd6b1eab586eded0ddb/error.c)
+- [Source code](https://github.com/ruby/ruby/blob/master/error.c)
 - [Related gems](https://rubygems.org/search?query=exception)
 - [Best practices](https://www.google.com/search?q=ruby+exceptions+best+practice)
 - [Performance](https://www.google.com/search?q=ruby++exception+performance)
