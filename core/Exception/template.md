@@ -81,7 +81,7 @@ Method <code>:exception</code> returns a new exception with a new message when p
 ```#run_irb
 x = Exception.new
 p x
-y = x.exception('Boo!')
+y = x.exception(:Boo)
 p y
 p x.__id__ == y.__id__
 ```
