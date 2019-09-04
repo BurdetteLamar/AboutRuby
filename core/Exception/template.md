@@ -130,36 +130,35 @@ end
 Show its class and message:
 
 ```#run_irb
-```
-  p rescued.class
-  p rescued.message
+p rescued.class
+p rescued.message
 ```
 
 Method <code>:backtrace</code> returns an array of strings.  This one is large:
 
 ```#run_irb
-  backtrace = rescued.backtrace
-  p backtrace.class
-  p backtrace.size
+backtrace = rescued.backtrace
+p backtrace.class
+p backtrace.size
 ```
   The whole thing:
 
 ```#run_irb
-  puts backtrace
+puts backtrace
 ```
 
 Set backtrace, in this case to an empty array:
 
 ```#run_irb
-  rescued.set_backtrace([])
-  puts rescued.backtrace
+rescued.set_backtrace([])
+puts rescued.backtrace
 ```
 
 The original backtrace information is still available via method <code>:backtrace_locations</code>, but the result is an array of <code>Thread::Backtrace::Location</code>, not an array of <code>String</code>.
 
 ```#run_irb
-  p rescued.backtrace_locations.first.class
-  puts rescued.backtrace_locations
+p rescued.backtrace_locations.first.class
+puts rescued.backtrace_locations
 ```
 
 #### Equality
@@ -169,45 +168,45 @@ Two exceptions are equal under <code>:==</code> if they have the same class, mes
 All the same:
 
 ```#run_irb
-  clone = rescued.clone
-  p rescued.class == x.class
-  p rescued.message == x.message
-  p rescued.backtrace == x.backtrace
-  p rescued == clone
+clone = rescued.clone
+p rescued.class == x.class
+p rescued.message == x.message
+p rescued.backtrace == x.backtrace
+p rescued == clone
 ```
 
 Different class:
 
 ```#run_irb
-  x = RuntimeError.new(rescued.message)
-  x.set_backtrace(rescued.backtrace)
-  p rescued.class == x.class
-  p rescued.message == x.message
-  p rescued.backtrace == x.backtrace
-  p rescued == x
+x = RuntimeError.new(rescued.message)
+x.set_backtrace(rescued.backtrace)
+p rescued.class == x.class
+p rescued.message == x.message
+p rescued.backtrace == x.backtrace
+p rescued == x
 ```
 
 Different message:
 
 ```#run_irb
-  x = rescued.exception('Foo!')
-  x.set_backtrace(rescued.backtrace)
-  p rescued.class == x.class
-  p rescued.message == x.message
-  p rescued.backtrace == x.backtrace
-  p rescued == x
+x = rescued.exception('Foo!')
+x.set_backtrace(rescued.backtrace)
+p rescued.class == x.class
+p rescued.message == x.message
+p rescued.backtrace == x.backtrace
+p rescued == x
 ```
 
 Different backtrace:
 
 ```#run_irb
-  x = clone.exception
-  backtrace = rescued.backtrace_locations.map { |x| x.to_s }
-  x.set_backtrace(backtrace)
-  p rescued.class == x.class
-  p rescued.message == x.message
-  p rescued.backtrace == x.backtrace
-  p rescued == x
+x = clone.exception
+backtrace = rescued.backtrace_locations.map { |x| x.to_s }
+x.set_backtrace(backtrace)
+p rescued.class == x.class
+p rescued.message == x.message
+p rescued.backtrace == x.backtrace
+p rescued == x
 ```
 
 ### More Methods
@@ -235,7 +234,7 @@ end
 Determine whether an Exception will be written to a tty:
 
 ```#run_irb
-  p Exception.to_tty?
+p Exception.to_tty?
 ```
 
 ### Global Variables
@@ -243,12 +242,12 @@ Determine whether an Exception will be written to a tty:
 In a <code>rescue</code>, <code>ensure</code>, <code>at_exit</code>, or <code>END</code> block, the already-raised but not-yet-handled exception is accessible via global variables.  <code>$!</code> has the raised exception, and <code>$@</code> has its backtrace
 
 ```#run_irb
-  begin
-    raise Exception.new('Boo!')
-  rescue Exception => x
-    p $!
-    puts $@
-  end
+begin
+  raise Exception.new('Boo!')
+rescue Exception => x
+  p $!
+  puts $@
+end
 ```
 
 ### Built-In Subclasses
