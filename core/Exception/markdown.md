@@ -119,9 +119,9 @@ Method <code>:exception</code> returns a new exception with a new message when p
 x = Exception.new
 p x
 #<Exception: Exception>
-y = x.exception('Boo!')
+y = x.exception(:Boo)
 p y
-#<Exception: Boo!>
+#<Exception: Boo>
 p x.__id__ == y.__id__
 false
 ```
