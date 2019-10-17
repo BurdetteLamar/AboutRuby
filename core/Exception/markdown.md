@@ -12,7 +12,7 @@ To demonstrate, we'll use Ruby and the Ruby Interactive Shell, <code>irb</code>,
 
 ```ruby
 p `ruby --version`.chomp
-"ruby 2.6.3p62 (2019-04-16 revision 67580) [x64-mingw32]"
+"ruby 2.6.4p104 (2019-08-28 revision 67798) [x64-mingw32]"
 p `irb --version`.chomp
 "irb 1.0.0 (2018-12-18)"
 ```
