@@ -10,6 +10,8 @@ From the documentation for Ruby's <code>OpenStruct/code> class:
 
 It's much like a <code>Struct</code>, but with more bells and whistles: you can, for example, add and delete attributes.
 
+### Demonstrations
+
 To demonstrate, we'll use Ruby and the Ruby Interactive Shell, <code>irb</code>, beginning with their versions:
 
 ```ruby

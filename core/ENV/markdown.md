@@ -39,6 +39,8 @@ A name may not contain the <code>=</code> character.
 </details>
 <!-- <<<<<< END INCLUDED FILE (markdown): SOURCE core/ENV/restrictions.md -->
 
+### Demonstrations
+
 To demonstrate, we'll use Ruby and the Ruby Interactive Shell, <code>irb</code>, beginning with their versions:
 
 ```ruby

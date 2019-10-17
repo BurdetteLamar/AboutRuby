@@ -8,6 +8,8 @@ From the documentation for Ruby's <code>Exception</code> class:
 
 >Descendants of class Exception are used to communicate between Kernel#raise and <code>rescue</code> statements in <code>begin ... end</code> blocks. Exception objects carry information about the exception – its type (the exception's class name), an optional descriptive string, and optional traceback information.
 
+### Demonstrations
+
 To demonstrate, we'll use Ruby and the Ruby Interactive Shell, <code>irb</code>, beginning with their versions:
 
 ```ruby
@@ -193,7 +195,7 @@ p backtrace.size
 
 ```ruby
 puts backtrace
-irb_input:145:in `irb_binding'
+irb_input:147:in `irb_binding'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `eval'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `evaluate'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/context.rb:385:in `evaluate'
@@ -228,7 +230,7 @@ The original backtrace information is still available via method <code>:backtrac
 p rescued.backtrace_locations.first.class
 Thread::Backtrace::Location
 puts rescued.backtrace_locations
-irb_input:145:in `irb_binding'
+irb_input:147:in `irb_binding'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `eval'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `evaluate'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/context.rb:385:in `evaluate'
@@ -356,7 +358,7 @@ begin
     puts $@
   end
 #<Exception: Boo!>
-irb_input:267:in `irb_binding'
+irb_input:269:in `irb_binding'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `eval'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/workspace.rb:85:in `evaluate'
 C:/Ruby26-x64/lib/ruby/2.6.0/irb/context.rb:385:in `evaluate'
