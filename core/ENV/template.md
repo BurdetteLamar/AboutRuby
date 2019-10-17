@@ -17,10 +17,11 @@ the value is retrieved from among the current environment variables.
 When you create or set a name-value pair in <code>ENV</code>,
 the name and value are immediately set in the environment variables.
 
-### Restriction
+### Names and Values
 
-In <code>ENV</code> each name is a <code>String</code>,
-as is each value.
+Generally speaking, each name or value is a ```String```.
+
+@[:markdown](restrictions.md)
 
 @[:markdown](../../include_files/begin_irb.md)
 
@@ -51,8 +52,6 @@ p ENV['foo']
 ```ruby
 ENV[name] = value
 ```
-
-@[:markdown](name_details.md)
 
 Use <code>ENV#[]=</code> to create, update, or delete an environment variable.
 The method returns the environment variable's value.

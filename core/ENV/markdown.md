@@ -1,6 +1,6 @@
 <!-- >>>>>> BEGIN GENERATED FILE (include): SOURCE core/ENV/template.md -->
-<!-- >>>>>> BEGIN INCLUDED FILE (markdown): SOURCE core/ENV/name_details.md -->
 <!-- >>>>>> BEGIN INCLUDED FILE (markdown): SOURCE include_files/begin_irb.md -->
+<!-- >>>>>> BEGIN INCLUDED FILE (markdown): SOURCE core/ENV/restrictions.md -->
 ## ENV
 
 ### What's ENV?
@@ -20,10 +20,24 @@ the value is retrieved from among the current environment variables.
 When you create or set a name-value pair in <code>ENV</code>,
 the name and value are immediately set in the environment variables.
 
-### Restriction
+### Names and Values
 
-In <code>ENV</code> each name is a <code>String</code>,
-as is each value.
+Generally speaking, each name or value is a ```String```.
+
+<details>
+<summary>Details</summary>
+<p>
+Each name or value must be one of the following:
+<ul>
+<li>A <code>String</code>.</li>
+<li>
+An object that responds to <code>#to_str</code> by returning a <code>String</code>,
+which will be used as the name or value.
+</li>
+</ul>
+A name may not contain the <code>=</code> character.
+</details>
+<!-- <<<<<< END INCLUDED FILE (markdown): SOURCE core/ENV/restrictions.md -->
 
 To demonstrate, we'll use Ruby and the Ruby Interactive Shell, <code>irb</code>, beginning with their versions:
 
@@ -129,20 +143,6 @@ p ENV['foo']
 ```ruby
 ENV[name] = value
 ```
-
-<details>
-<summary>Name details</summary>
-A name must be one of the following:
-<ul>
-<li>A ```String```.</li>
-<li>
-An object that responds to ```#to_str``` by returning a ```String```,
-which will be used as the name.
-</li>
-</ul>
-A name may not contain the ```=``` character.
-</details>
-<!-- <<<<<< END INCLUDED FILE (markdown): SOURCE core/ENV/name_details.md -->
 
 Use <code>ENV#[]=</code> to create, update, or delete an environment variable.
 The method returns the environment variable's value.
