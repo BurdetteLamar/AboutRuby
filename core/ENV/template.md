@@ -56,7 +56,7 @@ Also, each example "inherits" the state of ```ENV``` from those preceding it.
 
 ### The Basics
 
-### Setting an Environment Variable
+#### Setting an Environment Variable
 
 Set environment variable <code>foo</code>:
 
@@ -64,7 +64,7 @@ Set environment variable <code>foo</code>:
 p ENV['foo'] = '0'
 ```
 
-### Getting an Environment Variable
+#### Getting an Environment Variable
 
 Get environment variable <code>foo</code>:
 
@@ -72,7 +72,7 @@ Get environment variable <code>foo</code>:
 p ENV['foo']
 ```
 
-### Deleting an Environment Variable
+#### Deleting an Environment Variable
 
 Delete environment variable <code>foo</code>:
 

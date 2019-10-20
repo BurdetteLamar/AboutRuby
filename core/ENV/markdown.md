@@ -83,9 +83,9 @@ Also, each example "inherits" the state of ```ENV``` from those preceding it.
 
 ### Contents
 - [The Basics](#the-basics)
-- [Setting an Environment Variable](#setting-an-environment-variable)
-- [Getting an Environment Variable](#getting-an-environment-variable)
-- [Deleting an Environment Variable](#deleting-an-environment-variable)
+  - [Setting an Environment Variable](#setting-an-environment-variable)
+  - [Getting an Environment Variable](#getting-an-environment-variable)
+  - [Deleting an Environment Variable](#deleting-an-environment-variable)
 - [Setter Methods](#setter-methods)
   - [Method #[]=](#method-)
   - [Method #store](#method-store)
@@ -151,7 +151,7 @@ Also, each example "inherits" the state of ```ENV``` from those preceding it.
 
 ### The Basics
 
-### Setting an Environment Variable
+#### Setting an Environment Variable
 
 Set environment variable <code>foo</code>:
 
@@ -160,7 +160,7 @@ p ENV['foo'] = '0'
 "0"
 ```
 
-### Getting an Environment Variable
+#### Getting an Environment Variable
 
 Get environment variable <code>foo</code>:
 
@@ -169,7 +169,7 @@ p ENV['foo']
 "0"
 ```
 
-### Deleting an Environment Variable
+#### Deleting an Environment Variable
 
 Delete environment variable <code>foo</code>:
 
