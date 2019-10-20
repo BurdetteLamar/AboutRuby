@@ -20,22 +20,19 @@ the value is retrieved from among the current environment variables.
 When you create or set a name-value pair in <code>ENV</code>,
 the name and value are immediately set in the environment variables.
 
+When you delete a name-value pair in ```ENV```,
+it is immediately deleted from the environment variables.
+
 ### Names and Values
 
 Generally speaking, each name or value is a ```String```.
 
 <details>
 <summary>Details</summary>
-<p>
-Each name or value must be one of the following:
-<ul>
-<li>A <code>String</code>.</li>
-<li>
-An object that responds to <code>#to_str</code> by returning a <code>String</code>,
-which will be used as the name or value.
-</li>
-</ul>
-A name may not contain the <code>=</code> character.
+- Each name or value must be one of the following:
+  - A <code>String</code>.
+  - An object that responds to <code>#to_str</code> by returning a <code>String</code>, which will be used as the name or value.
+- A name may not contain the <code>=</code> character.
 </details>
 <!-- <<<<<< END INCLUDED FILE (markdown): SOURCE core/ENV/restrictions.md -->
 
@@ -220,7 +217,7 @@ begin
 #<TypeError: no implicit conversion of Object into String>
 ```
 
-Give a name that's not allowed ```String``` (raises ```Errno::EINVAL```):
+Give a string name that's not allowed (raises ```Errno::EINVAL```):
 
 ```ruby
 begin
@@ -299,7 +296,7 @@ begin
 #<TypeError: no implicit conversion of Object into String>
 ```
 
-Give a name that's not allowed ```String``` (raises ```Errno::EINVAL```):
+Give a string name that's not allowed (raises ```Errno::EINVAL```):
 
 ```ruby
 begin
@@ -384,7 +381,7 @@ Do all three at once;
 ENV.update('bar' => '1', 'baz' => '2')
 p ENv
 NameError (uninitialized constant ENv)
-	from irb_input:354
+	from irb_input:351
 	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
 	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
 	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'

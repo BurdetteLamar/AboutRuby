@@ -17,6 +17,9 @@ the value is retrieved from among the current environment variables.
 When you create or set a name-value pair in <code>ENV</code>,
 the name and value are immediately set in the environment variables.
 
+When you delete a name-value pair in ```ENV```,
+it is immediately deleted from the environment variables.
+
 ### Names and Values
 
 Generally speaking, each name or value is a ```String```.
@@ -118,7 +121,7 @@ rescue => x
 end
 ```
 
-Give a name that's not allowed ```String``` (raises ```Errno::EINVAL```):
+Give a string name that's not allowed (raises ```Errno::EINVAL```):
 
 ```#run_irb
 begin
@@ -187,7 +190,7 @@ rescue => x
 end
 ```
 
-Give a name that's not allowed ```String``` (raises ```Errno::EINVAL```):
+Give a string name that's not allowed (raises ```Errno::EINVAL```):
 
 ```#run_irb
 begin
