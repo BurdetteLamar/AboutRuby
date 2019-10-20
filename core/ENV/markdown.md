@@ -414,31 +414,35 @@ p ENV
 {"bar"=>"2", "foo"=>"0"}
 ```
 
-Give a name that's not a ```String``` (raises ```TypeError``` and no changes are made):
+Give a name that's not a ```String``` (raises ```TypeError```):
 
 ```ruby
 begin
-    ENV.update('foo' => '1', Object.new => '2')
+    ENV.update(Object.new => '0')
   rescue => x
     p x
   end
 #<TypeError: no implicit conversion of Object into String>
 p ENV
-{"bar"=>"2", "foo"=>"1"}
+{"bar"=>"2", "foo"=>"0"}
 ```
 
-Give a value that's not a ```String``` (raises ```TypeError``` and no changes are made):
+Give a value that's not a ```String``` (raises ```TypeError```):
 
 ```ruby
 begin
-    ENV.update('foo' => '1', 'bar' => Object.new)
+    ENV.update('foo' => Object.new)
   rescue => x
     p x
   end
 #<TypeError: no implicit conversion of Object into String>
 p ENV
-{"bar"=>"2", "foo"=>"1"}
+{"bar"=>"2", "foo"=>"0"}
 ```
+
+The pairs in the given ```Hash``` are processed in the order given.
+Processing continues to the last pair, or until an error occurs.
+Whan an error occurs, the processing stops, and no further changes are made.
 
 #### Method #replace
 

@@ -286,27 +286,31 @@ ENV.update('foo' => '0', 'bar' => '2', 'baz' => nil)
 p ENV
 ```
 
-Give a name that's not a ```String``` (raises ```TypeError``` and no changes are made):
+Give a name that's not a ```String``` (raises ```TypeError```):
 
 ```#run_irb
 begin
-  ENV.update('foo' => '1', Object.new => '2')
+  ENV.update(Object.new => '0')
 rescue => x
   p x
 end
 p ENV
 ```
 
-Give a value that's not a ```String``` (raises ```TypeError``` and no changes are made):
+Give a value that's not a ```String``` (raises ```TypeError```):
 
 ```#run_irb
 begin
-  ENV.update('foo' => '1', 'bar' => Object.new)
+  ENV.update('foo' => Object.new)
 rescue => x
   p x
 end
 p ENV
 ```
+
+The pairs in the given ```Hash``` are processed in the order given.
+Processing continues to the last pair, or until an error occurs.
+Whan an error occurs, the processing stops, and no further changes are made.
 
 #### Method #replace
 
