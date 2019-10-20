@@ -65,7 +65,8 @@ so let's begin with it empty:
 
 ```ruby
 ENV.clear
-
+p ENV.size
+0
 ```
 
 Also, each example "inherits" the state of ```ENV``` from those preceding it.

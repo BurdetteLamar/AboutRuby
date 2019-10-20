@@ -37,7 +37,7 @@ so let's begin with it empty:
 
 ```#run_irb
 ENV.clear
-
+p ENV.size
 ```
 
 Also, each example "inherits" the state of ```ENV``` from those preceding it.
