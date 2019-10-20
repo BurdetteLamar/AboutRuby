@@ -312,6 +312,28 @@ The pairs in the given ```Hash``` are processed in the order given.
 Processing continues to the last pair, or until an error occurs.
 Whan an error occurs, the processing stops, and no further changes are made.
 
+Give a non-first name that's not a ```String``` (raises ```TypeError``` and processing stops):
+
+```#run_irb
+begin
+  ENV.update('foo' => '1', Object.new => '0', 'baz' => '2')
+rescue => x
+  p x
+end
+p ENV
+```
+
+Give a non-first value that's not a ```String``` (raises ```TypeError``` and processing stops):
+
+```#run_irb
+begin
+  ENV.update('foo' => '0', 'bar' => Object.new, 'baz' => '2')
+rescue => x
+  p x
+end
+p ENV
+```
+
 #### Method #replace
 
 Use method <code>ENV#replace</code> to replace all environment variables with new ones.
