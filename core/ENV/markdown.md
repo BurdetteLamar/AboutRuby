@@ -29,10 +29,18 @@ Generally speaking, each name or value is a ```String```.
 
 <details>
 <summary>Details</summary>
-- Each name or value must be one of the following:
-  - A <code>String</code>.
-  - An object that responds to <code>#to_str</code> by returning a <code>String</code>, which will be used as the name or value.
-- A name may not contain the <code>=</code> character.
+<ul>
+<li>Each name or value must be one of the following:
+<ul>
+<li>A <code>String</code>.</li>
+<li>
+An object that responds to <code>#to_str</code> by returning a <code>String</code>,
+which will be used as the name or value.
+</li>
+</ul>
+<li>A name may not contain the <code>=</code> character.
+</li>
+</ul>
 </details>
 <!-- <<<<<< END INCLUDED FILE (markdown): SOURCE core/ENV/restrictions.md -->
 
@@ -381,7 +389,7 @@ Do all three at once;
 ENV.update('bar' => '1', 'baz' => '2')
 p ENv
 NameError (uninitialized constant ENv)
-	from irb_input:351
+	from irb_input:359
 	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
 	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
 	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
