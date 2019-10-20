@@ -62,6 +62,14 @@ Get environment variable <code>foo</code>:
 p ENV['foo']
 ```
 
+### Deleting an Environment Variable
+
+Delete environment variable <code>foo</code>:
+
+```#run_irb
+p ENV['foo'] = nil
+```
+
 ### Setter Methods
 
 #### Method #[]=
@@ -76,7 +84,6 @@ The method returns the environment variable's value.
 Create an environment variable:
 
 ```#run_irb
-ENV.delete('foo')
 p ENV['foo'] = '0'
 p ENV['foo']
 ```

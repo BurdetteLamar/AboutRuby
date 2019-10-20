@@ -75,6 +75,7 @@ Also, each example "inherits" the state of ```ENV``` from those preceding it.
 - [The Basics](#the-basics)
 - [Setting an Environment Variable](#setting-an-environment-variable)
 - [Getting an Environment Variable](#getting-an-environment-variable)
+- [Deleting an Environment Variable](#deleting-an-environment-variable)
 - [Setter Methods](#setter-methods)
   - [Method #[]=](#method-)
   - [Method #store](#method-store)
@@ -158,6 +159,15 @@ p ENV['foo']
 "0"
 ```
 
+### Deleting an Environment Variable
+
+Delete environment variable <code>foo</code>:
+
+```ruby
+p ENV['foo'] = nil
+nil
+```
+
 ### Setter Methods
 
 #### Method #[]=
@@ -172,7 +182,6 @@ The method returns the environment variable's value.
 Create an environment variable:
 
 ```ruby
-ENV.delete('foo')
 p ENV['foo'] = '0'
 "0"
 p ENV['foo']
@@ -390,7 +399,7 @@ Do all three at once;
 ENV.update('bar' => '1', 'baz' => '2')
 p ENv
 NameError (uninitialized constant ENv)
-	from irb_input:359
+	from irb_input:367
 	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
 	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
 	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
