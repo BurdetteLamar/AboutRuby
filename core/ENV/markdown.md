@@ -44,6 +44,16 @@ which will be used as the name or value.
 </details>
 <!-- <<<<<< END INCLUDED FILE (markdown): SOURCE core/ENV/restrictions.md -->
 
+### About Ordering
+
+The ordering of ```ENV``` content is OS-dependent.
+
+This will be seen in:
+- The ```String``` returned by ```ENV#inspect```.
+- A ```Hash``` returned by an ```ENV``` method.
+- An ```Enumerator``` returned by an ```ENV``` method.
+- An ```ENV``` method that iterates over its names, values, or name-value pairs..
+
 ### Demonstrations
 
 To demonstrate, we'll use Ruby and the Ruby Interactive Shell, <code>irb</code>, beginning with their versions:
@@ -55,16 +65,6 @@ p `irb --version`.chomp
 "irb 1.0.0 (2018-12-18)"
 ```
 <!-- <<<<<< END INCLUDED FILE (markdown): SOURCE include_files/begin_irb.md -->
-
-### About Ordering
-
-The ordering of name-value pairs in ```ENV``` is OS-dependent.
-
-This will be seen in:
-- The ``String``` returned by ```ENV#inspect```.
-- A ```Hash``` returned by an ```ENV``` method.
-- An ```Enumerator``` returned by an ```ENV``` method.
-- An ```ENV``` method that iterates over its names, values, or name-value pairs..
 
 ### About the Examples
 

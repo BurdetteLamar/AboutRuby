@@ -26,17 +26,17 @@ Generally speaking, each name or value is a ```String```.
 
 @[:markdown](restrictions.md)
 
-@[:markdown](../../include_files/begin_irb.md)
-
 ### About Ordering
 
-The ordering of name-value pairs in ```ENV``` is OS-dependent.
+The ordering of ```ENV``` content is OS-dependent.
 
 This will be seen in:
-- The ``String``` returned by ```ENV#inspect```.
+- The ```String``` returned by ```ENV#inspect```.
 - A ```Hash``` returned by an ```ENV``` method.
 - An ```Enumerator``` returned by an ```ENV``` method.
 - An ```ENV``` method that iterates over its names, values, or name-value pairs..
+
+@[:markdown](../../include_files/begin_irb.md)
 
 ### About the Examples
 
