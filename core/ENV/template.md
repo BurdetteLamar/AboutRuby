@@ -25,6 +25,20 @@ Generally speaking, each name or value is a ```String```.
 
 @[:markdown](../../include_files/begin_irb.md)
 
+### About the Examples
+
+Some of the methods in ```ENV``` return ```ENV``` itself.
+Typically, there are many environment variables.
+It's not useful to display a large ```ENV``` in the examples here,
+so let's begin with it empty:
+
+```#run_irb
+ENV.clear
+
+```
+
+Also, each example "inherits" the state of ```ENV``` from those preceding it.
+
 @[:page_toc](### Contents)
 
 ### The Basics
@@ -104,7 +118,7 @@ rescue => x
 end
 ```
 
-Give a name that's not a non-allowed ```String``` (raises ```Errno::EINVAL```):
+Give a name that's not allowed ```String``` (raises ```Errno::EINVAL```):
 
 ```#run_irb
 begin
@@ -173,7 +187,7 @@ rescue => x
 end
 ```
 
-Give a name that's not a non-allowed ```String``` (raises ```Errno::EINVAL```):
+Give a name that's not allowed ```String``` (raises ```Errno::EINVAL```):
 
 ```#run_irb
 begin
@@ -183,22 +197,106 @@ rescue => x
 end
 ```
 
+#### Method #delete
+
+Use method <code>ENV#delete</code> to delete an environment variable.
+
+The method returns the value of the deleted environment variable.
+
+Delete an existing environment variable:
+
+```#run_irb
+ENV['foo'] = '0'
+p ENV.delete('foo')
+p ENV['foo']
+```
+
+"Delete" a non-existent environment variable:
+
+```#run_irb
+p   ENV.delete('foo')
+p ENV['foo']
+```
+
+Give a name that's not a ```String``` (raises ```TypeError```):
+
+```#run_irb
+begin
+  ENV.delete(Object.new)
+rescue => x
+  p x
+end
+```
+
 #### Method #update
 
 Use method <code>ENV#update</code> to create, update, and delete
-multiple environement variables, all at once.
+multiple environment variables, all at once.
 
 The method accepts a ```Hash``` argument of name-value pairs,
 and returns <code>ENV</code>.
 
 Create environment variables:
 
-```run_irb
-ENV.update('foo' =< '1')
+```#run_irb
+ENV.update('foo' => '0', 'bar' => '1')
+p ENV
+```
+
+Update environment variables:
+
+```#run_irb
+ENV.update('foo' => '2', 'bar' => '3')
+p ENV
+```
+
+Delete environment variables:
+
+```#run_irb
+ENV.update('foo' => nil, 'bar' => nil)
+p ENV
+```
+
+Do all three at once;
+
+```#run_irb
+ENV.update('bar' => '1', 'baz' => '2')
+p ENv
+ENV.update('foo' => '0', 'bar' => '2', 'baz' => nil)
+p ENV
+```
+
+Give a name that's not a ```String``` (raises ```TypeError``` and no changes are made):
+
+```#run_irb
+begin
+  ENV.update('foo' => '1', Object.new => '2')
+rescue => x
+  p x
+end
+p ENV
+```
+
+Give a value that's not a ```String``` (raises ```TypeError``` and no changes are made):
+
+```#run_irb
+begin
+  ENV.update('foo' => '1', 'bar' => Object.new)
+rescue => x
+  p x
+end
+p ENV
 ```
 
 #### Method #replace
-#### Method #delete
+
+Use method <code>ENV#replace</code> to replace all environment variables with new ones.
+
+The method accepts a ```Hash``` argument of name-value pairs,
+and returns <code>ENV</code>.
+
+
+
 #### Method #clear
 #### Method #shift
 

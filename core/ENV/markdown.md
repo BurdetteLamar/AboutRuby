@@ -51,6 +51,20 @@ p `irb --version`.chomp
 ```
 <!-- <<<<<< END INCLUDED FILE (markdown): SOURCE include_files/begin_irb.md -->
 
+### About the Examples
+
+Some of the methods in ```ENV``` return ```ENV``` itself.
+Typically, there are many environment variables.
+It's not useful to display a large ```ENV``` in the examples here,
+so let's begin with it empty:
+
+```ruby
+ENV.clear
+
+```
+
+Also, each example "inherits" the state of ```ENV``` from those preceding it.
+
 ### Contents
 - [The Basics](#the-basics)
 - [Setting an Environment Variable](#setting-an-environment-variable)
@@ -58,9 +72,9 @@ p `irb --version`.chomp
 - [Setter Methods](#setter-methods)
   - [Method #[]=](#method-)
   - [Method #store](#method-store)
+  - [Method #delete](#method-delete)
   - [Method #update](#method-update)
   - [Method #replace](#method-replace)
-  - [Method #delete](#method-delete)
   - [Method #clear](#method-clear)
   - [Method #shift](#method-shift)
 - [Getter Methods](#getter-methods)
@@ -206,7 +220,7 @@ begin
 #<TypeError: no implicit conversion of Object into String>
 ```
 
-Give a name that's not a non-allowed ```String``` (raises ```Errno::EINVAL```):
+Give a name that's not allowed ```String``` (raises ```Errno::EINVAL```):
 
 ```ruby
 begin
@@ -285,7 +299,7 @@ begin
 #<TypeError: no implicit conversion of Object into String>
 ```
 
-Give a name that's not a non-allowed ```String``` (raises ```Errno::EINVAL```):
+Give a name that's not allowed ```String``` (raises ```Errno::EINVAL```):
 
 ```ruby
 begin
@@ -296,22 +310,124 @@ begin
 #<Errno::EINVAL: Invalid argument - ruby_setenv(foo=)>
 ```
 
+#### Method #delete
+
+Use method <code>ENV#delete</code> to delete an environment variable.
+
+The method returns the value of the deleted environment variable.
+
+Delete an existing environment variable:
+
+```ruby
+ENV['foo'] = '0'
+p ENV.delete('foo')
+"0"
+p ENV['foo']
+nil
+```
+
+"Delete" a non-existent environment variable:
+
+```ruby
+p   ENV.delete('foo')
+nil
+p ENV['foo']
+nil
+```
+
+Give a name that's not a ```String``` (raises ```TypeError```):
+
+```ruby
+begin
+    ENV.delete(Object.new)
+  rescue => x
+    p x
+  end
+#<TypeError: no implicit conversion of Object into String>
+```
+
 #### Method #update
 
 Use method <code>ENV#update</code> to create, update, and delete
-multiple environement variables, all at once.
+multiple environment variables, all at once.
 
 The method accepts a ```Hash``` argument of name-value pairs,
 and returns <code>ENV</code>.
 
 Create environment variables:
 
-```run_irb
-ENV.update('foo' =< '1')
+```ruby
+ENV.update('foo' => '0', 'bar' => '1')
+p ENV
+{"bar"=>"1", "foo"=>"0"}
+```
+
+Update environment variables:
+
+```ruby
+ENV.update('foo' => '2', 'bar' => '3')
+p ENV
+{"bar"=>"3", "foo"=>"2"}
+```
+
+Delete environment variables:
+
+```ruby
+ENV.update('foo' => nil, 'bar' => nil)
+p ENV
+{}
+```
+
+Do all three at once;
+
+```ruby
+ENV.update('bar' => '1', 'baz' => '2')
+p ENv
+NameError (uninitialized constant ENv)
+	from irb_input:354
+	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
+	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
+	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
+ENV.update('foo' => '0', 'bar' => '2', 'baz' => nil)
+p ENV
+{"bar"=>"2", "foo"=>"0"}
+```
+
+Give a name that's not a ```String``` (raises ```TypeError``` and no changes are made):
+
+```ruby
+begin
+    ENV.update('foo' => '1', Object.new => '2')
+  rescue => x
+    p x
+  end
+#<TypeError: no implicit conversion of Object into String>
+p ENV
+{"bar"=>"2", "foo"=>"1"}
+```
+
+Give a value that's not a ```String``` (raises ```TypeError``` and no changes are made):
+
+```ruby
+begin
+    ENV.update('foo' => '1', 'bar' => Object.new)
+  rescue => x
+    p x
+  end
+#<TypeError: no implicit conversion of Object into String>
+p ENV
+{"bar"=>"2", "foo"=>"1"}
 ```
 
 #### Method #replace
-#### Method #delete
+
+Use method <code>ENV#replace</code> to replace all environment variables with new ones.
+
+The method accepts a ```Hash``` argument of name-value pairs,
+and returns <code>ENV</code>.
+
+
+
 #### Method #clear
 #### Method #shift
 
