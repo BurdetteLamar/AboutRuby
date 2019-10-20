@@ -281,7 +281,7 @@ Do all three at once;
 
 ```#run_irb
 ENV.update('bar' => '1', 'baz' => '2')
-p ENv
+p ENV
 ENV.update('foo' => '0', 'bar' => '2', 'baz' => nil)
 p ENV
 ```

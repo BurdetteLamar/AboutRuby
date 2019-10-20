@@ -407,12 +407,8 @@ Do all three at once;
 
 ```ruby
 ENV.update('bar' => '1', 'baz' => '2')
-p ENv
-NameError (uninitialized constant ENv)
-	from irb_input:377
-	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
-	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
-	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
+p ENV
+{"bar"=>"1", "baz"=>"2"}
 ENV.update('foo' => '0', 'bar' => '2', 'baz' => nil)
 p ENV
 {"bar"=>"2", "foo"=>"0"}
