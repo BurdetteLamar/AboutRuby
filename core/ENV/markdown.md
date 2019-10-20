@@ -480,7 +480,16 @@ and returns <code>ENV</code>.
 
 
 #### Method #clear
+
+Use method ```ENV#clear``` to remove all environment variables.
+
+The method returns ```ENV```.
+
 #### Method #shift
+
+Use method ```ENV#shift``` to remove and return the first environment variable.
+
+The method returns a 2-element ```Array``` of the removed name and value.
 
 ### Getter Methods
 
