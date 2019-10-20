@@ -56,9 +56,19 @@ p `irb --version`.chomp
 ```
 <!-- <<<<<< END INCLUDED FILE (markdown): SOURCE include_files/begin_irb.md -->
 
+### About Ordering
+
+The ordering of name-value pairs in ```ENV``` is OS-dependent.
+
+This will be seen in:
+- The ``String``` returned by ```ENV#inspect```.
+- A ```Hash``` returned by an ```ENV``` method.
+- An ```Enumerator``` returned by an ```ENV``` method.
+- An ```ENV``` method that iterates over its names, values, or name-value pairs..
+
 ### About the Examples
 
-Some of the methods in ```ENV``` return ```ENV``` itself.
+Some methods in ```ENV``` return ```ENV``` itself.
 Typically, there are many environment variables.
 It's not useful to display a large ```ENV``` in the examples here,
 so let's begin with it empty:
@@ -399,7 +409,7 @@ Do all three at once;
 ENV.update('bar' => '1', 'baz' => '2')
 p ENv
 NameError (uninitialized constant ENv)
-	from irb_input:367
+	from irb_input:377
 	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
 	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
 	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'

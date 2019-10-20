@@ -28,9 +28,19 @@ Generally speaking, each name or value is a ```String```.
 
 @[:markdown](../../include_files/begin_irb.md)
 
+### About Ordering
+
+The ordering of name-value pairs in ```ENV``` is OS-dependent.
+
+This will be seen in:
+- The ``String``` returned by ```ENV#inspect```.
+- A ```Hash``` returned by an ```ENV``` method.
+- An ```Enumerator``` returned by an ```ENV``` method.
+- An ```ENV``` method that iterates over its names, values, or name-value pairs..
+
 ### About the Examples
 
-Some of the methods in ```ENV``` return ```ENV``` itself.
+Some methods in ```ENV``` return ```ENV``` itself.
 Typically, there are many environment variables.
 It's not useful to display a large ```ENV``` in the examples here,
 so let's begin with it empty:
