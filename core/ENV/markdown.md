@@ -87,66 +87,66 @@ Also, each example "inherits" the state of ```ENV``` from those preceding it.
   - [Getting an Environment Variable](#getting-an-environment-variable)
   - [Deleting an Environment Variable](#deleting-an-environment-variable)
 - [Setter Methods](#setter-methods)
-  - [Method #[]=](#method-)
-  - [Method #store](#method-store)
-  - [Method #delete](#method-delete)
-  - [Method #update](#method-update)
-  - [Method #replace](#method-replace)
-  - [Method #clear](#method-clear)
-  - [Method #shift](#method-shift)
+  - [ENV#[]=](#env-)
+  - [ENV#store](#envstore)
+  - [ENV#delete](#envdelete)
+  - [ENV#update](#envupdate)
+  - [ENV#replace](#envreplace)
+  - [ENV#clear](#envclear)
+  - [ENV#shift](#envshift)
 - [Getter Methods](#getter-methods)
-  - [Method #[]](#method-)
-  - [Method #fetch](#method-fetch)
-  - [Method #key](#method-key)
-  - [Method #keys](#method-keys)
-  - [Method #assoc](#method-assoc)
-  - [Method #values](#method-values)
-  - [Method #values_at](#method-values_at)
-  - [Method #invert](#method-invert)
-  - [Method #rassoc](#method-rassoc)
-  - [Method #slice](#method-slice)
-  - [Method #to_a](#method-to_a)
-  - [Method #to_h](#method-to_h)
-  - [Method #to_hash](#method-to_hash)
-  - [Method #to_s](#method-to_s)
-  - [Method #inspect](#method-inspect)
+  - [ENV#[]](#env)
+  - [ENV#fetch](#envfetch)
+  - [ENV#key](#envkey)
+  - [ENV#keys](#envkeys)
+  - [ENV#assoc](#envassoc)
+  - [ENV#values](#envvalues)
+  - [ENV#values_at](#envvalues_at)
+  - [ENV#invert](#envinvert)
+  - [ENV#rassoc](#envrassoc)
+  - [ENV#slice](#envslice)
+  - [ENV#to_a](#envto_a)
+  - [ENV#to_h](#envto_h)
+  - [ENV#to_hash](#envto_hash)
+  - [ENV#to_s](#envto_s)
+  - [ENV#inspect](#envinspect)
 - [Enumeration Methods](#enumeration-methods)
-  - [Method #delete_if](#method-delete_if)
-  - [Method #each](#method-each)
-  - [Method #each_key](#method-each_key)
-  - [Method #each_pair](#method-each_pair)
-  - [Method #each_value](#method-each_value)
-  - [Method #filter](#method-filter)
-  - [Method #filter!](#method-filter-)
-  - [Method #keep_if](#method-keep_if)
-  - [Method #reject](#method-reject)
-  - [Method #reject!](#method-reject-)
-  - [Method #select](#method-select)
-  - [Method #select!](#method-select-)
+  - [ENV#delete_if](#envdelete_if)
+  - [ENV#each](#enveach)
+  - [ENV#each_key](#enveach_key)
+  - [ENV#each_pair](#enveach_pair)
+  - [ENV#each_value](#enveach_value)
+  - [ENV#filter](#envfilter)
+  - [ENV#filter!](#envfilter-)
+  - [ENV#keep_if](#envkeep_if)
+  - [ENV#reject](#envreject)
+  - [ENV#reject!](#envreject-)
+  - [ENV#select](#envselect)
+  - [ENV#select!](#envselect-)
 - [Block-Oriented Methods](#block-oriented-methods)
-  - [Method #delete_if](#method-delete_if)
-  - [Method #each](#method-each)
-  - [Method #each_key](#method-each_key)
-  - [Method #each_pair](#method-each_pair)
-  - [Method #each_value](#method-each_value)
-  - [Method #fetch](#method-fetch)
-  - [Method #filter](#method-filter)
-  - [Method #filter!](#method-filter-)
-  - [Method #keep_if](#method-keep_if)
-  - [Method #reject](#method-reject)
-  - [Method #reject!](#method-reject-)
-  - [Method #select](#method-select)
-  - [Method #select!](#method-select-)
+  - [ENV#delete_if](#envdelete_if)
+  - [ENV#each](#enveach)
+  - [ENV#each_key](#enveach_key)
+  - [ENV#each_pair](#enveach_pair)
+  - [ENV#each_value](#enveach_value)
+  - [ENV#fetch](#envfetch)
+  - [ENV#filter](#envfilter)
+  - [ENV#filter!](#envfilter-)
+  - [ENV#keep_if](#envkeep_if)
+  - [ENV#reject](#envreject)
+  - [ENV#reject!](#envreject-)
+  - [ENV#select](#envselect)
+  - [ENV#select!](#envselect-)
 - [Query Methods](#query-methods)
-  - [Method #empty?](#method-empty)
-  - [Method #has_key?](#method-has_key)
-  - [Method #has_value?](#method-has_value)
-  - [Method #include?](#method-include)
-  - [Method #length](#method-length)
-  - [Method #key?](#method-key)
-  - [Method #member?](#method-member)
-  - [Method #size](#method-size)
-  - [Method #value?](#method-value)
+  - [ENV#empty?](#envempty)
+  - [ENV#has_key?](#envhas_key)
+  - [ENV#has_value?](#envhas_value)
+  - [ENV#include?](#envinclude)
+  - [ENV#length](#envlength)
+  - [ENV#key?](#envkey)
+  - [ENV#member?](#envmember)
+  - [ENV#size](#envsize)
+  - [ENV#value?](#envvalue)
 - [More](#more)
 
 ### The Basics
@@ -180,7 +180,7 @@ nil
 
 ### Setter Methods
 
-#### Method #[]=
+#### ENV#[]=
 
 ```ruby
 ENV[name] = value
@@ -256,7 +256,7 @@ begin
 #<Errno::EINVAL: Invalid argument - ruby_setenv(foo=)>
 ```
 
-#### Method #store
+#### ENV#store
 
 ```ruby
 ENV.store(name, value)
@@ -335,7 +335,7 @@ begin
 #<Errno::EINVAL: Invalid argument - ruby_setenv(foo=)>
 ```
 
-#### Method #delete
+#### ENV#delete
 
 Use method <code>ENV#delete</code> to delete an environment variable.
 
@@ -371,7 +371,7 @@ begin
 #<TypeError: no implicit conversion of Object into String>
 ```
 
-#### Method #update
+#### ENV#update
 
 Use method <code>ENV#update</code> to create, update, and delete
 multiple environment variables, all at once.
@@ -470,7 +470,7 @@ p ENV
 {"bar"=>"2", "foo"=>"0"}
 ```
 
-#### Method #replace
+#### ENV#replace
 
 Use method <code>ENV#replace</code> to replace all environment variables with new ones.
 
@@ -479,13 +479,13 @@ and returns <code>ENV</code>.
 
 
 
-#### Method #clear
+#### ENV#clear
 
 Use method ```ENV#clear``` to remove all environment variables.
 
 The method returns ```ENV```.
 
-#### Method #shift
+#### ENV#shift
 
 Use method ```ENV#shift``` to remove and return the first environment variable.
 
@@ -493,64 +493,64 @@ The method returns a 2-element ```Array``` of the removed name and value.
 
 ### Getter Methods
 
-#### Method #[]
-#### Method #fetch
-#### Method #key
-#### Method #keys
-#### Method #assoc
-#### Method #values
-#### Method #values_at
-#### Method #invert
-#### Method #rassoc
-#### Method #slice
-#### Method #to_a
-#### Method #to_h
-#### Method #to_hash
-#### Method #to_s
-#### Method #inspect
+#### ENV#[]
+#### ENV#fetch
+#### ENV#key
+#### ENV#keys
+#### ENV#assoc
+#### ENV#values
+#### ENV#values_at
+#### ENV#invert
+#### ENV#rassoc
+#### ENV#slice
+#### ENV#to_a
+#### ENV#to_h
+#### ENV#to_hash
+#### ENV#to_s
+#### ENV#inspect
 
 ### Enumeration Methods
 
-#### Method #delete_if
-#### Method #each
-#### Method #each_key
-#### Method #each_pair
-#### Method #each_value
-#### Method #filter
-#### Method #filter!
-#### Method #keep_if
-#### Method #reject
-#### Method #reject!
-#### Method #select
-#### Method #select!
+#### ENV#delete_if
+#### ENV#each
+#### ENV#each_key
+#### ENV#each_pair
+#### ENV#each_value
+#### ENV#filter
+#### ENV#filter!
+#### ENV#keep_if
+#### ENV#reject
+#### ENV#reject!
+#### ENV#select
+#### ENV#select!
 
 ### Block-Oriented Methods
 
-#### Method #delete_if
-#### Method #each
-#### Method #each_key
-#### Method #each_pair
-#### Method #each_value
-#### Method #fetch
-#### Method #filter
-#### Method #filter!
-#### Method #keep_if
-#### Method #reject
-#### Method #reject!
-#### Method #select
-#### Method #select!
+#### ENV#delete_if
+#### ENV#each
+#### ENV#each_key
+#### ENV#each_pair
+#### ENV#each_value
+#### ENV#fetch
+#### ENV#filter
+#### ENV#filter!
+#### ENV#keep_if
+#### ENV#reject
+#### ENV#reject!
+#### ENV#select
+#### ENV#select!
 
 ### Query Methods
 
-#### Method #empty?
-#### Method #has_key?
-#### Method #has_value?
-#### Method #include?
-#### Method #length
-#### Method #key?
-#### Method #member?
-#### Method #size
-#### Method #value?
+#### ENV#empty?
+#### ENV#has_key?
+#### ENV#has_value?
+#### ENV#include?
+#### ENV#length
+#### ENV#key?
+#### ENV#member?
+#### ENV#size
+#### ENV#value?
 
 ### More
 
