@@ -82,7 +82,7 @@ p ENV['foo'] = nil
 
 ### Setter Methods
 
-#### Method #[]=
+#### ENV#[]=
 
 ```ruby
 ENV[name] = value
@@ -148,7 +148,7 @@ rescue => x
 end
 ```
 
-#### Method #store
+#### ENV#store
 
 ```ruby
 ENV.store(name, value)
@@ -217,7 +217,7 @@ rescue => x
 end
 ```
 
-#### Method #delete
+#### ENV#delete
 
 Use method <code>ENV#delete</code> to delete an environment variable.
 
@@ -248,7 +248,7 @@ rescue => x
 end
 ```
 
-#### Method #update
+#### ENV#update
 
 Use method <code>ENV#update</code> to create, update, and delete
 multiple environment variables, all at once.
@@ -334,7 +334,7 @@ end
 p ENV
 ```
 
-#### Method #replace
+#### ENV#replace
 
 Use method <code>ENV#replace</code> to replace all environment variables with new ones.
 
@@ -343,13 +343,13 @@ and returns <code>ENV</code>.
 
 
 
-#### Method #clear
+#### ENV#clear
 
 Use method ```ENV#clear``` to remove all environment variables.
 
 The method returns ```ENV```.
 
-#### Method #shift
+#### ENV#shift
 
 Use method ```ENV#shift``` to remove and return the first environment variable.
 
@@ -357,64 +357,64 @@ The method returns a 2-element ```Array``` of the removed name and value.
 
 ### Getter Methods
 
-#### Method #[]
-#### Method #fetch
-#### Method #key
-#### Method #keys
-#### Method #assoc
-#### Method #values
-#### Method #values_at
-#### Method #invert
-#### Method #rassoc
-#### Method #slice
-#### Method #to_a
-#### Method #to_h
-#### Method #to_hash
-#### Method #to_s
-#### Method #inspect
+#### ENV#[]
+#### ENV#fetch
+#### ENV#key
+#### ENV#keys
+#### ENV#assoc
+#### ENV#values
+#### ENV#values_at
+#### ENV#invert
+#### ENV#rassoc
+#### ENV#slice
+#### ENV#to_a
+#### ENV#to_h
+#### ENV#to_hash
+#### ENV#to_s
+#### ENV#inspect
 
 ### Enumeration Methods
 
-#### Method #delete_if
-#### Method #each
-#### Method #each_key
-#### Method #each_pair
-#### Method #each_value
-#### Method #filter
-#### Method #filter!
-#### Method #keep_if
-#### Method #reject
-#### Method #reject!
-#### Method #select
-#### Method #select!
+#### ENV#delete_if
+#### ENV#each
+#### ENV#each_key
+#### ENV#each_pair
+#### ENV#each_value
+#### ENV#filter
+#### ENV#filter!
+#### ENV#keep_if
+#### ENV#reject
+#### ENV#reject!
+#### ENV#select
+#### ENV#select!
 
 ### Block-Oriented Methods
 
-#### Method #delete_if
-#### Method #each
-#### Method #each_key
-#### Method #each_pair
-#### Method #each_value
-#### Method #fetch
-#### Method #filter
-#### Method #filter!
-#### Method #keep_if
-#### Method #reject
-#### Method #reject!
-#### Method #select
-#### Method #select!
+#### ENV#delete_if
+#### ENV#each
+#### ENV#each_key
+#### ENV#each_pair
+#### ENV#each_value
+#### ENV#fetch
+#### ENV#filter
+#### ENV#filter!
+#### ENV#keep_if
+#### ENV#reject
+#### ENV#reject!
+#### ENV#select
+#### ENV#select!
 
 ### Query Methods
 
-#### Method #empty?
-#### Method #has_key?
-#### Method #has_value?
-#### Method #include?
-#### Method #length
-#### Method #key?
-#### Method #member?
-#### Method #size
-#### Method #value?
+#### ENV#empty?
+#### ENV#has_key?
+#### ENV#has_value?
+#### ENV#include?
+#### ENV#length
+#### ENV#key?
+#### ENV#member?
+#### ENV#size
+#### ENV#value?
 
 ### More
 
