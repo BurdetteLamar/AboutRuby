@@ -31,10 +31,11 @@ Generally speaking, each name or value is a ```String```.
 The ordering of ```ENV``` content is OS-dependent.
 
 This will be seen in:
-- The ```String``` returned by ```ENV#inspect```.
 - A ```Hash``` returned by an ```ENV``` method.
 - An ```Enumerator``` returned by an ```ENV``` method.
 - An ```ENV``` method that iterates over its names, values, or name-value pairs..
+- The ```String``` returned by ```ENV#shift```.
+- The ```String``` returned by ```ENV#inspect```.
 
 @[:markdown](../../include_files/begin_irb.md)
 
@@ -341,7 +342,33 @@ Use method <code>ENV#replace</code> to replace all environment variables with ne
 The method accepts a ```Hash``` argument of name-value pairs,
 and returns <code>ENV</code>.
 
+Replace ```ENV``` with data from a ```Hash````:
 
+```#run_irb
+p ENV
+ENV.replace('baz' => '0', 'bat' => '1')
+p ENV
+```
+Give an argument that's not a ```Hash```:
+
+```#run_irb
+ENV.replace(Object.new)
+p ENV
+```
+
+Give a ```Hash``` with an illegal name:
+
+```#run_irb
+ENV.replace(Object.new => '0')
+p ENV
+```
+
+Give a ```Hash``` with an illegal value:
+
+```#run_irb
+ENV.replace('foo' => Object.new)
+p ENV
+```
 
 #### ENV#clear
 
@@ -349,11 +376,23 @@ Use method ```ENV#clear``` to remove all environment variables.
 
 The method returns ```ENV```.
 
+```#run_irb
+saved_env = ENV.to_hash
+p ENV.clear
+ENV.replace(saved_env)
+```
+
 #### ENV#shift
 
 Use method ```ENV#shift``` to remove and return the first environment variable.
 
 The method returns a 2-element ```Array``` of the removed name and value.
+
+```#run_irb
+p ENV
+p ENV.shift
+p ENV
+```
 
 ### Getter Methods
 

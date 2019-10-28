@@ -52,10 +52,11 @@ which will be used as the name or value.
 The ordering of ```ENV``` content is OS-dependent.
 
 This will be seen in:
-- The ```String``` returned by ```ENV#inspect```.
 - A ```Hash``` returned by an ```ENV``` method.
 - An ```Enumerator``` returned by an ```ENV``` method.
 - An ```ENV``` method that iterates over its names, values, or name-value pairs..
+- The ```String``` returned by ```ENV#shift```.
+- The ```String``` returned by ```ENV#inspect```.
 
 ### Demonstrations
 
@@ -480,7 +481,56 @@ Use method <code>ENV#replace</code> to replace all environment variables with ne
 The method accepts a ```Hash``` argument of name-value pairs,
 and returns <code>ENV</code>.
 
+Replace ```ENV``` with data from a ```Hash````:
 
+```ruby
+p ENV
+{"bar"=>"2", "foo"=>"0"}
+ENV.replace('baz' => '0', 'bat' => '1')
+p ENV
+{"bat"=>"1", "baz"=>"0"}
+```
+Give an argument that's not a ```Hash```:
+
+```ruby
+ENV.replace(Object.new)
+TypeError (no implicit conversion of Object into Hash)
+	from irb_input:451:in `replace'
+	from irb_input:451
+	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
+	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
+	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
+p ENV
+{"bat"=>"1", "baz"=>"0"}
+```
+
+Give a ```Hash``` with an illegal name:
+
+```ruby
+ENV.replace(Object.new => '0')
+TypeError (no implicit conversion of Object into String)
+	from irb_input:458:in `replace'
+	from irb_input:458
+	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
+	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
+	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
+p ENV
+{"bat"=>"1", "baz"=>"0"}
+```
+
+Give a ```Hash``` with an illegal value:
+
+```ruby
+ENV.replace('foo' => Object.new)
+TypeError (no implicit conversion of Object into String)
+	from irb_input:465:in `replace'
+	from irb_input:465
+	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
+	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
+	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
+p ENV
+{"bat"=>"1", "baz"=>"0"}
+```
 
 #### ENV#clear
 
@@ -488,11 +538,29 @@ Use method ```ENV#clear``` to remove all environment variables.
 
 The method returns ```ENV```.
 
+```ruby
+saved_env = ENV.to_hash
+p ENV.clear
+{}
+p ENV
+{}
+ENV.replace(saved_env)
+```
+
 #### ENV#shift
 
 Use method ```ENV#shift``` to remove and return the first environment variable.
 
 The method returns a 2-element ```Array``` of the removed name and value.
+
+```ruby
+p ENV
+{"bat"=>"1", "baz"=>"0"}
+p ENV.shift
+["bat", "1"]
+p ENV
+{"baz"=>"0"}
+```
 
 ### Getter Methods
 
