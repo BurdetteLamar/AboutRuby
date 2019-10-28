@@ -38,8 +38,11 @@ An object that responds to <code>#to_str</code> by returning a <code>String</cod
 which will be used as the name or value.
 </li>
 </ul>
-<li>A name may not contain the <code>=</code> character.
-</li>
+<li>A name may not:
+ <ul>
+ <li>Contain the <code>=</code> character.</li>
+ <li>Be the empty string.</li>
+ </ul>
 </ul>
 </details>
 <!-- <<<<<< END INCLUDED FILE (markdown): SOURCE core/ENV/restrictions.md -->
