@@ -354,7 +354,7 @@ Use method <code>ENV#replace</code> to replace all environment variables with ne
 The method accepts a ```Hash``` argument of name-value pairs,
 and returns <code>ENV</code>.
 
-Replace ```ENV``` with data from a ```Hash````:
+Replace ```ENV``` with data from a ```Hash```:
 
 ```#run_irb
 p ENV
