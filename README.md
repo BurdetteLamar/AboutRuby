@@ -8,7 +8,7 @@ Each topic has Ruby code snippets that demonstrate behaviors by running them in 
 
 ## Contents
 - core
-  - [ENV Object](core/ENV Object/markdown.md#env object)
+  - [ENV](core/ENV/markdown.md#env)
   - [Exception](core/Exception/markdown.md#exception)
 - std-lib
   - [OpenStruct](std-lib/OpenStruct/markdown.md#openstruct)
