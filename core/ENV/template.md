@@ -44,14 +44,15 @@ This will be seen in:
 Some methods in ```ENV``` return ```ENV``` itself.
 Typically, there are many environment variables.
 It's not useful to display a large ```ENV``` in the examples here,
-so let's begin with it empty:
+so most example snippets begin by resetting the contents of ```ENV```
+via ```ENV.replace``` or ```ENV.clear```:
 
 ```#run_irb
+ENV.replace('foo' => '0', 'bar' => '1')
+p ENV
 ENV.clear
-p ENV.size
+p ENV
 ```
-
-Also, each example "inherits" the state of ```ENV``` from those preceding it.
 
 @[:page_toc](### Contents)
 
@@ -62,6 +63,7 @@ Also, each example "inherits" the state of ```ENV``` from those preceding it.
 Set environment variable <code>foo</code>:
 
 ```#run_irb
+ENV.clear
 p ENV['foo'] = '0'
 ```
 
@@ -70,6 +72,7 @@ p ENV['foo'] = '0'
 Get environment variable <code>foo</code>:
 
 ```#run_irb
+ENV.replace('foo' => '0')
 p ENV['foo']
 ```
 
@@ -78,7 +81,9 @@ p ENV['foo']
 Delete environment variable <code>foo</code>:
 
 ```#run_irb
+ENV.replace('foo' => '0')
 p ENV['foo'] = nil
+p ENV['foo']
 ```
 
 ### Setter Methods
@@ -95,6 +100,7 @@ The method returns the environment variable's value.
 Create an environment variable:
 
 ```#run_irb
+ENV.clear
 p ENV['foo'] = '0'
 p ENV['foo']
 ```
@@ -102,6 +108,7 @@ p ENV['foo']
 Update an environment variable:
 
 ```#run_irb
+ENV.replace('foo' => '0')
 p ENV['foo'] = '1'
 p ENV['foo']
 ```
@@ -109,6 +116,7 @@ p ENV['foo']
 Delete an environment variable by setting its value to ```nil```:
 
 ```#run_irb
+ENV.replace('foo' => '0')
 p ENV['foo'] = nil
 p ENV['foo']
 ```
@@ -116,6 +124,7 @@ p ENV['foo']
 Delete a non-existent environment variable (raises no exception):
 
 ```#run_irb
+ENV.clear
 p ENV['foo'] = nil
 ```
 
@@ -144,6 +153,11 @@ Give a string name that's not allowed (raises ```Errno::EINVAL```):
 ```#run_irb
 begin
   ENV['foo='] = '0'
+rescue => x
+  p x
+end
+begin
+  ENV[''] = '0'
 rescue => x
   p x
 end
@@ -216,6 +230,11 @@ begin
 rescue => x
   p x
 end
+begin
+  ENV.store('',  '0')
+rescue => x
+  p x
+end
 ```
 
 #### ENV#delete
@@ -231,16 +250,16 @@ The method returns the value of the deleted environment variable.
 Delete an existing environment variable:
 
 ```#run_irb
-ENV['foo'] = '0'
+ENV.replace('foo' => '0')
 p ENV.delete('foo')
 p ENV['foo']
 ```
 
-"Delete" a non-existent environment variable:
+Give a name that's not an environment variable:
 
 ```#run_irb
-p   ENV.delete('foo')
-p ENV['foo']
+ENV.clear
+p ENV.delete('foo')
 ```
 
 Give a name that's not a ```String``` (raises ```TypeError```):
@@ -268,13 +287,15 @@ and returns <code>ENV</code>.
 Create environment variables:
 
 ```#run_irb
-ENV.update('foo' => '0', 'bar' => '1')
+ENV.replace('foo' => '0', 'bar' => '1')
+ENV.update('baz' => '2', 'bat' => '3')
 p ENV
 ```
 
 Update environment variables:
 
 ```#run_irb
+ENV.replace('foo' => '0', 'bar' => '1')
 ENV.update('foo' => '2', 'bar' => '3')
 p ENV
 ```
@@ -282,6 +303,7 @@ p ENV
 Delete environment variables:
 
 ```#run_irb
+ENV.replace('foo' => '0', 'bar' => '1')
 ENV.update('foo' => nil, 'bar' => nil)
 p ENV
 ```
@@ -289,9 +311,8 @@ p ENV
 Do all three at once;
 
 ```#run_irb
-ENV.update('bar' => '1', 'baz' => '2')
-p ENV
-ENV.update('foo' => '0', 'bar' => '2', 'baz' => nil)
+ENV.replace('foo' => '0', 'bar' => '1')
+ENV.update('baz' => '2', 'bar' => '3', 'foo' => nil)
 p ENV
 ```
 
@@ -357,29 +378,37 @@ and returns <code>ENV</code>.
 Replace ```ENV``` with data from a ```Hash```:
 
 ```#run_irb
-p ENV
 ENV.replace('baz' => '0', 'bat' => '1')
 p ENV
 ```
-Give an argument that's not a ```Hash```:
+Give an argument that's not a ```Hash``` (raises ```TypeError```:
 
 ```#run_irb
-ENV.replace(Object.new)
-p ENV
+begin
+  ENV.replace(Object.new)
+rescue => x
+  p x
+end
 ```
 
-Give a ```Hash``` with an illegal name:
+Give a ```Hash``` with a name that's not a ```String``` (raises ```TypeError```):
 
 ```#run_irb
-ENV.replace(Object.new => '0')
-p ENV
+begin
+  ENV.replace(Object.new => '0')
+rescue => x
+  p x
+end
 ```
 
-Give a ```Hash``` with an illegal value:
+Give a ```Hash``` with a value that's not a ```String``` (raises ```TypeError```):
 
 ```#run_irb
-ENV.replace('foo' => Object.new)
-p ENV
+begin
+  ENV.replace('foo' => Object.new)
+rescue => x
+  p x
+end
 ```
 
 #### ENV#clear
@@ -393,9 +422,9 @@ Use method ```ENV#clear``` to remove all environment variables.
 The method returns ```ENV```.
 
 ```#run_irb
-saved_env = ENV.to_hash
+ENV.replace('foo' => '0', 'bar' => '1')
 p ENV.clear
-ENV.replace(saved_env)
+p ENV
 ```
 
 #### ENV#shift
@@ -409,7 +438,7 @@ Use method ```ENV#shift``` to remove and return the first environment variable.
 The method returns a 2-element ```Array``` of the removed name and value.
 
 ```#run_irb
-p ENV
+ENV.replace('foo' => '0', 'bar' => '1')
 p ENV.shift
 p ENV
 ```
@@ -449,7 +478,17 @@ Get the value of an environment variable:
 
 ```#run_irb
 ENV['foo'] = '0'
-p ENV.fetch('foo'])
+p ENV.fetch('foo')
+```
+
+Give a name that's not an environment variable name (raises ```KeyError```):
+
+```#run_irb
+begin
+  ENV.fetch('foot')
+rescue => x
+  p x
+end
 ```
 
 Give a name that's not a ```String``` (raises ```TypeError```):

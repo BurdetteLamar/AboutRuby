@@ -75,15 +75,17 @@ p `irb --version`.chomp
 Some methods in ```ENV``` return ```ENV``` itself.
 Typically, there are many environment variables.
 It's not useful to display a large ```ENV``` in the examples here,
-so let's begin with it empty:
+so most example snippets begin by resetting the contents of ```ENV```
+via ```ENV.replace``` or ```ENV.clear```:
 
 ```ruby
+ENV.replace('foo' => '0', 'bar' => '1')
+p ENV
+{"bar"=>"1", "foo"=>"0"}
 ENV.clear
-p ENV.size
-0
+p ENV
+{}
 ```
-
-Also, each example "inherits" the state of ```ENV``` from those preceding it.
 
 ### Contents
 - [The Basics](#the-basics)
@@ -160,6 +162,7 @@ Also, each example "inherits" the state of ```ENV``` from those preceding it.
 Set environment variable <code>foo</code>:
 
 ```ruby
+ENV.clear
 p ENV['foo'] = '0'
 "0"
 ```
@@ -169,6 +172,7 @@ p ENV['foo'] = '0'
 Get environment variable <code>foo</code>:
 
 ```ruby
+ENV.replace('foo' => '0')
 p ENV['foo']
 "0"
 ```
@@ -178,7 +182,10 @@ p ENV['foo']
 Delete environment variable <code>foo</code>:
 
 ```ruby
+ENV.replace('foo' => '0')
 p ENV['foo'] = nil
+nil
+p ENV['foo']
 nil
 ```
 
@@ -196,6 +203,7 @@ The method returns the environment variable's value.
 Create an environment variable:
 
 ```ruby
+ENV.clear
 p ENV['foo'] = '0'
 "0"
 p ENV['foo']
@@ -205,6 +213,7 @@ p ENV['foo']
 Update an environment variable:
 
 ```ruby
+ENV.replace('foo' => '0')
 p ENV['foo'] = '1'
 "1"
 p ENV['foo']
@@ -214,6 +223,7 @@ p ENV['foo']
 Delete an environment variable by setting its value to ```nil```:
 
 ```ruby
+ENV.replace('foo' => '0')
 p ENV['foo'] = nil
 nil
 p ENV['foo']
@@ -223,6 +233,7 @@ nil
 Delete a non-existent environment variable (raises no exception):
 
 ```ruby
+ENV.clear
 p ENV['foo'] = nil
 nil
 ```
@@ -258,6 +269,12 @@ begin
     p x
   end
 #<Errno::EINVAL: Invalid argument - ruby_setenv(foo=)>
+begin
+    ENV[''] = '0'
+  rescue => x
+    p x
+  end
+#<Errno::EINVAL: Invalid argument - ruby_setenv()>
 ```
 
 #### ENV#store
@@ -337,6 +354,12 @@ begin
     p x
   end
 #<Errno::EINVAL: Invalid argument - ruby_setenv(foo=)>
+begin
+    ENV.store('',  '0')
+  rescue => x
+    p x
+  end
+#<Errno::EINVAL: Invalid argument - ruby_setenv()>
 ```
 
 #### ENV#delete
@@ -352,19 +375,18 @@ The method returns the value of the deleted environment variable.
 Delete an existing environment variable:
 
 ```ruby
-ENV['foo'] = '0'
+ENV.replace('foo' => '0')
 p ENV.delete('foo')
 "0"
 p ENV['foo']
 nil
 ```
 
-"Delete" a non-existent environment variable:
+Give a name that's not an environment variable:
 
 ```ruby
-p   ENV.delete('foo')
-nil
-p ENV['foo']
+ENV.clear
+p ENV.delete('foo')
 nil
 ```
 
@@ -394,14 +416,16 @@ and returns <code>ENV</code>.
 Create environment variables:
 
 ```ruby
-ENV.update('foo' => '0', 'bar' => '1')
+ENV.replace('foo' => '0', 'bar' => '1')
+ENV.update('baz' => '2', 'bat' => '3')
 p ENV
-{"bar"=>"1", "foo"=>"0"}
+{"bar"=>"1", "bat"=>"3", "baz"=>"2", "foo"=>"0"}
 ```
 
 Update environment variables:
 
 ```ruby
+ENV.replace('foo' => '0', 'bar' => '1')
 ENV.update('foo' => '2', 'bar' => '3')
 p ENV
 {"bar"=>"3", "foo"=>"2"}
@@ -410,6 +434,7 @@ p ENV
 Delete environment variables:
 
 ```ruby
+ENV.replace('foo' => '0', 'bar' => '1')
 ENV.update('foo' => nil, 'bar' => nil)
 p ENV
 {}
@@ -418,12 +443,10 @@ p ENV
 Do all three at once;
 
 ```ruby
-ENV.update('bar' => '1', 'baz' => '2')
+ENV.replace('foo' => '0', 'bar' => '1')
+ENV.update('baz' => '2', 'bar' => '3', 'foo' => nil)
 p ENV
-{"bar"=>"1", "baz"=>"2"}
-ENV.update('foo' => '0', 'bar' => '2', 'baz' => nil)
-p ENV
-{"bar"=>"2", "foo"=>"0"}
+{"bar"=>"3", "baz"=>"2"}
 ```
 
 Give a name that's not a ```String``` (raises ```TypeError```):
@@ -436,7 +459,7 @@ begin
   end
 #<TypeError: no implicit conversion of Object into String>
 p ENV
-{"bar"=>"2", "foo"=>"0"}
+{"bar"=>"3", "baz"=>"2"}
 ```
 
 Give a value that's not a ```String``` (raises ```TypeError```):
@@ -449,7 +472,7 @@ begin
   end
 #<TypeError: no implicit conversion of Object into String>
 p ENV
-{"bar"=>"2", "foo"=>"0"}
+{"bar"=>"3", "baz"=>"2"}
 ```
 
 The pairs in the given ```Hash``` are processed in the order given.
@@ -466,7 +489,7 @@ begin
   end
 #<TypeError: no implicit conversion of Object into String>
 p ENV
-{"bar"=>"2", "foo"=>"1"}
+{"bar"=>"3", "baz"=>"2", "foo"=>"1"}
 ```
 
 Give a non-first value that's not a ```String``` (raises ```TypeError``` and processing stops):
@@ -479,7 +502,7 @@ begin
   end
 #<TypeError: no implicit conversion of Object into String>
 p ENV
-{"bar"=>"2", "foo"=>"0"}
+{"bar"=>"3", "baz"=>"2", "foo"=>"0"}
 ```
 
 #### ENV#replace
@@ -496,52 +519,41 @@ and returns <code>ENV</code>.
 Replace ```ENV``` with data from a ```Hash```:
 
 ```ruby
-p ENV
-{"bar"=>"2", "foo"=>"0"}
 ENV.replace('baz' => '0', 'bat' => '1')
 p ENV
 {"bat"=>"1", "baz"=>"0"}
 ```
-Give an argument that's not a ```Hash```:
+Give an argument that's not a ```Hash``` (raises ```TypeError```:
 
 ```ruby
-ENV.replace(Object.new)
-TypeError (no implicit conversion of Object into Hash)
-	from irb_input:463:in `replace'
-	from irb_input:463
-	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
-	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
-	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
-p ENV
-{"bat"=>"1", "baz"=>"0"}
+begin
+    ENV.replace(Object.new)
+  rescue => x
+    p x
+  end
+#<TypeError: no implicit conversion of Object into Hash>
 ```
 
-Give a ```Hash``` with an illegal name:
+Give a ```Hash``` with a name that's not a ```String``` (raises ```TypeError```):
 
 ```ruby
-ENV.replace(Object.new => '0')
-TypeError (no implicit conversion of Object into String)
-	from irb_input:470:in `replace'
-	from irb_input:470
-	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
-	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
-	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
-p ENV
-{"bat"=>"1", "baz"=>"0"}
+begin
+    ENV.replace(Object.new => '0')
+  rescue => x
+    p x
+  end
+#<TypeError: no implicit conversion of Object into String>
 ```
 
-Give a ```Hash``` with an illegal value:
+Give a ```Hash``` with a value that's not a ```String``` (raises ```TypeError```):
 
 ```ruby
-ENV.replace('foo' => Object.new)
-TypeError (no implicit conversion of Object into String)
-	from irb_input:477:in `replace'
-	from irb_input:477
-	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
-	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
-	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
-p ENV
-{"bat"=>"1", "baz"=>"0"}
+begin
+    ENV.replace('foo' => Object.new)
+  rescue => x
+    p x
+  end
+#<TypeError: no implicit conversion of Object into String>
 ```
 
 #### ENV#clear
@@ -555,10 +567,11 @@ Use method ```ENV#clear``` to remove all environment variables.
 The method returns ```ENV```.
 
 ```ruby
-saved_env = ENV.to_hash
+ENV.replace('foo' => '0', 'bar' => '1')
 p ENV.clear
 {}
-ENV.replace(saved_env)
+p ENV
+{}
 ```
 
 #### ENV#shift
@@ -572,12 +585,11 @@ Use method ```ENV#shift``` to remove and return the first environment variable.
 The method returns a 2-element ```Array``` of the removed name and value.
 
 ```ruby
-p ENV
-{"bat"=>"1", "baz"=>"0"}
+ENV.replace('foo' => '0', 'bar' => '1')
 p ENV.shift
-["bat", "1"]
+["bar", "1"]
 p ENV
-{"baz"=>"0"}
+{"foo"=>"0"}
 ```
 
 ### Getter Methods
@@ -617,13 +629,19 @@ Get the value of an environment variable:
 
 ```ruby
 ENV['foo'] = '0'
-p ENV.fetch('foo'])
-SyntaxError (irb_input:548: syntax error, unexpected ']', expecting ')')
-p ENV.fetch('foo'])
-                 ^
-	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
-	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
-	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
+p ENV.fetch('foo')
+"0"
+```
+
+Give a name that's not an environment variable name (raises ```KeyError```):
+
+```ruby
+begin
+    ENV.fetch('foot')
+  rescue => x
+    p x
+  end
+#<KeyError: key not found: "foot">
 ```
 
 Give a name that's not a ```String``` (raises ```TypeError```):
@@ -634,31 +652,7 @@ begin
   rescue => x
     p x
   end
-SyntaxError (irb_input:549: syntax error, unexpected '=')
-...rnel.raise _; rescue _.class; =begin ```#run_irb
-...                              ^
-irb_input:549: syntax error, unexpected tXSTRING_BEG, expecting end
-...e _; rescue _.class; =begin ```#run_irb
-...                              ^
-irb_input:551: syntax error, unexpected tXSTRING_BEG, expecting end
-Give a name that's not a ```String``` (raises ```TypeErr...
-                          ^
-irb_input:551: syntax error, unexpected tXSTRING_BEG, expecting end
-... name that's not a ```String``` (raises ```TypeError```):
-...                              ^
-irb_input:551: syntax error, unexpected tXSTRING_BEG, expecting end
-...s not a ```String``` (raises ```TypeError```):
-...                              ^
-irb_input:551: syntax error, unexpected tXSTRING_BEG, expecting end
-...ring``` (raises ```TypeError```):
-...                              ^
-irb_input:553: syntax error, unexpected tXSTRING_BEG, expecting end
-```ruby
-      ^
-irb_input:559: syntax error, unexpected end-of-input, expecting end
-	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
-	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
-	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
+#<TypeError: no implicit conversion of Object into String>
 ```
 
 #### ENV#key
@@ -731,17 +725,3 @@ ENV.key(value) # => name
 - [Best practices](https://www.google.com/search?q=ruby+env+best+practice)
 - [Performance](https://www.google.com/search?q=ruby+senv+performance)
 <!-- <<<<<< END GENERATED FILE (include): SOURCE core/ENV/template.md -->
-```ruby
-
-SyntaxError (irb_input:559: syntax error, unexpected '=')
-...rnel.raise _; rescue _.class; =begin ```#run_irb
-...                              ^
-irb_input:559: syntax error, unexpected tXSTRING_BEG, expecting end
-...e _; rescue _.class; =begin ```#run_irb
-...                              ^
-irb_input:563: syntax error, unexpected tXSTRING_BEG, expecting end
-```ruby
- ^
-irb_input:632: syntax error, unexpected end-of-input, expecting end
-	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
-	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
