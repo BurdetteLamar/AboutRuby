@@ -417,18 +417,67 @@ p ENV
 ### Getter Methods
 
 #### ENV#[]
+
+```ruby
+ENV[name] # => value
+```
+
+Get the value of an environment variable:
+
+```#run_irb
+ENV['foo'] = '0'
+p ENV['foo']
+```
+
+Give a name that's not a ```String``` (raises ```TypeError```):
+
+```#run_irb
+begin
+  ENV[Object.new]
+rescue => x
+  p x
+end
+```
+
 #### ENV#fetch
+
+```ruby
+ENV.fetch(name) # => value
+```
+
+Get the value of an environment variable:
+
+```#run_irb
+ENV['foo'] = '0'
+p ENV.fetch('foo'])
+```
+
+Give a name that's not a ```String``` (raises ```TypeError```):
+
+```#run_irb
+begin
+  ENV.fetch(Object.new)
+rescue => x
+  p x
+end
+```
+
 #### ENV#key
+
+```ruby
+ENV.key(value) # => name
+```
+
 #### ENV#keys
 #### ENV#assoc
+#### ENV#rassoc
 #### ENV#values
 #### ENV#values_at
-#### ENV#invert
-#### ENV#rassoc
 #### ENV#slice
 #### ENV#to_a
 #### ENV#to_h
 #### ENV#to_hash
+#### ENV#invert
 #### ENV#to_s
 #### ENV#inspect
 

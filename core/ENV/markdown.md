@@ -104,14 +104,14 @@ Also, each example "inherits" the state of ```ENV``` from those preceding it.
   - [ENV#key](#envkey)
   - [ENV#keys](#envkeys)
   - [ENV#assoc](#envassoc)
+  - [ENV#rassoc](#envrassoc)
   - [ENV#values](#envvalues)
   - [ENV#values_at](#envvalues_at)
-  - [ENV#invert](#envinvert)
-  - [ENV#rassoc](#envrassoc)
   - [ENV#slice](#envslice)
   - [ENV#to_a](#envto_a)
   - [ENV#to_h](#envto_h)
   - [ENV#to_hash](#envto_hash)
+  - [ENV#invert](#envinvert)
   - [ENV#to_s](#envto_s)
   - [ENV#inspect](#envinspect)
 - [Enumeration Methods](#enumeration-methods)
@@ -583,18 +583,100 @@ p ENV
 ### Getter Methods
 
 #### ENV#[]
+
+```ruby
+ENV[name] # => value
+```
+
+Get the value of an environment variable:
+
+```ruby
+ENV['foo'] = '0'
+p ENV['foo']
+"0"
+```
+
+Give a name that's not a ```String``` (raises ```TypeError```):
+
+```ruby
+begin
+    ENV[Object.new]
+  rescue => x
+    p x
+  end
+#<TypeError: no implicit conversion of Object into String>
+```
+
 #### ENV#fetch
+
+```ruby
+ENV.fetch(name) # => value
+```
+
+Get the value of an environment variable:
+
+```ruby
+ENV['foo'] = '0'
+p ENV.fetch('foo'])
+SyntaxError (irb_input:548: syntax error, unexpected ']', expecting ')')
+p ENV.fetch('foo'])
+                 ^
+	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
+	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
+	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
+```
+
+Give a name that's not a ```String``` (raises ```TypeError```):
+
+```ruby
+begin
+    ENV.fetch(Object.new)
+  rescue => x
+    p x
+  end
+SyntaxError (irb_input:549: syntax error, unexpected '=')
+...rnel.raise _; rescue _.class; =begin ```#run_irb
+...                              ^
+irb_input:549: syntax error, unexpected tXSTRING_BEG, expecting end
+...e _; rescue _.class; =begin ```#run_irb
+...                              ^
+irb_input:551: syntax error, unexpected tXSTRING_BEG, expecting end
+Give a name that's not a ```String``` (raises ```TypeErr...
+                          ^
+irb_input:551: syntax error, unexpected tXSTRING_BEG, expecting end
+... name that's not a ```String``` (raises ```TypeError```):
+...                              ^
+irb_input:551: syntax error, unexpected tXSTRING_BEG, expecting end
+...s not a ```String``` (raises ```TypeError```):
+...                              ^
+irb_input:551: syntax error, unexpected tXSTRING_BEG, expecting end
+...ring``` (raises ```TypeError```):
+...                              ^
+irb_input:553: syntax error, unexpected tXSTRING_BEG, expecting end
+```ruby
+      ^
+irb_input:559: syntax error, unexpected end-of-input, expecting end
+	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
+	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
+	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
+```
+
 #### ENV#key
+
+```ruby
+ENV.key(value) # => name
+```
+
 #### ENV#keys
 #### ENV#assoc
+#### ENV#rassoc
 #### ENV#values
 #### ENV#values_at
-#### ENV#invert
-#### ENV#rassoc
 #### ENV#slice
 #### ENV#to_a
 #### ENV#to_h
 #### ENV#to_hash
+#### ENV#invert
 #### ENV#to_s
 #### ENV#inspect
 
@@ -649,3 +731,17 @@ p ENV
 - [Best practices](https://www.google.com/search?q=ruby+env+best+practice)
 - [Performance](https://www.google.com/search?q=ruby+senv+performance)
 <!-- <<<<<< END GENERATED FILE (include): SOURCE core/ENV/template.md -->
+```ruby
+
+SyntaxError (irb_input:559: syntax error, unexpected '=')
+...rnel.raise _; rescue _.class; =begin ```#run_irb
+...                              ^
+irb_input:559: syntax error, unexpected tXSTRING_BEG, expecting end
+...e _; rescue _.class; =begin ```#run_irb
+...                              ^
+irb_input:563: syntax error, unexpected tXSTRING_BEG, expecting end
+```ruby
+ ^
+irb_input:632: syntax error, unexpected end-of-input, expecting end
+	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
+	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
