@@ -86,7 +86,7 @@ p ENV['foo'] = nil
 #### ENV#[]=
 
 ```ruby
-ENV[name] = value
+ENV[name] = value # => value
 ```
 
 Use <code>ENV#[]=</code> to create, update, or delete an environment variable.
@@ -152,7 +152,7 @@ end
 #### ENV#store
 
 ```ruby
-ENV.store(name, value)
+ENV.store(name, value) # => value
 ```
 
 Method <code>ENV#store</code> is an alias for method <code>ENV#[]=</code>.
@@ -220,6 +220,10 @@ end
 
 #### ENV#delete
 
+```ruby
+ENV.delete(name) # => value
+```
+
 Use method <code>ENV#delete</code> to delete an environment variable.
 
 The method returns the value of the deleted environment variable.
@@ -250,6 +254,10 @@ end
 ```
 
 #### ENV#update
+
+```ruby
+ENV.update(hash) # => ENV
+```
 
 Use method <code>ENV#update</code> to create, update, and delete
 multiple environment variables, all at once.
@@ -337,6 +345,10 @@ p ENV
 
 #### ENV#replace
 
+```ruby
+ENV.replace(hash) # => ENV
+```
+
 Use method <code>ENV#replace</code> to replace all environment variables with new ones.
 
 The method accepts a ```Hash``` argument of name-value pairs,
@@ -372,6 +384,10 @@ p ENV
 
 #### ENV#clear
 
+```ruby
+ENV.clear # => ENV
+```
+
 Use method ```ENV#clear``` to remove all environment variables.
 
 The method returns ```ENV```.
@@ -383,6 +399,10 @@ ENV.replace(saved_env)
 ```
 
 #### ENV#shift
+
+```ruby
+ENV.shift # => [name, value]
+```
 
 Use method ```ENV#shift``` to remove and return the first environment variable.
 

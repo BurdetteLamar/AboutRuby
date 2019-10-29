@@ -187,7 +187,7 @@ nil
 #### ENV#[]=
 
 ```ruby
-ENV[name] = value
+ENV[name] = value # => value
 ```
 
 Use <code>ENV#[]=</code> to create, update, or delete an environment variable.
@@ -263,7 +263,7 @@ begin
 #### ENV#store
 
 ```ruby
-ENV.store(name, value)
+ENV.store(name, value) # => value
 ```
 
 Method <code>ENV#store</code> is an alias for method <code>ENV#[]=</code>.
@@ -341,6 +341,10 @@ begin
 
 #### ENV#delete
 
+```ruby
+ENV.delete(name) # => value
+```
+
 Use method <code>ENV#delete</code> to delete an environment variable.
 
 The method returns the value of the deleted environment variable.
@@ -376,6 +380,10 @@ begin
 ```
 
 #### ENV#update
+
+```ruby
+ENV.update(hash) # => ENV
+```
 
 Use method <code>ENV#update</code> to create, update, and delete
 multiple environment variables, all at once.
@@ -476,6 +484,10 @@ p ENV
 
 #### ENV#replace
 
+```ruby
+ENV.replace(hash) # => ENV
+```
+
 Use method <code>ENV#replace</code> to replace all environment variables with new ones.
 
 The method accepts a ```Hash``` argument of name-value pairs,
@@ -495,8 +507,8 @@ Give an argument that's not a ```Hash```:
 ```ruby
 ENV.replace(Object.new)
 TypeError (no implicit conversion of Object into Hash)
-	from irb_input:451:in `replace'
-	from irb_input:451
+	from irb_input:463:in `replace'
+	from irb_input:463
 	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
 	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
 	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
@@ -509,8 +521,8 @@ Give a ```Hash``` with an illegal name:
 ```ruby
 ENV.replace(Object.new => '0')
 TypeError (no implicit conversion of Object into String)
-	from irb_input:458:in `replace'
-	from irb_input:458
+	from irb_input:470:in `replace'
+	from irb_input:470
 	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
 	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
 	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
@@ -523,8 +535,8 @@ Give a ```Hash``` with an illegal value:
 ```ruby
 ENV.replace('foo' => Object.new)
 TypeError (no implicit conversion of Object into String)
-	from irb_input:465:in `replace'
-	from irb_input:465
+	from irb_input:477:in `replace'
+	from irb_input:477
 	from C:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/irb-1.0.0/exe/irb:11:in `<top (required)>'
 	from C:/Ruby26-x64/bin/irb.cmd:31:in `load'
 	from C:/Ruby26-x64/bin/irb.cmd:31:in `<main>'
@@ -533,6 +545,10 @@ p ENV
 ```
 
 #### ENV#clear
+
+```ruby
+ENV.clear # => ENV
+```
 
 Use method ```ENV#clear``` to remove all environment variables.
 
@@ -546,6 +562,10 @@ ENV.replace(saved_env)
 ```
 
 #### ENV#shift
+
+```ruby
+ENV.shift # => [name, value]
+```
 
 Use method ```ENV#shift``` to remove and return the first environment variable.
 
