@@ -5,6 +5,7 @@ A Hash is a dictionary-like collection of unique keys and their corresponding va
 A Hash has certain similarities to an Array, but while an Array index is always an Integer, a Hash key can be any object.
 
 ### Contents
+- [Common Uses](#common-uses)
 - [Creating a Hash](#creating-a-hash)
   - [Constructor Hash.new](#constructor-hashnew)
   - [Hash Literal](#hash-literal)
@@ -16,7 +17,34 @@ A Hash has certain similarities to an Array, but while an Array index is always 
   - [Default Value](#default-value)
   - [Default Proc](#default-proc)
 - [Entry Order](#entry-order)
+- [Hash Keys](#hash-keys)
+- [Public Class Methods](#public-class-methods)
+  - [Hash[]](#hash-1)
 
+### Common Uses
+
+A Hash can be used to give names to data:
+
+```ruby
+dev = { name: 'Matz', language: 'Ruby' }
+dev # => {:name=>"Matz", :language=>"Ruby"}
+}
+```
+
+A Hash can also be used to give names to method arguments:
+
+```ruby
+class Dev
+  def initialize(hash)
+    @name = hash[:name]
+    @language = hash[:language]
+  end
+end
+matz = Dev.new(name: 'Matz', language: 'Ruby')
+matz # => #<Dev: @name="Matz", @language="Ruby">
+```
+
+→
 ### Creating a Hash
 
 Here are three ways to create a Hash:
@@ -132,7 +160,7 @@ h.default # => nil
 h[:nosuch] # => nil
 ```
 
-Set the default value with method default=:
+You can set the default value with method default=:
 
 ```ruby
 h.default = false
@@ -232,4 +260,91 @@ But re-creating a deleted entry can affect the order:
 h.delete(:foo)
 h[:foo] = 5
 h # => {:bar=>1, :baz=>3, :foo=>5}
+```
+
+### Hash Keys
+
+I can't improve on the discussion over at [ruby-doc.org](https://ruby-doc.org/core-2.7.0/Hash.html#class-Hash-label-Hash+Keys) (and don't want to steal from it).
+
+An object that lacks method <code>hash</code>
+cannot be a Hash key:
+
+```ruby
+{BasicObject.new => 0} # Raises NoMethodError (undefined method `hash' for #<BasicObject>)
+```
+
+### Public Class Methods
+
+#### Hash[]
+
+```ruby
+Hash[] → new_empty_hash
+Hash[ key, value, ... ] → new_hash
+Hash[ [ [ key, value ], ... ] ] → new_hash
+Hash[ hashable_object ] → new_hash 
+```
+
+Creates a new hash populated with the given objects, if any.
+
+The initial default value and default proc are set to nil (see Default Values):
+
+```Ruby
+Hash[].default # => nil
+Hash[].default_proc # => nil
+```
+
+When an even number of arguments is given, returns a new hash wherein each successive even/odd pair of arguments forms a key/value entry:
+
+```ruby
+Hash[] # => {}
+Hash[:foo, 0, :bar, 1] # => {:foo=>0, :bar=>1}
+```
+
+When the only argument is an array of 2-element arrays, returns a new hash wherein each 2-element array forms a key/value entry:
+
+```ruby
+Hash[ [ [:foo, 0], [:bar, 1] ] ] # => {:foo=>0, :bar=>1}
+```
+
+When the only argument is an object that is convertible to a hash, converts the object and returns the new hash:
+```ruby
+class Foo
+  def to_hash
+    {:foo => 0, :bar => 1}
+  end
+end
+Hash[Foo.new] # => {:foo=>0, :bar=>1}
+```
+
+Note: Here “object that is convertible to a hash” means an object that has has instance method to_hash that takes no arguments and returns a Hash object.
+
+Raises an exception if the argument count is 1, but the argument is not an array of 2-element arrays or an object that is convertible to a hash:
+
+```ruby
+Hash[:foo] # Raises ArgumentError (odd number of arguments for Hash)
+Hash[ [ [:foo, 0, 1] ] ] # Raises ArgumentError (invalid number of elements (3 for 1..2))
+```
+
+Raises an exception if the argument count is odd and greater than 1:
+
+```ruby
+Hash[0, 1, 2] # Raises ArgumentError (odd number of arguments for Hash)
+```
+
+Raises an exception if the only argument is an object whose instance method to_hash takes arguments:
+
+```ruby
+class Foo; def to_hash(x) {}; end; end
+Hash[Foo.new] # Raises ArgumentError (wrong number of arguments (given 0, expected 1))
+```
+
+Raises an exception if the only argument is an object whose instance method to_hash does not return a Hash object:
+
+```ruby
+class Foo
+  def to_hash
+   :foo
+  end
+end
+Hash[Foo.new] # Raises TypeError (can't convert Foo to Hash (Foo#to_hash gives Symbol))
 ```
