@@ -6,7 +6,7 @@ namespace :build do
 
   desc 'Build markdown'
   task :markdown do
-    markdown_helper = MarkdownHelper.new
+    markdown_helper = MarkdownHelper.new(pristine: true)
     template_file_name = 'template.md'
     markdown_file_name = 'markdown.md'
     Dir.chdir(RakefileDirPath)
@@ -16,6 +16,7 @@ namespace :build do
     template_file_paths.each do |template_file_path|
       template_dir_path = File.dirname(template_file_path)
       section_name, topic_name = template_dir_path.split('/')
+      next unless topic_name == 'Hash'
       if section_name != current_section_name
         contents.push("- #{section_name}")
         current_section_name = section_name

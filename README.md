@@ -1,5 +1,3 @@
-<!-- >>>>>> BEGIN GENERATED FILE (include): SOURCE README.template.md -->
-<!-- >>>>>> BEGIN INCLUDED FILE (markdown): SOURCE include_files/contents.md -->
 # About Ruby
 
 Ruby topics, with emphasis on working demo code.
@@ -8,9 +6,4 @@ Each topic has Ruby code snippets that demonstrate behaviors by running them in 
 
 ## Contents
 - core
-  - [ENV](core/ENV/markdown.md#env)
-  - [Exception](core/Exception/markdown.md#exception)
-- std-lib
-  - [OpenStruct](std-lib/OpenStruct/markdown.md#openstruct)
-<!-- <<<<<< END INCLUDED FILE (markdown): SOURCE include_files/contents.md -->
-<!-- <<<<<< END GENERATED FILE (include): SOURCE README.template.md -->
+  - [Hash](core/Hash/markdown.md#hash)
