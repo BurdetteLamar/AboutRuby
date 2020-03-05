@@ -27,9 +27,8 @@ A Hash has certain similarities to an Array, but while an Array index is always 
 A Hash can be used to give names to data:
 
 ```ruby
-dev = { name: 'Matz', language: 'Ruby' }
-dev # => {:name=>"Matz", :language=>"Ruby"}
-}
+matz = {:name => 'Matz', :language => 'Ruby' }
+matz # => {:name=>"Matz", :language=>"Ruby"}
 ```
 
 A Hash can also be used to give names to method arguments:
@@ -41,7 +40,7 @@ class Dev
     @language = hash[:language]
   end
 end
-matz = Dev.new(name: 'Matz', language: 'Ruby')
+matz = Dev.new({:name => 'Matz', :language => 'Ruby'})
 matz # => #<Dev: @name="Matz", @language="Ruby">
 ```
 
@@ -127,7 +126,7 @@ h[:foo] # => 0
 
 The simplest way to create or update a Hash value (instance method []=):
 
-```ruby`
+```ruby
 h[:bat] = 3 # => 3
 h # => {:foo=>0, :bar=>1, :baz=>2, :bat=>3}
 h[:foo] = 4 # => 4
@@ -244,8 +243,9 @@ A Hash object presents its entries in the or their creation. This is seen in:
 A new Hash:
 
 ```ruby
-h = Hash[:foo => 0, :bar => 1, :baz => 2]
+h = Hash[foo: 0, bar: 1, baz: 2]
 h # => {:foo=>0, :bar=>1, :baz=>2}
+
 ```
 
 Updating a value does not affect the order:
@@ -311,7 +311,7 @@ When the only argument is an object that is convertible to a hash, converts the 
 ```ruby
 class Foo
   def to_hash
-    {:foo => 0, :bar => 1}
+    {foo: 0, bar: 1}
   end
 end
 Hash[Foo.new] # => {:foo=>0, :bar=>1}
