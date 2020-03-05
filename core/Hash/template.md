@@ -333,3 +333,43 @@ class Foo
 end
 Hash[Foo.new] # Raises TypeError (can't convert Foo to Hash (Foo#to_hash gives Symbol))
 ```
+
+#### try_convert
+
+````ruby
+ try_convert(obj) → hash or nil
+````
+
+Calls method obj.to_hash, returning its return value:
+
+```ruby
+class HashableSet < Set
+  def to_hash
+    h = {}
+    self.map { |item| h[item] = nil}
+    h
+  end
+end
+hs = HashableSet.new([:foo, :bar, :baz])
+Hash.try_convert(hs) # => {:foo=>nil, :bar=>nil, :baz=>nil}
+```
+
+Returns nil unless obj.respond_to?(:to_hash):
+
+```ruby
+s = 'foo'
+s.respond_to?(:to_hash)
+Hash.try_convert(s) # => nil
+```
+
+Returns nil unless obj.to_hash returns a Hash object:
+
+```ruby
+class HashableSet < Set
+  def to_hash
+    nil
+  end
+end
+hs = HashableSet.new([:foo, :bar, :baz])
+Hash.try_convert(hs) # => nil
+```
