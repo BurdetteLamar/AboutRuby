@@ -21,6 +21,9 @@ A Hash has certain similarities to an Array, but while an Array index is always 
 - [Public Class Methods](#public-class-methods)
   - [Hash[]](#hash-1)
   - [try_convert](#try_convert)
+- [Public Instance Methods](#public-instance-methods)
+  - [<](#-)
+  - [<=](#--1)
 
 ### Common Uses
 
@@ -388,4 +391,54 @@ class HashableSet < Set
 end
 hs = HashableSet.new([:foo, :bar, :baz])
 Hash.try_convert(hs) # => nil
+```
+
+### Public Instance Methods
+
+#### <
+
+```ruby
+ hash < other_hash → true or false
+```
+
+Returns <tt>true</tt> if <tt>hash</tt> is a proper subset of <tt>other_hash</tt>,
+ <tt>false</tt> otherwise:
+
+```ruby
+h1 = {foo: 0, bar: 1}
+h2 = {foo: 0, bar: 1, baz: 2}
+h1 < h2 # => true
+h2 < h1 # => false
+h1 < h1 # => false
+```
+
+Raises an exception if <tt>other_hash</tt> is not a Hash object:
+
+```ruby
+h = {}
+h < 1 # Raises TypeError (no implicit conversion of Integer into Hash)
+```
+
+#### <=
+
+```ruby
+ hash <= other_hash → true or false
+```
+
+Returns <tt>true</tt> if <tt>hash</tt> is a subset of <tt>other_hash</tt>,
+ <tt>false</tt> otherwise:
+
+```ruby
+h1 = {foo: 0, bar: 1}
+h2 = {foo: 0, bar: 1, baz: 2}
+h1 <= h2 # => true
+h2 <= h1 # => false
+h1 <= h1 # => true
+```
+
+Raises an exception if <tt>other_hash</tt> is not a Hash object:
+
+```ruby
+h = {}
+h <= 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 ```
