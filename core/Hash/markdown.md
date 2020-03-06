@@ -27,6 +27,8 @@ A Hash has certain similarities to an Array, but while an Array index is always 
   - [==](#-2)
   - [>](#-3)
   - [>=](#-4)
+  - [[]](#-5)
+  - [[]=](#-6)
 
 ### Common Uses
 
@@ -271,14 +273,39 @@ h # => {:bar=>1, :baz=>3, :foo=>5}
 
 ### Hash Keys
 
-I can't improve on the discussion over at [ruby-doc.org](https://ruby-doc.org/core-2.7.0/Hash.html#class-Hash-label-Hash+Keys) (and don't want to steal from it).
-
 An object that lacks method <code>hash</code>
 cannot be a Hash key:
 
 ```ruby
 {BasicObject.new => 0} # Raises NoMethodError (undefined method `hash' for #<BasicObject>)
 ```
+
+An object that lacks method <code>hash</code>
+cannot be a Hash key:
+
+A Hash key should not be modified while it is in use,
+but a String key is always safe.
+That's because an unfrozen String
+passed as a key will be replaced by a duplicated and frozen String:
+
+```ruby
+s = 'foo'
+s.frozen? # => false
+h = {s => 0}
+first_key = h.keys.first
+first_key.frozen? # => true
+first_key.equal?(s) # => false
+```
+
+```ruby
+{BasicObject.new => 0} # Raises NoMethodError (undefined method `hash' for #<BasicObject>)
+```
+
+
+
+I can't improve on the discussion of user-defined
+objects as keys
+ over at [ruby-doc.org](https://ruby-doc.org/core-2.7.0/Hash.html#class-Hash-label-Hash+Keys) (and don't want to steal from it).
 
 ### Public Class Methods
 
@@ -293,7 +320,7 @@ Hash[ hashable_object ] → new_hash
 
 Creates a new hash populated with the given objects, if any.
 
-The initial default value and default proc are set to nil (see Default Values):
+The initial default value and default proc are set to nil (see [Default Values](#default-values)):
 
 ```Ruby
 Hash[].default # => nil
@@ -540,4 +567,60 @@ Raises an exception if <tt>other_hash</tt> is not a Hash object:
 ```ruby
 h = {}
 h >= 1 # Raises TypeError (no implicit conversion of Integer into Hash)
+```
+
+#### []
+
+```ruby
+hsh[key] → value
+```
+
+If the given key is found,
+returns the value object corresponding to the key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h[:foo] # => 0
+```
+
+Otherwise, returns the default value (see [Default Values](#default-values)):
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h[:nosuch] # => default value
+```
+
+#### []=
+
+```ruby
+h[key] = value → value
+```
+
+Associates the given key and value, and returns the value.
+
+If the key exists, replaces its value:
+
+```ruby
+h = {foo: 0, bar: 1}
+h[:foo] = 2 # => 2
+h # => {:foo=>2, :bar=>1}
+```
+
+The ordering is not affected; see [Entry Order](#entry-order).
+
+If the key does not exist, adds the key and value:
+
+```ruby
+h = {foo: 0, bar: 1}
+h[:baz] = 2 # => 2
+h # => {:foo=>0, :bar=>1, :baz=>2}
+```
+The new entry is last in the order; see [Entry Order](#entry-order).
+
+Raises an exception if the key is invalid
+(see [Hash Keys](#hash-keys)):
+
+```ruby
+h = {foo: 0, bar: 1}
+h[BasicObject.new] = 2 # Raises NoMethodError (undefined method `hash' for #<BasicObject>)
 ```
