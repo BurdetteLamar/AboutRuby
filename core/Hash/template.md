@@ -548,7 +548,7 @@ h >= 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 #### []
 
 ```ruby
-hsh[key] → value
+h[key] → value
 ```
 
 If the given key is found,
@@ -599,4 +599,46 @@ Raises an exception if the key is invalid
 ```ruby
 h = {foo: 0, bar: 1}
 h[BasicObject.new] = 2 # Raises NoMethodError (undefined method `hash' for #<BasicObject>)
+```
+
+#### assoc
+
+```ruby
+assoc(key) → an_array or nil
+```
+
+Returns a 2-element Array
+containing the key and its value:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.assoc(:bar) # => [:bar, 1]
+```
+
+Returns <tt>nil</tt> if the key is not found:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.assoc(:nosuch)
+```
+
+Raises an exception if the key is invalid
+(see [Hash Keys](#hash-keys)):
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.assoc(BasicObject.new) Raises NoMethodError (undefined method `hash' for #<BasicObject>)
+```
+
+#### clear
+
+```ruby
+clear → hash
+```
+
+Removes all hash entries, returning the empty hash:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.clear # => {}
 ```
