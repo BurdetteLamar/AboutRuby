@@ -22,8 +22,11 @@ A Hash has certain similarities to an Array, but while an Array index is always 
   - [Hash[]](#hash-1)
   - [try_convert](#try_convert)
 - [Public Instance Methods](#public-instance-methods)
-  - [<](#-)
-  - [<=](#--1)
+  - [<](#)
+  - [<=](#-1)
+  - [==](#-2)
+  - [>](#-3)
+  - [>=](#-4)
 
 ### Common Uses
 
@@ -441,4 +444,100 @@ Raises an exception if <tt>other_hash</tt> is not a Hash object:
 ```ruby
 h = {}
 h <= 1 # Raises TypeError (no implicit conversion of Integer into Hash)
+```
+
+
+#### ==
+
+```ruby
+h == other_hash → true or false
+```
+
+Returns <tt>true</tt> if:
+* <tt>other_hash</tt> is a Hash object.
+* <tt>h</tt> and <tt>other_hash</tt> have the same
+  keys (regardless of order).
+* For each key _key_, <tt>h[key] == other_hash[key]</tt>.
+
+Otherwise, returns <tt>false</tt>.
+
+Equal:
+
+```ruby
+h1 = {foo: 0, bar: 1, baz: 2}
+h2 = {foo: 0, bar: 1, baz: 2}
+h1 == h2 # => true
+h3 = {baz: 2, bar: 1, foo: 0}
+h1 == h3 # => true
+```
+
+Not equal because of class:
+
+```ruby
+h1 = {foo: 0, bar: 1, baz: 2}
+h1 == 1 # false
+```
+
+Not equal because of different keys:
+
+```ruby
+h1 = {foo: 0, bar: 1, baz: 2}
+h2 = {foo: 0, bar: 1, zab: 2}
+h1 == h2 # => false
+```
+
+Not equal because of different values:
+
+```ruby
+h1 = {foo: 0, bar: 1, baz: 2}
+h2 = {foo: 0, bar: 1, baz: 3}
+h1 == h2 # => false
+```
+
+#### >
+
+```ruby
+ hash > other_hash → true or false
+```
+
+Returns <tt>true</tt> if <tt>hash</tt> is a proper superset of <tt>other_hash</tt>,
+ <tt>false</tt> otherwise:
+
+```ruby
+h1 = {foo: 0, bar: 1, baz: 2}
+h2 = {foo: 0, bar: 1}
+h1 > h2 # => true
+h2 > h1 # => false
+h1 > h1 # => false
+```
+
+Raises an exception if <tt>other_hash</tt> is not a Hash object:
+
+```ruby
+h = {}
+h > 1 # Raises TypeError (no implicit conversion of Integer into Hash)
+```
+
+#### >=
+
+```ruby
+ hash >= other_hash → true or false
+```
+
+Returns <tt>true</tt> if <tt>hash</tt> is a superset of <tt>other_hash</tt>,
+ <tt>false</tt> otherwise:
+
+```ruby
+h1 = {foo: 0, bar: 1, baz: 2}
+h2 = {foo: 0, bar: 1}
+h1 >= h2 # => true
+h2 >= h1 # => false
+h1 >= h1 # => true
+```
+
+Raises an exception if <tt>other_hash</tt> is not a Hash object:
+
+```ruby
+h = {}
+h >= 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 ```
