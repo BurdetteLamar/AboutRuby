@@ -35,6 +35,7 @@ A Hash has certain similarities to an Array, but while an Array index is always 
   - [compact!](#compact-)
   - [compare_by_identiry](#compare_by_identiry)
   - [compare_by_identity?](#compare_by_identity)
+  - [deconstruct_keys](#deconstruct_keys)
 
 ### Common Uses
 
@@ -748,4 +749,10 @@ h = {}
 h.compare_by_identity? # false
 h.compare_by_identity
 h.compare_by_identity? # true
+```
+
+#### deconstruct_keys
+
+```ruby
+deconstruct_keys(p1) → a_hash
 ```

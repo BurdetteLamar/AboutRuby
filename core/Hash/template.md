@@ -719,3 +719,10 @@ h.compare_by_identity? # false
 h.compare_by_identity
 h.compare_by_identity? # true
 ```
+
+#### deconstruct_keys
+
+```ruby
+deconstruct_keys(p1) → a_hash
+```
+
