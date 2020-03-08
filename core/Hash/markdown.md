@@ -31,6 +31,10 @@ A Hash has certain similarities to an Array, but while an Array index is always 
   - [[]=](#-6)
   - [assoc](#assoc)
   - [clear](#clear)
+  - [compact](#compact)
+  - [compact!](#compact-)
+  - [compare_by_identiry](#compare_by_identiry)
+  - [compare_by_identity?](#compare_by_identity)
 
 ### Common Uses
 
@@ -662,9 +666,86 @@ h.assoc(BasicObject.new) Raises NoMethodError (undefined method `hash' for #<Bas
 clear → hash
 ```
 
-Removes all hash entries, returning the empty hash:
+Removes all hash entries, returning the empty newly-emptied hash:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
 h.clear # => {}
+```
+
+#### compact
+
+```ruby
+compact → new_hash
+```
+
+Returns a copy of <tt>h</tt> with all nil-valued entries removed:
+
+```ruby
+h = {foo: 0, bar: nil, baz: 2, bat: nil}
+h1 = h.compact
+h1 # => {:foo=>0, :baz=>2}
+```
+
+#### compact!
+
+```ruby
+compact → h or nil
+```
+
+Returns <tt>h</tt> with all nil-valued entries removed:
+
+```ruby
+h = {foo: 0, bar: nil, baz: 2, bat: nil}
+h.compact!
+h # => {:foo=>0, :baz=>2}
+```
+
+#### compare_by_identiry
+
+```ruby
+compare_by_identity → this_hash
+```
+
+Sets the hash to consider only identity in comparing keys, returning the hash;
+two keys are considered the same only if they are the same object.
+
+By default, these two keys are considered the same, and therefore overwrite:
+
+```ruby
+s0 = 'x'
+s1 = 'x'
+s0.object_id == s1.object_id # => false
+h = {}
+h.compare_by_identity? # => false
+h[s0] = 0
+h[s1] = 1
+h.size # => 1
+```
+
+After calling <tt>compare_by_identity</tt>, the keys are considered different,
+the therefore do not overwrite:
+
+``ruby
+h = {}
+h.compare_by_identity # => {}
+h.compare_by_identity? # => true
+h[s0] = 0
+h[s1] = 1
+h.size # => 2
+``
+
+#### compare_by_identity?
+
+```ruby
+compare_by_identity? → true or false
+```
+
+Returns <tt>true</tt> if <compare_by_identity> has been called, <tt>false</tt> otherwise:
+
+```ruby
+h = {}
+h.compare_by_identity? # false
+h.compare_by_identity
+h.compare_by_identity? # true
 ```
