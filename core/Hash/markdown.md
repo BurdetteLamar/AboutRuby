@@ -42,6 +42,7 @@ A Hash has certain similarities to an Array, but while an Array index is always 
   - [default_proc=](#default_proc-1)
   - [delete](#delete)
   - [delete_if](#delete_if)
+  - [dig](#dig)
 
 ### Common Uses
 
@@ -903,4 +904,37 @@ Returns an <tt>Enumerator</tt> if no block given:
 h = {foo: 0, bar: 1, baz: 2}
 e = h.delete_if # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:delete_if>
 e.each { |key, value| value > 0 } # => {:foo=>0}
+```
+
+#### dig
+
+```ruby
+dig(*keys) → value
+```
+
+Returns the value for a specified key in nested objects:
+
+```ruby
+h = { foo: {bar: {baz: 2}}}
+h.dig(:foo, :bar, :baz) # => 2
+```
+
+Returns <tt>nil</tt> if the key is not found:
+
+```ruby
+h = { foo: {bar: {baz: 2}}}
+h.dig(:foo, :nosuch) # => nil
+```
+
+Raises an exception if a traversed entry does not respond to <tt>dig</tt>:
+
+```ruby
+h = { foo: [10, 11, 12] }
+h.dig(:foo, 1, 0) # Raises TypeError: Integer does not have #dig method
+```
+
+Raises an exception if a given key is invalid (see [Hash Keys](#hash-keys)):
+
+```ruby
+h.dig(BasicObject.new) Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 ```
