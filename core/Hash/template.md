@@ -845,3 +845,25 @@ calls the block and returns the block's return value:
 ```ruby
 h.delete(:nosuch) { |key| "Key #{key} not found" } # => "Key nosuch not found"
 ```
+
+#### delete_if
+
+```ruby
+delete_if {| key, value | block } → new_hash
+delete_if → an_enumerator
+```
+
+Returns a new Hash of all entries for which the block returns a truthy value:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.delete_if { |key, value| value > 0 } # => {:foo=>0}
+```
+
+Returns an <tt>Enumerator</tt> if no block given:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+e = h.delete_if # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:delete_if>
+e.each { |key, value| value > 0 } # => {:foo=>0}
+```
