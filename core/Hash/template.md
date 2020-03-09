@@ -726,3 +726,122 @@ h.compare_by_identity? # true
 deconstruct_keys(p1) → a_hash
 ```
 
+#### default
+
+```ruby
+default → obj
+default(key) → obj
+```
+
+With no argument, returns the current default value:
+
+```ruby
+h = {}
+h.default # => nil
+h.default = false
+h.default # => false
+```
+
+With <tt>key</tt> given, returns the default value for <tt>key</tt>,
+regardless of whether that key exists:
+
+```ruby
+h = {}
+h.default[:nosuch] # => nil
+```
+
+The returned value will be determined either by the default proc or by the default value.
+See [Default Values](#default-values).
+
+#### default=
+
+```ruby
+default = obj → obj
+```
+
+Sets the default value to <tt>obj</tt>, returning <tt>obj</tt>:
+
+```ruby
+h = {}
+h.default # => nil
+h.default = false
+h.default # => false
+```
+
+See [Default Values](#default-values).
+
+
+#### default_proc
+
+```ruby
+default_proc → proc_obj or nil
+```
+
+Returns the default proc:
+
+```ruby
+h = {}
+h.default_proc # => nil
+h.default_proc = proc { |hash, key| "Default value for #{key}" }
+h.default_proc.class # => Proc
+```
+
+See [Default Values](#default-values).
+
+#### default_proc=
+
+```ruby
+default_proc = proc_obj
+```
+
+Sets the default proc:
+
+```ruby
+h = {}
+h.default_proc # => nil
+h.default_proc = proc { |hash, key| "Default value for #{key}" }
+h.default_proc.class # => Proc
+```
+
+See [Default Values](#default-values).
+
+Raises an exception if the given object is not a <tt>Proc</tt>:
+
+```ruby
+h = {}
+h.default_proc = 0 # Raises TypeError (wrong default_proc type Integer (expected Proc))
+```
+
+#### delete
+
+```ruby
+delete(key) → value
+delete(key) {| key | ... } → value
+```
+
+If no block is given and the hash includes the given key, deletes its entry and returns the associated value:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.delete(:bar) # => 1
+```
+
+If no block given and the hash does not include the given key, returns <tt>nil</tty>:
+
+```ruby
+h.delete(:nosuch) # => nil
+```
+
+If a is block given and the hash includes the given key, ignores the block, deletes the entry,
+and returns the associated value:
+
+```ruby
+h.delete(:baz) { |key| fail 'Will never happen'} # => 2
+```
+
+If a block is given and the hash does not include the given key,
+calls the block and returns the block's return value:
+
+```ruby
+h.delete(:nosuch) { |key| "Key #{key} not found" } # => "Key nosuch not found"
+```
