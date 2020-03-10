@@ -955,6 +955,12 @@ h.each_key { |key| puts key } # => {:foo=>0, :bar=>1, :baz=>2}
 
 Output:
 
+```
+foo
+bar
+baz
+```
+
 Returns an <tt>Enumerator</tt> if no block given:
 
 ```ruby
@@ -1007,5 +1013,56 @@ Output:
 foo: 0
 bar: 1
 baz: 2
+```
+
+#### each_value
+
+```ruby
+each_value { |value| ... } → hsh
+each_value → an_enumerator
+```
+
+Calls the given block with each value, returning the hash itself:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.each_value { |value| puts value } # => {:foo=>0, :bar=>1, :baz=>2}
+```
+
+Output:
+
+```
+0
+1
+2
+```
+
+Returns an <tt>Enumerator</tt> if no block given:
+
+```ruby
+e = h.each_value
+e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each+value>
+e.each { |value| puts value }
+```
+
+Output:
+
+```
+0
+1
+2
+```
+
+#### empty?
+
+```ruby
+empty? → true or false
+```
+
+Returns <tt>true</tt> if there are no hash entries, <tt>false</tt> otherwise:
+
+```ruby
+{}.empty? # => true
+{foo: 0, bar: 1, baz: 2}.empty? # => false
 ```
 
