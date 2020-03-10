@@ -49,6 +49,7 @@ A Hash has certain similarities to an Array, but while an Array index is always 
   - [each_value](#each_value)
   - [empty?](#empty)
   - [eql?](#eql)
+  - [fetch](#fetch)
 
 ### Common Uses
 
@@ -1157,3 +1158,53 @@ h2 = {foo: 0, bar: 1, baz: 3}
 h1.eql? h2 # => false
 ```
 
+#### fetch
+
+```ruby
+fetch(key) → obj
+fetch(key , default) → obj
+fetch(key) { |key| ... } → obj
+```
+
+Returns a value for the given <tt>key</tt>.
+
+If neither <tt>default</tt> nor a block given:
+* If <tt>key</tt> found, returns its associated value.
+* Otherwise, raises an exception:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.fetch(:bar) # => 1
+h.fetch(:nosuch) # Raises KeyError (key not found: :nosuch)
+```
+
+If <tt>default</tt> is given, but no block:
+* If <tt>key</tt> found, returns its associated value.
+* Otherwise, returns <tt>default</tt>:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.fetch(:bar, :default) # => 1
+h.fetch(:nosuch, :default) # => :default
+```
+
+If a block is given, but no <tt>default</tt>:
+* If <tt>key</tt> found, returns its associated value.
+* Otherwise, calls the block with <tt>key</tt>, and   returns the block's return value.
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.fetch(:bar) { |key| fail 'Ignored'} # => 1
+h.fetch(:nosuch) { |key| "Value for #{key}"} # => "Value for nosuch"
+```
+
+If both <tt>default</tt> and a block are given:
+* Ignores <tt>default</tt> and issues a warning 'block supersedes default value argument'.
+* If <tt>key</tt> found, returns its associated value.
+* Otherwise, calls the block with <tt>key</tt>, and   returns the block's return value.
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.fetch(:bar, :default) { |key| fail 'Ignored'} # => 1
+h.fetch(:nosuch, :default) { |key| "Value for #{key}"} # => "Value for nosuch"
+```
