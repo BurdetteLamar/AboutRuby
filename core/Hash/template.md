@@ -932,3 +932,36 @@ foo: 0
 bar: 1
 baz: 2
 ```
+
+#### each_key
+
+```ruby
+each_key { |key| ... } → hsh
+each_key → an_enumerator
+```
+
+Calls the given block with each key, returning the hash itself:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.each_key { |key| puts key } # => {:foo=>0, :bar=>1, :baz=>2}
+```
+
+Output:
+
+Returns an <tt>Enumerator</tt> if no block given:
+
+```ruby
+e = h.each_key
+e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each+key>
+e.each { |key| puts key }
+```
+
+Output:
+
+```
+foo
+bar
+baz
+```
+
