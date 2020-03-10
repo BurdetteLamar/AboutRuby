@@ -43,6 +43,7 @@ A Hash has certain similarities to an Array, but while an Array index is always 
   - [delete](#delete)
   - [delete_if](#delete_if)
   - [dig](#dig)
+  - [each](#each)
 
 ### Common Uses
 
@@ -937,4 +938,36 @@ Raises an exception if a given key is invalid (see [Hash Keys](#hash-keys)):
 
 ```ruby
 h.dig(BasicObject.new) Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+```
+
+#### each
+
+```ruby
+each {| key, value | ... } → self
+each → an_enumerator
+```
+
+Calls the given block with each key-value pair, returning the hash itself:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.each { |key, value| puts "#{key}: #{value}"} # => {:foo=>0, :bar=>1, :baz=>2}
+```
+
+Output:
+
+Returns an <tt>Enumerator</tt> if no block given:
+
+```ruby
+e = h.each
+e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each>
+e.each { |key, value| puts "#{key}: #{value}"}
+```
+
+Output:
+
+```
+foo: 0
+bar: 1
+baz: 2
 ```
