@@ -917,6 +917,12 @@ h.each { |key, value| puts "#{key}: #{value}"} # => {:foo=>0, :bar=>1, :baz=>2}
 
 Output:
 
+```
+foo: 0
+bar: 1
+baz: 2
+```
+
 Returns an <tt>Enumerator</tt> if no block given:
 
 ```ruby
@@ -963,5 +969,43 @@ Output:
 foo
 bar
 baz
+```
+
+#### each_pair
+
+```ruby
+each_pair {| key, value | ... } → self
+each_pair → an_enumerator
+```
+
+Calls the given block with each key-value pair, returning the hash itself:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.each_pair { |key, value| puts "#{key}: #{value}"} # => {:foo=>0, :bar=>1, :baz=>2}
+```
+
+Output:
+
+```
+foo: 0
+bar: 1
+baz: 2
+```
+
+Returns an <tt>Enumerator</tt> if no block given:
+
+```ruby
+e = h.each
+e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each+pair>
+e.each { |key, value| puts "#{key}: #{value}"}
+```
+
+Output:
+
+```
+foo: 0
+bar: 1
+baz: 2
 ```
 
