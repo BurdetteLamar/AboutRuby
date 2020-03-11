@@ -19,8 +19,9 @@ A Hash has certain similarities to an Array, but while an Array index is always 
 - [Entry Order](#entry-order)
 - [Hash Keys](#hash-keys)
 - [Public Class Methods](#public-class-methods)
-  - [Hash[]](#hash-1)
-  - [try_convert](#try_convert)
+  - [::[]](#-)
+  - [::new](#-new)
+  - [::try_convert](#-try_convert)
 - [Public Instance Methods](#public-instance-methods)
   - [<](#)
   - [<=](#-1)
@@ -196,6 +197,13 @@ h.default = false
 h[:nosuch] # => false
 ```
 
+For certain kinds of default values (e.g., a String), the default can be modified thus:
+
+h = Hash.new('Foo')
+h[:nosuch] # => "Foo"
+h[:nosuch_0].upcase! # => "FOO"
+h[:nosuch_1] # => "FOO"
+
 #### Default Proc
 
 When the default proc for a Hash is set, the returned default value is determined by the default proc alone.
@@ -245,12 +253,6 @@ h[:nosuch] # => "First value for nosuch"
 h.include?(:nosuch) # => true
 h[:nosuch] # => "Subsequent value for nosuch"
 h[:nosuch] # => "Subsequent value for nosuch"
-```
-
-Delete the entry for key :nosuch (because we use it in these examples as a missing key):
-
-```ruby
-h.delete(:nosuch)
 ```
 
 Setting the default proc to nil causes a missing-key reference to return the default value:
@@ -322,15 +324,12 @@ first_key.equal?(s) # => false
 {BasicObject.new => 0} # Raises NoMethodError (undefined method `hash' for #<BasicObject>)
 ```
 
-
-
 I can't improve on the discussion of user-defined
-objects as keys
- over at [ruby-doc.org](https://ruby-doc.org/core-2.7.0/Hash.html#class-Hash-label-Hash+Keys) (and don't want to steal from it).
+objects as keys  over at [ruby-doc.org](https://ruby-doc.org/core-2.7.0/Hash.html#class-Hash-label-Hash+Keys) (and don't want to steal from it).
 
 ### Public Class Methods
 
-#### Hash[]
+#### ::[]
 
 ```ruby
 Hash[] → new_empty_hash
@@ -404,7 +403,50 @@ end
 Hash[Foo.new] # Raises TypeError (can't convert Foo to Hash (Foo#to_hash gives Symbol))
 ```
 
-#### try_convert
+#### ::new
+
+```ruby
+new → new_hash
+new(default_value) → new_hash
+new {|hash, key| ... } → new_hash
+```
+
+Returns a new empty hash (no entries). The new hash has an initial default value and an initial default proc that depend on which form above was used.  See [Default Values](#default-values).
+
+If neither default_value nor block given, initializes both the default value and the default proc to nil
+
+```ruby
+h = Hash.new
+h.default # => nil
+h.default_proc # => nil
+h[:nosuch] # => nil
+```
+
+If <tt>default_value</tt> given but no block given, initializes the default value to the given value and the default proc to +nil:
+
+```ruby
+h = Hash.new(false)
+h.default # => false
+h.default_proc # => nil
+h[:nosuch] # => false
+```
+
+If block given but no argument given, stores the block as the default proc, and sets the default value (which will be ignored) to nil:
+
+```ruby
+h = Hash.new { |hash, key| "Default value for #{key}" }
+h.default # => nil
+h.default_proc.class # => Proc
+h[:nosuch] # => "Default value for nosuch"
+```
+
+Raises an exception if both default_value and a block are given:
+```ruby
+Hash.new(0) { } # Raises ArgumentError (wrong number of arguments (given 1, expected 0))
+```
+
+
+#### ::try_convert
 
 ````ruby
  try_convert(obj) → hash or nil
