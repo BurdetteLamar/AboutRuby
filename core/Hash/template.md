@@ -1186,7 +1186,7 @@ h.fetch(:nosuch, :default) # => :default
 
 If a block is given, but no <tt>default</tt>:
 * If <tt>key</tt> found, returns its associated value.
-* Otherwise, calls the block with <tt>key</tt>, and   returns the block's return value.
+* Otherwise, calls the block with <tt>key</tt>, and returns the block's return value.
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -1204,3 +1204,101 @@ h = {foo: 0, bar: 1, baz: 2}
 h.fetch(:bar, :default) { |key| fail 'Ignored'} # => 1
 h.fetch(:nosuch, :default) { |key| "Value for #{key}"} # => "Value for nosuch"
 ```
+
+Raises an exception if <tt>key</tt> is invalid (see [Hash Keys](#hash-keys)):
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.fetch(BasicObject.new)
+```
+
+#### fetch_values
+
+```ruby
+fetch_values(*keys) → an_array
+fetch_values(*keys) { |key| block } → an_array
+```
+
+Returns an Array of the values associated with the given <tt>*keys</tt>:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.fetch_values(:baz, :foo) # => [2, 0]
+```
+
+Returns the empty Array if no keys given:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.fetch_values # => []
+```
+
+Raises an exception if any given key is not found:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.fetch_values(:baz, :nosuch) # Raises KeyError (key not found: :nosuch)
+```
+
+Raises an exception if any given key is invalid (see [Hash Keys](#hash-keys)):
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.fetch_values(:baz, BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+```
+
+#### filter
+
+```ruby
+filter {|key, value| ... } → new_hash
+filter → new_enumerator
+```
+
+Hash#filter is an alias for Hash#select.
+
+Returns a new hash consisting of the entries for which the block returns a truthy value:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.filter { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+```
+
+Returns a new Enumerator if no block given:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+e = h.filter # => {:bar=>1, :baz=>2} # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:filter>
+e.each { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+```
+
+#### filter!
+
+```ruby
+filter! {| key, value | ... } → receiver or nil
+filter! → new_enumerator
+```
+
+Hash#filter! is an alias for Hash#select!.
+
+Deletes each hash entry for which the block returns <tt>nil</tt> or <tt>false</tt>, returning the receiver:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.filter! { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+```
+
+Returns <tt>nil</tt> if no entries were deleted:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.filter! { |key, value| true } # => nil
+```
+
+Returns a new Enumerator if no block given:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+e = h.filter! # => {:bar=>1, :baz=>2} # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:filter!>
+e.each { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+```
+
