@@ -648,7 +648,7 @@ h[BasicObject.new] = 2 # Raises NoMethodError (undefined method `hash' for #<Bas
 assoc(key) → an_array or nil
 ```
 
-Returns a 2-element Array
+If the key is found, returns a 2-element Array
 containing the key and its value:
 
 ```ruby
@@ -887,6 +887,12 @@ calls the block and returns the block's return value:
 h.delete(:nosuch) { |key| "Key #{key} not found" } # => "Key nosuch not found"
 ```
 
+Raises an exception if <tt>key</tt> is invalid (see [Hash Keys](#hash-keys)):
+
+```ruby
+h.delete(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+```
+
 #### delete_if
 
 ```ruby
@@ -939,7 +945,7 @@ h.dig(:foo, 1, 0) # Raises TypeError: Integer does not have #dig method
 Raises an exception if a given key is invalid (see [Hash Keys](#hash-keys)):
 
 ```ruby
-h.dig(BasicObject.new) Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+h.dig(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 ```
 
 #### each
@@ -1209,7 +1215,7 @@ Raises an exception if <tt>key</tt> is invalid (see [Hash Keys](#hash-keys)):
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.fetch(BasicObject.new)
+h.fetch(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 ```
 
 #### fetch_values
@@ -1431,5 +1437,104 @@ Raises an exception if <tt>key</tt> is invalid (see [Hash Keys](#hash-keys)):
 
 ```ruby
 h.include?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+```
+
+#### inspect
+
+```ruby
+inspect → string
+```
+
+Returns a String showing the hash entries:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.inspect # => "{:foo=>0, :bar=>1, :baz=>2}"
+```
+
+#### invert
+
+```ruby
+invert → new_hash
+```
+
+Returns a new Hash object with the each key-value pair reversed:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.invert # => {0=>:foo, 1=>:bar, 2=>:baz}
+```
+
+Overwrites any repeated new keys:
+
+```ruby
+h = {foo: 0, bar: 0, baz: 0}
+h.invert # => {0=>:baz}
+```
+
+Raises an exception if any new keys i invalid:
+
+```ruby
+h = {foo: 0, bar: 1, baz: BasicObject.new}
+h.invert NoMethodError (undefined method `hash' for #<BasicObject:>)
+```
+
+#### keep_if
+
+```ruby
+keep_if {| key, value | ... } → this_hash
+keep_if → an_enumerator
+```
+
+Yields each entry's key-value pair to the block,
+retains the entry if the block returns a truthy value,
+deletes the entry otherwise,
+and returns the hash itself.
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.keep_if { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+```
+
+Returns an Enumerator if no block given:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+e = h.keep_if # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:keep_if>
+e.each { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+```
+
+#### key
+
+```ruby
+key(value) → key
+```
+
+Returns the key for the first-found entry with value <tt>value</tt>:
+
+```ruby
+h = {foo: 0, bar: 2, baz: 2}
+h.key(0) # => :foo
+h.key(2) # => :bar
+```
+
+#### key?
+
+```ruby
+key?(key) → true or false
+```
+
+Returns <tt>true</tt> if <tt>key</tt> is a key in the hash, <tt>false</tt> otherwise:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.key?(:foo) # => true
+h.key?(:nosuch) # => false
+```
+
+Raises an exception if <tt>key</tt> is invalid (see [Hash Keys](#hash-keys)):
+
+```ruby
+h.key?(BasicObject.new)
 ```
 
