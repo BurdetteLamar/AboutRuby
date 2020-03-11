@@ -57,6 +57,8 @@ A Hash has certain similarities to an Array, but while an Array index is always 
   - [flatten](#flatten)
   - [has_key?](#has_key)
   - [has_value?](#has_value)
+  - [hash](#hash-1)
+  - [include?](#include)
 
 ### Common Uses
 
@@ -1441,4 +1443,46 @@ Returns <tt>true</tt> if <tt>value</tt> is a value in the hash, otherwise <tt>fa
 h = {foo: 0, bar: 1, baz: 2}
 h.has_value?(1) # => true
 h.has_value?(123) # => false
+```
+
+#### hash
+
+```ruby
+hash → integer
+```
+
+Returns the integer hash value for the hash:
+
+```ruby
+h1 = {foo: 0, bar: 1, baz: 2}
+h1.hash # => 983977779
+```
+
+Two Hash objects have the same hash value if their content is the same:
+
+```ruby
+h1 = {foo: 0, bar: 1, baz: 2}
+h2 = {baz: 2, bar: 1, foo: 0}
+h2.hash == h1.hash # => true
+h2.eql? h1 # => true
+```
+
+#### include?
+
+```ruby
+include?(key) → true or false
+```
+
+Returns <tt>true</tt> if <tt>key</tt> is a key in the hash, otherwise <tt>false</tt>:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.include?(:bar) # => true
+h.include?(:nosuch) # => false
+```
+
+Raises an exception if <tt>key</tt> is invalid (see [Hash Keys](#hash-keys)):
+
+```ruby
+h.include?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 ```
