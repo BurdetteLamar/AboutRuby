@@ -1356,3 +1356,38 @@ h = {foo: 0, bar: [:bat, 3], baz: 2}
 h.flatten(Complex(2, 1)) # Raises RangeError (can't convert 2+1i into Integer)
 h.flatten(:nosuch) # Raises TypeError (no implicit conversion of Symbol into Integer)
 ```
+
+#### has_key?
+
+```ruby
+has_key?(key) → true or false
+```
+
+Returns <tt>true</tt> if <tt>key</tt> is a key in the hash, otherwise <tt>false</tt>:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.has_key?(:bar) # => true
+h.has_key?(:nosuch) # => false
+```
+
+Raises an exception if <tt>key</tt> is invalid (see [Hash Keys](#hash-keys)):
+
+```ruby
+h.has_key?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+```
+
+#### has_value?
+
+```ruby
+ has_value?(value) → true or false
+```
+
+Returns <tt>true</tt> if <tt>value</tt> is a value in the hash, otherwise <tt>false</tt>:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.has_value?(1) # => true
+h.has_value?(123) # => false
+```
+
