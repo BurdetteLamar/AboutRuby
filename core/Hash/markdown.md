@@ -54,6 +54,7 @@ A Hash has certain similarities to an Array, but while an Array index is always 
   - [fetch_values](#fetch_values)
   - [filter](#filter)
   - [filter!](#filter-)
+  - [flatten](#flatten)
 
 ### Common Uses
 
@@ -1349,4 +1350,59 @@ Returns a new Enumerator if no block given:
 h = {foo: 0, bar: 1, baz: 2}
 e = h.filter! # => {:bar=>1, :baz=>2} # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:filter!>
 e.each { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+```
+
+#### flatten
+
+```ruby
+flatten(level = 1) → new_array 
+```
+
+Returns a new Array wherein each key and each value of the receiver is an array element:
+
+```ruby
+h = {foo: 0, bar: [:bat, 3], baz: 2}
+h.flatten # => [:foo, 0, :bar, [:bat, 3], :baz, 2]
+```
+
+Takes the level of recursive flattening from <tt>level</tt>:
+
+```ruby
+h = {foo: 0, bar: [:bat, [:baz, [:bat, ]]]}
+h.flatten(1) # => [:foo, 0, :bar, [:bat, [:baz, [:bat]]]]
+h.flatten(2) # => [:foo, 0, :bar, :bat, [:baz, [:bat]]]
+h.flatten(3) # => [:foo, 0, :bar, :bat, :baz, [:bat]]
+h.flatten(4) # => [:foo, 0, :bar, :bat, :baz, :bat]
+```
+
+When <tt>level</tt> is negative, flattens all levels:
+
+```ruby
+h = {foo: 0, bar: [:bat, [:baz, [:bat, ]]]}
+h.flatten(-1) # => [:foo, 0, :bar, :bat, :baz, :bat]
+h.flatten(-2) # => [:foo, 0, :bar, :bat, :baz, :bat]
+```
+
+When <tt>level</tt> is <tt>0</tt>, returns the equivalent of #to_a :
+
+```ruby
+h = {foo: 0, bar: [:bat, 3], baz: 2}
+h.flatten(0) # => [[:foo, 0], [:bar, [:bat, 3]], [:baz, 2]]
+h.flatten(0) == h.to_a # => true
+```
+
+Converts <tt>level</tt> to an Integer object if necessary and possible:
+
+```ruby
+h = {foo: 0, bar: [:bat, 3], baz: 2}
+h.flatten(Float(1.1)) # => [:foo, 0, :bar, [:bat, 3], :baz, 2]
+h.flatten(Complex(2, 0)) # => [:foo, 0, :bar, :bat, 3, :baz, 2]
+```
+
+Raises an exception if <tt>level</tt> cannot be converted to an Integer:
+
+```ruby
+h = {foo: 0, bar: [:bat, 3], baz: 2}
+h.flatten(Complex(2, 1)) # Raises RangeError (can't convert 2+1i into Integer)
+h.flatten(:nosuch) # Raises TypeError (no implicit conversion of Symbol into Integer)
 ```
