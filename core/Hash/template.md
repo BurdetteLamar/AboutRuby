@@ -1767,3 +1767,41 @@ e = h.reject
 e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:reject>
 e.each { |key, value| key.start_with?('b') } # => {:foo=>0}
 ```
+
+#### reject!
+
+```ruby
+reject! { |key, value| ... } → this_hash or nil
+reject! → new_enumerator
+```
+
+Returns the receiver, whose remaining entries are all those
+for which the block returns <tt>false</tt> or <tt>nil</tt>:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.reject! { |key, value| key.start_with?('b') } # => {:foo=>0}
+```
+
+Returns a new Enumerator if no block given:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+e = h.reject!
+e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:reject!>
+e.each { |key, value| key.start_with?('b') } # => {:foo=>0}
+```
+
+#### replace
+
+```ruby
+replace(other_hash) → this_hash
+```
+
+Replaces the entire contents of this hash with the contents of <tt>other_hash</tt>:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.replace({bat: 3, bam: 4}) # => {:bat=>3, :bam=>4}
+```
+
