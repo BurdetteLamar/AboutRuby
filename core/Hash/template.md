@@ -704,12 +704,20 @@ h1 # => {:foo=>0, :baz=>2}
 compact → h or nil
 ```
 
-Returns <tt>h</tt> with all nil-valued entries removed:
+Returns <tt>h</tt> with all <tt>nil</tt>-valued entries removed:
 
 ```ruby
 h = {foo: 0, bar: nil, baz: 2, bat: nil}
 h.compact!
 h # => {:foo=>0, :baz=>2}
+```
+
+Returns <tt>nil</tt> if no entries were removed:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.compact! # => nil
+h # => {:foo=>0, :bar=>1, :baz=>2}
 ```
 
 #### compare_by_identiry
@@ -1780,9 +1788,17 @@ for which the block returns <tt>false</tt> or <tt>nil</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.reject! { |key, value| key.start_with?('b') } # => {:foo=>0}
+h.reject! { |key, value| key.start_with?('b') } # => nil
+h # => {:foo=>0} # => {:foo=>0, :bar=>1, :baz=>2}
 ```
 
+Returns <tt>nil</tt> if no entries were removed:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.reject! { |key, value| value > 2 }
+h
+```
 Returns a new Enumerator if no block given:
 
 ```ruby
@@ -1844,6 +1860,14 @@ Returns the receiver whose entries are those for which the block returns a truth
 h = {foo: 0, bar: 1, baz: 2}
 h.select! { |key, value| value < 2 } # => {:foo=>0, :bar=>1}
 h # => {:foo=>0, :bar=>1}
+```
+
+Returns <tt>nil</tt> if no entries were removed:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.select! { |key, value| value < 3} # => nil 
+h # => {:foo=>0, :bar=>1, :baz=>2}
 ```
 
 Returns a new Enumerator if no block given:
