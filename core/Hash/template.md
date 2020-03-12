@@ -1535,6 +1535,52 @@ h.key?(:nosuch) # => false
 Raises an exception if <tt>key</tt> is invalid (see [Hash Keys](#hash-keys)):
 
 ```ruby
-h.key?(BasicObject.new)
+h.key?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+```
+
+#### keys
+
+```ruby
+keys → new_array
+```
+
+Returns a new Array containing all hash keys:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.keys # => [:foo, :bar, :baz]
+```
+
+#### length
+
+```ruby
+length → integer
+```
+
+Returns the count of hash entries:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.length # => 3
+```
+
+#### member?
+
+```ruby
+member?(key) → true or false
+```
+
+Returns <tt>true</tt> if <tt>key</tt> is a key in the hash, <tt>false</tt> otherwise:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.member?(:foo) # => true
+h.member?(:nosuch) # => false
+```
+
+Raises an exception if <tt>key</tt> is invalid (see [Hash Keys](#hash-keys)):
+
+```ruby
+h.member?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 ```
 
