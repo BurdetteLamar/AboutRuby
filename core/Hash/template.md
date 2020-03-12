@@ -1880,3 +1880,60 @@ e.each { |key, value| value < 2 } # => {:foo=>0, :bar=>1}
 h # => {:foo=>0, :bar=>1}
 ```
 
+#### shift
+
+```ruby
+shift → [key, value] or default_value
+```
+
+Removes the first hash entry, returning a 2-element Array
+containing the removed key and value:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.shift # => [:foo, 0]
+h # => {:bar=>1, :baz=>2}
+```
+
+Returns the default value if the hash is empty (see [Default Values](#default-values)):
+
+```ruby
+h = {}
+h.shift # => nil
+```
+
+#### size
+
+```ruby
+size → an_integer
+```
+
+Returns the count of hash entries:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.size # => 3
+h.delete(:foo) # => 0
+h.size # => 2
+```
+
+#### slice
+
+```ruby
+slice(*keys) → new_hash
+```
+
+Returns a new Hash object containing the entries for the given <tt>*keys</tt>:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.slice(:baz, :foo) # => {:baz=>2, :foo=>0}
+```
+
+Raises an exception if any given key is invalid (see [Hash Keys](#hash-keys)):
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.slice(:foo, BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+```
+
