@@ -71,6 +71,7 @@ A Hash has certain similarities to an Array, but while an Array index is always 
   - [merge!](#merge-)
   - [rassoc](#rassoc)
   - [rehash](#rehash)
+  - [reject](#reject)
 
 ### Common Uses
 
@@ -962,7 +963,7 @@ h.delete(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<
 #### delete_if
 
 ```ruby
-delete_if {| key, value | block } → new_hash
+delete_if {| key, value | ... } → new_hash
 delete_if → an_enumerator
 ```
 
@@ -1288,7 +1289,7 @@ h.fetch(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<B
 
 ```ruby
 fetch_values(*keys) → an_array
-fetch_values(*keys) { |key| block } → an_array
+fetch_values(*keys) { |key| ... } → an_array
 ```
 
 Returns an Array of the values associated with the given <tt>*keys</tt>:
@@ -1808,4 +1809,28 @@ Raises an exception if called while hash iteration in progress:
 ```ruby
 h = {foo: 0, bar: 1, baz: 1}
 h.each { |key, value| h.rehash } # Raises RuntimeError (rehash during iteration)
+```
+
+#### reject
+
+```ruby
+reject { |key, value| ...} → new_hash
+reject → new_enumerator 
+```
+
+Returns a new Hash object whose entries are all those from the receiver
+for which the block returns <tt>false</tt> or <tt>nil</tt>:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.reject { |key, value| key.start_with?('b') } # => {:foo=>0}
+```
+
+Returns a new Enumerator if no block given:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+e = h.reject
+e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:reject>
+e.each { |key, value| key.start_with?('b') } # => {:foo=>0}
 ```
