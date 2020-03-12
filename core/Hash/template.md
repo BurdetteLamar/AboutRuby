@@ -1584,3 +1584,56 @@ Raises an exception if <tt>key</tt> is invalid (see [Hash Keys](#hash-keys)):
 h.member?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 ```
 
+#### merge
+
+```ruby
+merge -> new_copy_of_hash
+merge(*other_hashes) → new_hash
+merge(*other_hashes) { |key, old_value, new_value| ... } → new_hash 
+```
+
+With arguments and no block:
+* Returns a new Hash object that is the merge of the receiver
+and each given hash.
+* The given hashes are merged left to right.
+* Each new-key entry is added at the end.
+* Each duplicate-key entry's value overwrites the previous value.
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h1 = {bat: 3, bar: 4}
+h2 = {bam: 5, bat:6}
+h.merge(h1, h2) # => {:foo=>0, :bar=>4, :baz=>2, :bat=>6, :bam=>5}
+```
+
+With arguments and a block:
+* Returns a new Hash object that is the merge of the receiver
+and each given hash.
+* The given hashes are merged left to right.
+* Each new-key entry is added at the end.
+* For each duplicate key:
+  * Yields the key and the old and new values to the block.
+  * The block's return value becomes the new value for the entry.
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h1 = {bat: 3, bar: 4}
+h2 = {bam: 5, bat:6}
+h3 = h.merge(h1, h2) { |key, old_value, new_value| old_value + new_value }
+h3 # => {:foo=>0, :bar=>5, :baz=>2, :bat=>9, :bam=>5}
+```
+
+With no arguments:
+* Returns a copy of the receiver.
+* The block, if given, is ignored.
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h1 = h.merge
+h1 # => {:foo=>0, :bar=>1, :baz=>2}
+h1.object_id == h.object_id # => false
+h2 = h.merge { |key, old_value, new_value| fail 'Cannot happen' }
+h2 # => {:foo=>0, :bar=>1, :baz=>2}
+h2.object_id == h.object_id # => false
+```
+
