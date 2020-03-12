@@ -1710,3 +1710,36 @@ h = {foo: 0, bar: 1, baz: 2}
 h.rassoc(3) # => nil
 ```
 
+#### rehash
+
+```ruby
+rehash → this_hash
+```
+
+Returns the receiver after rebuilding its index
+from the current hash value for each key object:
+
+```ruby
+a0 = [ :foo, :bar ]
+a1 = [ :baz, :bat ]
+h = { a0 => 0, a1 => 1 }
+h.include?(a0) # => true
+h[a0] # => 0
+a0.hash # => 110002110
+
+a0[0] = :bam
+a0.hash # => 1069447059
+h.include?(a0) # => false
+h[a0] # => nil
+
+h.rehash # => {[:bam, :bar]=>0, [:baz, :bat]=>1}
+h.include?(a0) # => true
+h[a0] # => 0
+```
+
+Raises an exception if called while hash iteration in progress:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 1}
+h.each { |key, value| h.rehash } # Raises RuntimeError (rehash during iteration)
+```
