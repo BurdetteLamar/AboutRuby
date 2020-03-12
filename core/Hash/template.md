@@ -1689,3 +1689,24 @@ h1 # => {:foo=>0, :bar=>1, :baz=>2}
 h1.object_id == h.object_id # => true
 ```
 
+#### rassoc
+
+```ruby
+rassoc(value) → new_array or nil
+```
+
+Returns a new 2-element Array consisting of the key and value
+of the first-found entry whose value is <tt>==</tt> to <tt>value</tt>:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 1}
+h.rassoc(1) # => [:bar, 1]
+```
+
+Returns <tt>nil</tt> if no such value found:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.rassoc(3) # => nil
+```
+
