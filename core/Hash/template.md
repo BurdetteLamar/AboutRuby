@@ -2309,3 +2309,58 @@ h1 # => {:foo=>0, :bar=>1, :baz=>2}
 h1.object_id == h.object_id # => true
 ```
 
+#### value
+
+```ruby
+value?(value) → true or false
+```
+
+Returns <tt>true</tt> if <tt>value</tt> is a value in the hash,
+<tt>false</tt> otherwise:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.value?(0) # => true
+h.value?(3) # => false
+```
+
+#### values
+
+```ruby
+values → new_array
+```
+
+Returns a new Array containing all values in <tt>self</tt>:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.values # => [0, 1, 2]
+```
+
+#### values_at
+
+```ruby
+values_at(*keys) → array
+```
+
+Returns a new Array containing values for the given <tt>*keys</tt>:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.values_at(:foo, :baz) # => [0, 2]
+```
+
+Returns an empty Array if no arguments given:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.values_at # => [0, 2]
+```
+
+Raises an exception if any given key is invalid
+(see [Invalid Hash Keys](#invalid-hash-keys)):
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.values_at(BasicObject.new) # => [0, 2]
+```
