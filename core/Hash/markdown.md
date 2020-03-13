@@ -83,6 +83,10 @@ A Hash has certain similarities to an Array, but while an Array index is always 
   - [to_a](#to_a)
   - [to_h](#to_h)
   - [to_hash](#to_hash)
+  - [to_proc](#to_proc)
+  - [to_s](#to_s)
+  - [transform_keys](#transform_keys)
+  - [transform_keys!](#transform_keys-)
 
 ### Common Uses
 
@@ -1528,10 +1532,10 @@ h.include?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for 
 #### inspect
 
 ```ruby
-inspect → string
+inspect → new_string
 ```
 
-Returns a String showing the hash entries:
+Returns a new String showing the hash entries:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -2072,8 +2076,7 @@ For a subclass of Hash, returns a new Hash containing the receiver's content:
 class H < Hash; end
 h = H[foo: 0, bar: 1, baz: 2]
 h # => {:foo=>0, :bar=>1, :baz=>2}
-h.class # => H
-hash = h.to_h
+h.class # => Hhash = h.to_h
 hash # => {:foo=>0, :bar=>1, :baz=>2}
 hash.class # => Hash
 ```
@@ -2124,3 +2127,96 @@ h1 = h.to_hash
 h1 # => {:foo=>0, :bar=>1, :baz=>2}
 h1.object_id == h.object_id # => true
 ```
+
+#### to_proc
+
+```ruby
+to_proc → proc
+```
+
+Returns a Proc object that maps a key to its value:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+proc = h.to_proc
+proc.class # => Proc
+proc.call(:foo) # => 0
+proc.call(:bar) # => 1
+proc.call(:nosuch) # => nil
+[:foo, :bar, :noosuch].map(&h) # => [0, 1, nil]
+```
+
+#### to_s
+
+```ruby
+to_s → new_string
+```
+
+Returns a new String showing the hash entries:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.to_s # => "{:foo=>0, :bar=>1, :baz=>2}"
+```
+
+#### transform_keys
+
+```ruby
+transform_keys {|key| ... } → new_hash
+transform_keys → an_enumerator
+```
+
+Returns a new Hash object;
+each entry is a key provided by the block the value from <tt>self</tt>:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.transform_keys { |key| key.to_s } # => {"foo"=>0, "bar"=>1, "baz"=>2}
+```
+
+Returns a new Enumerator if no block given:
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+e = h.transform_keys
+e.each { |key| key.to_s } # => {"foo"=>0, "bar"=>1, "baz"=>2}
+```
+
+Raises an exception if the block returns an invalid key (see [Hash Keys](#hash-keys)):
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.transform_keys { |key| BasicObject.new } # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+```
+
+#### transform_keys!
+
+```ruby
+transform_keys! {|key| ... } → new_hash
+transform_keys! → an_enumerator
+```
+
+Returns <tt>self</tt> with new keys provided by the block:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h1 = h.transform_keys! { |key| key.to_s }
+h1 # => {"foo"=>0, "bar"=>1, "baz"=>2}
+h1.object_id == h.object_id # => true
+```
+
+Returns a new Enumerator if no block given:
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+e = h.transform_keys!
+h1 = e.each { |key| key.to_s }
+h1 # => {"foo"=>0, "bar"=>1, "baz"=>2}
+h1.object_id == h.object_id # => true
+```
+
+Raises an exception if the block returns an invalid key (see [Hash Keys](#hash-keys)):
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.transform_keys! { |key| BasicObject.new } # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+```
+
