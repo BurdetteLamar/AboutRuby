@@ -1937,3 +1937,113 @@ h = {foo: 0, bar: 1, baz: 2}
 h.slice(:foo, BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 ```
 
+#### store
+
+```ruby
+store(key, value) → value
+```
+
+Creates or updates an entry with the given <tt>key</tt> and <tt>value</tt>, returning <tt>value</tt>:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.store(:baz, 3) # => 3
+h # => {:foo=>0, :bar=>1, :baz=>3}
+```
+
+Raises an exception if <tt>key</tt> is invalid  (see [Hash Keys](#hash-keys)):
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.store(BasicObject.new, 3) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+```
+
+#### to_a
+
+```ruby
+to_a → new_array
+```
+
+Returns a new Array of 2-element Array objects;
+each nested Array contains the key and value for a hash entry:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.to_a # => [[:foo, 0], [:bar, 1], [:baz, 2]]
+```
+
+#### to_h
+
+```ruby
+to_h → receiver or new_hash
+to_h { |key, value| ... } → new_hash
+```
+
+Returns the receiver:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h1 = h.to_h
+h1 # => {:foo=>0, :bar=>1, :baz=>2}
+h1.object_id == h.object_id # => true
+```
+
+For a subclass of Hash, returns a new Hash containing the receiver's content:
+
+```ruby
+class H < Hash; end
+h = H[foo: 0, bar: 1, baz: 2]
+h # => {:foo=>0, :bar=>1, :baz=>2}
+h.class # => H
+hash = h.to_h
+hash # => {:foo=>0, :bar=>1, :baz=>2}
+hash.class # => Hash
+```
+
+When a block is given, returns a new Hash object
+whose content is based on the block;
+the block should return a 2-element Array object
+specifying the key-value pair to be included in the returned Array:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h1 = h.to_h { |key, value| [value, key] }
+h1 # => {0=>:foo, 1=>:bar, 2=>:baz}
+```
+
+Raises an exception if the block does not return an Array:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h1 = h.to_h { |key, value| :array } # Raises TypeError (wrong element type Symbol (expected array))
+```
+
+Raises an exception if the block returns an Array of size different from 2:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h1 = h.to_h { |key, value| [0, 1, 2] } # Raises ArgumentError (element has wrong array length (expected 2, was 3))
+```
+
+Raises an exception if the block returns an invalid key (see [Hash Keys](#hash-keys)):
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h1 = h.to_h { |key, value| [BasicObject.new, 0] } # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+```
+
+#### to_hash
+
+```ruby
+to_hash → self
+```
+
+Returns <tt>self</tt>:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h1 = h.to_hash
+h1 # => {:foo=>0, :bar=>1, :baz=>2}
+h1.object_id == h.object_id # => true
+```
+
