@@ -1,8 +1,11 @@
 ## Hash
 
-A Hash is a dictionary-like collection of unique keys and their corresponding values.
+A Hash is a dictionary-like collection of unique _keys_;
+each key has a corresponding _value_.
 
-A Hash has certain similarities to an Array, but while an Array index is always an Integer, a Hash key can be any object.
+A Hash has certain similarities to an Array, but:
+* An Array index is always an Integer.
+* A Hash key can be (almost) any object.
 
 ### Contents
 - [Common Uses](#common-uses)
@@ -18,6 +21,9 @@ A Hash has certain similarities to an Array, but while an Array index is always 
   - [Default Proc](#default-proc)
 - [Entry Order](#entry-order)
 - [Hash Keys](#hash-keys)
+  - [Invalid Hash Keys](#invalid-hash-keys)
+  - [Modifying an Active Hash Key](#modifying-an-active-hash-key)
+  - [User-Defined Hash Keys](#user-defined-hash-keys)
 - [Public Class Methods](#public-class-methods)
   - [::[]](#-)
   - [::new](#-new)
@@ -90,7 +96,7 @@ A Hash has certain similarities to an Array, but while an Array index is always 
 
 ### Common Uses
 
-A Hash can be used to give names to data:
+A Hash can be used to give names to objects:
 
 ```ruby
 matz = {:name => 'Matz', :language => 'Ruby' }
@@ -107,6 +113,14 @@ class Dev
   end
 end
 matz = Dev.new({:name => 'Matz', :language => 'Ruby'})
+matz # => #<Dev: @name="Matz", @language="Ruby">
+```
+
+When the last argument in a method call is a Hash,
+the curly braces may be omitted:
+
+```ruby
+matz = Dev.new(:name => 'Matz', :language => 'Ruby')
 matz # => #<Dev: @name="Matz", @language="Ruby">
 ```
 
@@ -148,10 +162,17 @@ h = Hash[:foo => 0, :bar => 1, :baz => 2]
 h # => {:foo=>0, :bar=>1, :baz=>2}
 ```
 
-If all initial keys are to be Symbols, there's this shorthand:
+For any key that's to be a Symbol, there's this shorthand:
 
 ```ruby
 h = Hash[foo: 0, bar: 1, baz: 2]
+h # => {:foo=>0, :bar=>1, :baz=>2}
+```
+
+And you can mix the two styles:
+
+```ruby
+h = Hash[:foo => 0, bar: 1, :baz => 2]
 h # => {:foo=>0, :bar=>1, :baz=>2}
 ```
 
@@ -173,16 +194,24 @@ h = {:foo => 0, :bar => 1, :baz => 2}
 h # => {:foo=>0, :bar=>1, :baz=>2}
 ```
 
-If all initial keys are to be Symbols, there's this shorthand:
+For any key that's to be a Symbol, there's this shorthand:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
 h # => {:foo=>0, :bar=>1, :baz=>2}
 ```
 
+And you can mix the two styles:
+
+```ruby
+h = {foo: 0, :bar => 1, baz: 2}
+h # => {:foo=>0, :bar=>1, :baz=>2}
+```
+
+
 ### Getting a Hash Value
 
-The simplest way to get a Hash value (instance method []):
+The simplest way to get a Hash value (instance method <tt>[]</tt>):
 
 ```ruby
 h[:foo] # => 0
@@ -190,7 +219,7 @@ h[:foo] # => 0
 
 ### Setting a Hash Value
 
-The simplest way to create or update a Hash value (instance method []=):
+The simplest way to create or update a Hash value (instance method <tt>[]=</tt>):
 
 ```ruby
 h[:bat] = 3 # => 3
@@ -201,7 +230,7 @@ h # => {:foo=>4, :bar=>1, :baz=>2, :bat=>3}
 
 ### Deleting a Hash Value
 
-The simplest way to delete a Hash entry (instance method delete):
+The simplest way to delete a Hash entry (instance method <tt>delete</tt>):
 
 ```ruby
 h.delete(:bat) # => 3
@@ -210,14 +239,14 @@ h # => {:foo=>4, :bar=>1, :baz=>2}
 
 ### Default Values
 
-For a Hash key that does not exist, method [] returns a default value that is based on both:
+For a Hash key that does not exist, method <tt>[]</tt> returns a default value that is based on both:
 
 * Its default value.
 * Its default proc.
 
 #### Default Value
 
-The simplest case is seen when the default proc for the Hash has not been set (i.e., is nil). In that case the value of method default (initially nil) is returned:
+The simplest case is seen when the default proc for the Hash has not been set (i.e., is <tt>nil</tt>). In that case the value of method default (initially <tt>nil</tt>) is returned:
 
 ```ruby
 h = Hash.new
@@ -226,7 +255,7 @@ h.default # => nil
 h[:nosuch] # => nil
 ```
 
-You can set the default value with method default=:
+You can set the default value with method <tt>default=</tt>:
 
 ```ruby
 h.default = false
@@ -242,7 +271,8 @@ h[:nosuch_1] # => "FOO"
 
 #### Default Proc
 
-When the default proc for a Hash is set, the returned default value is determined by the default proc alone.
+When the default proc for a Hash is set, the returned default value is determined by the default proc alone
+(and the default value is ignored).
 
 For a Hash that's to be created by Hash.new, you can initialize the default proc by including a block:
 
@@ -251,7 +281,7 @@ h = Hash.new { |hash, key| "Default value for #{key}" }
 h.default_proc.class # => Proc
 ```
 
-You can set the default proc with method default_proc=:
+You can also set the default proc with method <tt>default_proc=</tt>:
 
 ```ruby
 h = Hash.new
@@ -260,21 +290,21 @@ h.default_proc = proc { |hash, key| "Default value for #{key}" }
 h.default_proc.class # => Proc
 ```
 
-When the default proc is set (i.e., not nil) and method [] is called with with a non-existent key, the block is called with both the Hash object itself and the missing key, and the block's return value is returned as the key's value:
+When the default proc is set (i.e., not <tt>nil</tt>) and method <tt>[]</tt> is called with with a non-existent key, the block is called with both the Hash object itself and the missing key; the block's return value is returned as the key's value:
 
 ```ruby
 h = Hash.new { |hash, key| "Default value for #{key}" }
 h[:nosuch] # => "Default value for nosuch"
 ```
 
-Note that in this case, the default value is ignored:
+In this case, the default value is ignored:
 
 ```ruby
 h.default = false
 h[:nosuch] # => "Default value for nosuch"
 ```
 
-Note also that in the example above no entry for key :nosuch is created:
+Note also that in the example above no entry for key <tt>:nosuch</tt> is created:
 
 ```ruby
 h.include?(:nosuch) # => false
@@ -291,7 +321,7 @@ h[:nosuch] # => "Subsequent value for nosuch"
 h[:nosuch] # => "Subsequent value for nosuch"
 ```
 
-Setting the default proc to nil causes a missing-key reference to return the default value:
+Setting the default proc to <tt>nil</tt> causes a missing-key reference to return the default value:
 
 ```ruby
 h.default_proc = nil
@@ -301,13 +331,13 @@ h[:nosuch] # => false
 
 ### Entry Order
 
-A Hash object presents its entries in the or their creation. This is seen in:
+A Hash object presents its entries in the of their creation. This is seen in:
 
-* Iterative methods such as each, each_key, each_pair, each_value.
-* Other order-sensitive methods such as shift, keys, values.
-* The String returned by method inspect.
+* Iterative methods such as <tt>each</tt>, <tt>each_key</tt>, <tt>each_pair</tt>, <tt>each_value</tt>.
+* Other order-sensitive methods such as <tt>shift</tt>, <tt>keys</tt>, <tt>values</tt>.
+* The String returned by method <tt>inspect</tt>.
 
-A new Hash:
+A new Hash has its initial ordering per the given entries:
 
 ```ruby
 h = Hash[foo: 0, bar: 1, baz: 2]
@@ -332,18 +362,52 @@ h # => {:bar=>1, :baz=>3, :foo=>5}
 
 ### Hash Keys
 
-An object that lacks method <code>hash</code>
+#### Invalid Hash Keys
+
+An object that lacks method <tt>hash</tt>
 cannot be a Hash key:
 
 ```ruby
 {BasicObject.new => 0} # Raises NoMethodError (undefined method `hash' for #<BasicObject>)
 ```
 
-An object that lacks method <code>hash</code>
-cannot be a Hash key:
+#### Modifying an Active Hash Key
 
-A Hash key should not be modified while it is in use,
-but a String key is always safe.
+Modifying a Hash key while it is in use damages the hash's index.
+
+This Hash has keys that are Arrays:
+
+```ruby
+a0 = [ :foo, :bar ]
+a1 = [ :baz, :bat ]
+h = { a0 => 0, a1 => 1 }
+h.include?(a0) # => true
+h[a0] # => 0
+a0.hash # => 110002110
+```
+
+ Modifying array element <tt>a0[0]</tt> changes its hash value:
+```ruby
+a0[0] = :bam
+a0.hash # => 1069447059
+```
+
+And damages the hash's index:
+
+```ruby
+h.include?(a0) # => false
+h[a0] # => nil
+```
+
+You can repair the hash index using method <tt>rehash</tt>:
+
+```ruby
+h.rehash # => {[:bam, :bar]=>0, [:baz, :bat]=>1}
+h.include?(a0) # => true
+h[a0] # => 0
+```
+
+A String key is always safe.
 That's because an unfrozen String
 passed as a key will be replaced by a duplicated and frozen String:
 
@@ -356,9 +420,7 @@ first_key.frozen? # => true
 first_key.equal?(s) # => false
 ```
 
-```ruby
-{BasicObject.new => 0} # Raises NoMethodError (undefined method `hash' for #<BasicObject>)
-```
+#### User-Defined Hash Keys
 
 I can't improve on the discussion of user-defined
 objects as keys  over at [ruby-doc.org](https://ruby-doc.org/core-2.7.0/Hash.html#class-Hash-label-Hash+Keys) (and don't want to steal from it).
@@ -717,7 +779,7 @@ h # => {:foo=>0, :bar=>1, :baz=>2}
 The new entry is last in the order; see [Entry Order](#entry-order).
 
 Raises an exception if the key is invalid
-(see [Hash Keys](#hash-keys)):
+(see [Invalid Hash Keys](#invalid-hash-keys)):
 
 ```ruby
 h = {foo: 0, bar: 1}
@@ -746,7 +808,7 @@ h.assoc(:nosuch)
 ```
 
 Raises an exception if the key is invalid
-(see [Hash Keys](#hash-keys)):
+(see [Invalid Hash Keys](#invalid-hash-keys)):
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -977,7 +1039,7 @@ calls the block and returns the block's return value:
 h.delete(:nosuch) { |key| "Key #{key} not found" } # => "Key nosuch not found"
 ```
 
-Raises an exception if <tt>key</tt> is invalid (see [Hash Keys](#hash-keys)):
+Raises an exception if <tt>key</tt> is invalid (see [Invalid Hash Keys](#invalid-hash-keys)):
 
 ```ruby
 h.delete(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
@@ -1032,7 +1094,7 @@ h = { foo: [10, 11, 12] }
 h.dig(:foo, 1, 0) # Raises TypeError: Integer does not have #dig method
 ```
 
-Raises an exception if a given key is invalid (see [Hash Keys](#hash-keys)):
+Raises an exception if a given key is invalid (see [Invalid Hash Keys](#invalid-hash-keys)):
 
 ```ruby
 h.dig(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
@@ -1301,7 +1363,7 @@ h.fetch(:bar, :default) { |key| fail 'Ignored'} # => 1
 h.fetch(:nosuch, :default) { |key| "Value for #{key}"} # => "Value for nosuch"
 ```
 
-Raises an exception if <tt>key</tt> is invalid (see [Hash Keys](#hash-keys)):
+Raises an exception if <tt>key</tt> is invalid (see [Invalid Hash Keys](#invalid-hash-keys)):
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -1336,7 +1398,7 @@ h = {foo: 0, bar: 1, baz: 2}
 h.fetch_values(:baz, :nosuch) # Raises KeyError (key not found: :nosuch)
 ```
 
-Raises an exception if any given key is invalid (see [Hash Keys](#hash-keys)):
+Raises an exception if any given key is invalid (see [Invalid Hash Keys](#invalid-hash-keys)):
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -1467,7 +1529,7 @@ h.has_key?(:bar) # => true
 h.has_key?(:nosuch) # => false
 ```
 
-Raises an exception if <tt>key</tt> is invalid (see [Hash Keys](#hash-keys)):
+Raises an exception if <tt>key</tt> is invalid (see [Invalid Hash Keys](#invalid-hash-keys)):
 
 ```ruby
 h.has_key?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
@@ -1523,7 +1585,7 @@ h.include?(:bar) # => true
 h.include?(:nosuch) # => false
 ```
 
-Raises an exception if <tt>key</tt> is invalid (see [Hash Keys](#hash-keys)):
+Raises an exception if <tt>key</tt> is invalid (see [Invalid Hash Keys](#invalid-hash-keys)):
 
 ```ruby
 h.include?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
@@ -1622,7 +1684,7 @@ h.key?(:foo) # => true
 h.key?(:nosuch) # => false
 ```
 
-Raises an exception if <tt>key</tt> is invalid (see [Hash Keys](#hash-keys)):
+Raises an exception if <tt>key</tt> is invalid (see [Invalid Hash Keys](#invalid-hash-keys)):
 
 ```ruby
 h.key?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
@@ -1668,7 +1730,7 @@ h.member?(:foo) # => true
 h.member?(:nosuch) # => false
 ```
 
-Raises an exception if <tt>key</tt> is invalid (see [Hash Keys](#hash-keys)):
+Raises an exception if <tt>key</tt> is invalid (see [Invalid Hash Keys](#invalid-hash-keys)):
 
 ```ruby
 h.member?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
@@ -2012,7 +2074,7 @@ h = {foo: 0, bar: 1, baz: 2}
 h.slice(:baz, :foo) # => {:baz=>2, :foo=>0}
 ```
 
-Raises an exception if any given key is invalid (see [Hash Keys](#hash-keys)):
+Raises an exception if any given key is invalid (see [Invalid Hash Keys](#invalid-hash-keys)):
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -2033,7 +2095,7 @@ h.store(:baz, 3) # => 3
 h # => {:foo=>0, :bar=>1, :baz=>3}
 ```
 
-Raises an exception if <tt>key</tt> is invalid  (see [Hash Keys](#hash-keys)):
+Raises an exception if <tt>key</tt> is invalid  (see [Invalid Hash Keys](#invalid-hash-keys)):
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -2106,7 +2168,7 @@ h = {foo: 0, bar: 1, baz: 2}
 h1 = h.to_h { |key, value| [0, 1, 2] } # Raises ArgumentError (element has wrong array length (expected 2, was 3))
 ```
 
-Raises an exception if the block returns an invalid key (see [Hash Keys](#hash-keys)):
+Raises an exception if the block returns an invalid key (see [Invalid Hash Keys](#invalid-hash-keys)):
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -2181,7 +2243,7 @@ e = h.transform_keys
 e.each { |key| key.to_s } # => {"foo"=>0, "bar"=>1, "baz"=>2}
 ```
 
-Raises an exception if the block returns an invalid key (see [Hash Keys](#hash-keys)):
+Raises an exception if the block returns an invalid key (see [Invalid Hash Keys](#invalid-hash-keys)):
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -2213,7 +2275,7 @@ h1 # => {"foo"=>0, "bar"=>1, "baz"=>2}
 h1.object_id == h.object_id # => true
 ```
 
-Raises an exception if the block returns an invalid key (see [Hash Keys](#hash-keys)):
+Raises an exception if the block returns an invalid key (see [Invalid Hash Keys](#invalid-hash-keys)):
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
