@@ -1,7 +1,7 @@
 ## Hash
 
 A Hash is a dictionary-like collection of unique _keys_;
-each key has a corresponding _value_.
+each key has an associated _value_.
 
 A Hash has certain similarities to an Array, but:
 * An Array index is always an Integer.
@@ -93,6 +93,8 @@ A Hash has certain similarities to an Array, but:
   - [to_s](#to_s)
   - [transform_keys](#transform_keys)
   - [transform_keys!](#transform_keys-)
+  - [transform_values](#transform_values)
+  - [transform_values!](#transform_values-)
 
 ### Common Uses
 
@@ -1019,7 +1021,7 @@ h = {foo: 0, bar: 1, baz: 2}
 h.delete(:bar) # => 1
 ```
 
-If no block given and the hash does not include the given key, returns <tt>nil</tty>:
+If no block given and the hash does not include the given key, returns <tt>nil</tt>:
 
 ```ruby
 h.delete(:nosuch) # => nil
@@ -2267,6 +2269,7 @@ h1.object_id == h.object_id # => true
 ```
 
 Returns a new Enumerator if no block given:
+
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
 e = h.transform_keys!
@@ -2282,3 +2285,61 @@ h = {foo: 0, bar: 1, baz: 2}
 h.transform_keys! { |key| BasicObject.new } # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 ```
 
+#### transform_values
+
+```ruby
+transform_values {|value| ... } → new_hash
+transform_values → new_enumerator
+```
+
+Returns a new Hash object whose keys are the same as
+in <tt>self</tt>, and whose values are determined by the given block.
+
+Yields each value to the block,
+and assigns its return value as the new value:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h1 = h.transform_values { |value| value * 100}
+h1 # => {:foo=>0, :bar=>100, :baz=>200}
+h1.object_id == h.object_id # => false
+```
+
+Returns a new Enumerator if no block given:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+e = h.transform_values
+e
+h1 = e.each { |value| value * 100}
+h1 # => {:foo=>0, :bar=>100, :baz=>200}
+h1.object_id == h.object_id # => false
+```
+
+#### transform_values!
+
+```ruby
+transform_values {|value| ... } → new_hash
+transform_values → new_enumerator
+```
+
+Returns <tt>self</tt>, whose keys are unchanged,
+and whose values are determined by the given block.
+
+Yields each value to the block,
+and assigns its return value as the new value:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.transform_values! { |value| value * 100} # => {:foo=>0, :bar=>100, :baz=>200}
+h # => {:foo=>0, :bar=>100, :baz=>200}
+```
+
+Returns a new Enumerator if no block given:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+e = h.transform_values!
+e.each { |value| value * 100} # => {:foo=>0, :bar=>100, :baz=>200}
+h # => {:foo=>0, :bar=>100, :baz=>200}
+```
