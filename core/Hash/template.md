@@ -2257,3 +2257,55 @@ e.each { |value| value * 100} # => {:foo=>0, :bar=>100, :baz=>200}
 h # => {:foo=>0, :bar=>100, :baz=>200}
 ```
 
+#### update
+
+```ruby
+update -> this_hash
+update(*other_hashes) → this_hash
+update(*other_hashes) { |key, old_value, new_value| ... } → this_hash
+```
+
+With arguments and no block:
+* Returns the receiver, after the given hashes are merged into it.
+* The given hashes are merged left to right.
+* Each new-key entry is added at the end.
+* Each duplicate-key entry's value overwrites the previous value.
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h1 = {bat: 3, bar: 4}
+h2 = {bam: 5, bat:6}
+h3 = h.update(h1, h2)
+h3 # => {:foo=>0, :bar=>4, :baz=>2, :bat=>6, :bam=>5}
+h3.object_id == h.object_id # => true
+```
+
+With arguments and a block:
+* Returns the receiver, after the given hashes are merged.
+* The given hashes are merged left to right.
+* Each new-key entry is added at the end.
+* For each duplicate key:
+  * Yields the key and the old and new values to the block.
+  * The block's return value becomes the new value for the entry.
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h1 = {bat: 3, bar: 4}
+h2 = {bam: 5, bat:6}
+h3 = h.update(h1, h2) { |key, old_value, new_value| old_value + new_value }
+h3 # => {:foo=>0, :bar=>5, :baz=>2, :bat=>9, :bam=>5}
+h3.object_id == h.object_id # => true
+```
+
+With no arguments:
+* Returns the receiver, unmodified.
+* The block, if given, is ignored.
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.merge # => {:foo=>0, :bar=>1, :baz=>2}
+h1 = h.update { |key, old_value, new_value| fail 'Cannot happen' }
+h1 # => {:foo=>0, :bar=>1, :baz=>2}
+h1.object_id == h.object_id # => true
+```
+
