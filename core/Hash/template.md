@@ -339,6 +339,58 @@ first_key.equal?(s) # => false
 I can't improve on the discussion of user-defined
 objects as keys  over at [ruby-doc.org](https://ruby-doc.org/core-2.7.0/Hash.html#class-Hash-label-Hash+Keys) (and don't want to steal from it).
 
+#### Hash-Convertible Arguments
+
+Some Hash methods accept one or more Hash-convertible objects as arguments.
+
+Here, "Hash-convertible object" means an object that:
+* Has an instance method <tt>to_hash</tt> that.
+* The method accepts no arguments.
+* The method returns an object <tt>obj</tt> for which <tt>obj.kind_of?(Hash)</tt> returns <tt>true</tt>.
+
+This class is Hash-convertible:
+
+```ruby
+class HashConvertible
+  def to_hash
+    {foo: 0, bar: 1}
+  end
+end
+h = {}
+h.merge(HashConvertible.new) # => {:foo=>0, :bar=>1}
+```
+
+Class Integer is not Hash-convertible (no <tt>to_hash</tt> method):
+
+```ruby
+h = {}
+h.merge(1) # Raises TypeError (no implicit conversion of Integer into Hash)
+```
+
+This class is not Hash-convertible (method <tt>to_hash</tt> takes arguments):
+
+```ruby
+class NotHashConvertible
+  def to_hash(x)
+    {foo: 0, bar: 1}
+  end
+end
+h = {}
+h.merge(NotHashConvertible.new) # Raises ArgumentError (wrong number of arguments (given 0, expected 1))
+```
+
+This class is not Hash-convertible (method <tt>to_hash</tt> returns non-Hash):
+
+```ruby
+class NotHashConvertible
+  def to_hash
+    :foo
+  end
+end
+h = {}
+h.merge(NotHashConvertible.new) # Raises TypeError (can't convert NotHashConvertible to Hash (NotHashConvertible#to_hash gives Symbol))
+```
+
 ### Public Class Methods
 
 #### ::[]
@@ -560,7 +612,7 @@ Returns <tt>true</tt> if all of the following are true:
 * <tt>other_hash</tt> is a Hash object.
 * <tt>hash</tt> and <tt>other_hash</tt> have the same
   keys (regardless of order).
-* For each key _key_, <tt>hash[key] == other_hash[key]</tt>.
+* For each key <tt>key</tt>, <tt>hash[key] == other_hash[key]</tt>.
 
 Otherwise, returns <tt>false</tt>.
 
