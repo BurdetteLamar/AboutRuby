@@ -705,7 +705,7 @@ h[BasicObject.new] = 2 # Raises NoMethodError (undefined method `hash' for #<Bas
 #### assoc
 
 ```ruby
-assoc(key) → an_array or nil
+assoc(key) → new_array or nil
 ```
 
 If key <tt>key</tt> is found, returns a 2-element Array
@@ -965,7 +965,7 @@ h.delete(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<
 
 ```ruby
 delete_if {| key, value | ... } → new_hash
-delete_if → an_enumerator
+delete_if → new_enumerator
 ```
 
 Returns a new Hash object consisting of all entries for which the block returns a truthy value:
@@ -1020,7 +1020,7 @@ h.dig(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<Bas
 
 ```ruby
 each {| key, value | ... } → self
-each → an_enumerator
+each → new_enumerator
 ```
 
 Calls the given block with each key-value pair, returning <tt>self</tt>:
@@ -1058,7 +1058,7 @@ baz: 2
 
 ```ruby
 each_key { |key| ... } → self
-each_key → an_enumerator
+each_key → new_enumerator
 ```
 
 Calls the given block with each key, returning <tt>self</tt>:
@@ -1096,7 +1096,7 @@ baz
 
 ```ruby
 each_pair {| key, value | ... } → self
-each_pair → an_enumerator
+each_pair → new_enumerator
 ```
 
 Calls the given block with each key-value pair, returning <tt>self</tt>:
@@ -1134,7 +1134,7 @@ baz: 2
 
 ```ruby
 each_value { |value| ... } → self
-each_value → an_enumerator
+each_value → new_enumerator
 ```
 
 Calls the given block with each value, returning <tt>self</tt>:
@@ -1617,15 +1617,6 @@ h = {foo: 0, bar: 1, baz: 2}
 h.keys # => [:foo, :bar, :baz]
 ```
 
-The Array items are not copies of the keys,
-but are the actual key objects:
-
-```ruby
-h = {[0] => 0}
-a = h.keys
-a.first.push(1)
-h # => {[0, 1]=>0}
-```
 #### length
 
 ```ruby
@@ -1840,7 +1831,7 @@ reject { |key, value| ...} → new_hash
 reject → new_enumerator 
 ```
 
-Returns a new Hash object whose entries are all those from the receiver
+Returns a new Hash object whose entries are all those from <tt>self</tt>
 for which the block returns <tt>false</tt> or <tt>nil</tt>:
 
 ```ruby
@@ -1860,11 +1851,11 @@ e.each { |key, value| key.start_with?('b') } # => {:foo=>0}
 #### reject!
 
 ```ruby
-reject! { |key, value| ... } → this_hash or nil
+reject! { |key, value| ... } → self or nil
 reject! → new_enumerator
 ```
 
-Returns the receiver, whose remaining entries are all those
+Returns <tt>self</tt>, whose remaining entries are all those
 for which the block returns <tt>false</tt> or <tt>nil</tt>:
 
 ```ruby
@@ -1892,11 +1883,11 @@ e.each { |key, value| key.start_with?('b') } # => {:foo=>0}
 #### replace
 
 ```ruby
-replace(other_hash) → this_hash
+replace(other_hash) → self
 ```
 
-Replaces the entire contents of this hash with the contents of <tt>other_hash</tt>;
-returns this hash:
+Replaces the entire contents of <tt>self</tt> with the contents of <tt>other_hash</tt>;
+returns <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -1931,11 +1922,11 @@ e.each { |key, value| value < 2 } # => {:foo=>0, :bar=>1}
 #### select!
 
 ```ruby
-select! { |key, value| ... } → this_hash
+select! { |key, value| ... } → self
 select → new_enumerator
 ```
 
-Returns the receiver whose entries are those for which the block returns a truthy value:
+Returns <tt>self</tt> whose entries are those for which the block returns a truthy value:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -1967,8 +1958,8 @@ h # => {:foo=>0, :bar=>1}
 shift → [key, value] or default_value
 ```
 
-Removes the first hash entry, returning a 2-element Array
-containing the removed key and value:
+Removes the first entry from <tt>self</tt>,
+returning a 2-element Array containing the removed key and its value:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -2028,8 +2019,9 @@ Creates or updates an entry with the given <tt>key</tt> and <tt>value</tt>, retu
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.store(:baz, 3) # => 3
-h # => {:foo=>0, :bar=>1, :baz=>3}
+h.store(:bat, 3) # => 3
+h.store(:foo, 4) # => 5
+h # => {:foo=>4, :bar=>1, :baz=>2, :bat=>3}
 ```
 
 Raises an exception if <tt>key</tt> is invalid  (see [Invalid Hash Keys](#invalid-hash-keys)):
@@ -2056,11 +2048,11 @@ h.to_a # => [[:foo, 0], [:bar, 1], [:baz, 2]]
 #### to_h
 
 ```ruby
-to_h → receiver or new_hash
+to_h → self or new_hash
 to_h { |key, value| ... } → new_hash
 ```
 
-Returns the receiver:
+For an instance of Hash, returns <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -2069,7 +2061,7 @@ h1 # => {:foo=>0, :bar=>1, :baz=>2}
 h1.object_id == h.object_id # => true
 ```
 
-For a subclass of Hash, returns a new Hash containing the receiver's content:
+For a subclass of Hash, returns a new Hash containing the content of <tt>self</tt>:
 
 ```ruby
 class H < Hash; end
@@ -2162,11 +2154,13 @@ h.to_s # => "{:foo=>0, :bar=>1, :baz=>2}"
 
 ```ruby
 transform_keys {|key| ... } → new_hash
-transform_keys → an_enumerator
+transform_keys → new_enumerator
 ```
 
-Returns a new Hash object;
-each entry is a key provided by the block the value from <tt>self</tt>:
+Returns a new Hash object of size <tt>self.size</tt>;
+each entry has:'
+* A key provided by the block.
+* The value from <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -2190,8 +2184,8 @@ h.transform_keys { |key| BasicObject.new } # Raises NoMethodError (undefined met
 #### transform_keys!
 
 ```ruby
-transform_keys! {|key| ... } → new_hash
-transform_keys! → an_enumerator
+transform_keys! {|key| ... } → self
+transform_keys! → new_enumerator
 ```
 
 Returns <tt>self</tt> with new keys provided by the block:
@@ -2227,11 +2221,10 @@ transform_values {|value| ... } → new_hash
 transform_values → new_enumerator
 ```
 
-Returns a new Hash object whose keys are the same as
-in <tt>self</tt>, and whose values are determined by the given block.
-
-Yields each value to the block,
-and assigns its return value as the new value:
+Returns a new Hash object of size <tt>self.size</tt>;
+each entry has:
+* A key from <tt>self</tt>.
+* The value provided by the block.
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -2254,15 +2247,12 @@ h1.object_id == h.object_id # => false
 #### transform_values!
 
 ```ruby
-transform_values {|value| ... } → new_hash
+transform_values {|value| ... } → self
 transform_values → new_enumerator
 ```
 
 Returns <tt>self</tt>, whose keys are unchanged,
 and whose values are determined by the given block.
-
-Yields each value to the block,
-and assigns its return value as the new value:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -2282,13 +2272,13 @@ h # => {:foo=>0, :bar=>100, :baz=>200}
 #### update
 
 ```ruby
-update -> this_hash
-update(*other_hashes) → this_hash
-update(*other_hashes) { |key, old_value, new_value| ... } → this_hash
+update -> self
+update(*other_hashes) → self
+update(*other_hashes) { |key, old_value, new_value| ... } → self
 ```
 
 With arguments and no block:
-* Returns the receiver, after the given hashes are merged into it.
+* Returns <tt>self</tt>, after the given hashes are merged into it.
 * The given hashes are merged left to right.
 * Each new-key entry is added at the end.
 * Each duplicate-key entry's value overwrites the previous value.
@@ -2303,7 +2293,7 @@ h3.object_id == h.object_id # => true
 ```
 
 With arguments and a block:
-* Returns the receiver, after the given hashes are merged.
+* Returns <tt>self</tt>, after the given hashes are merged.
 * The given hashes are merged left to right.
 * Each new-key entry is added at the end.
 * For each duplicate key:
@@ -2320,7 +2310,7 @@ h3.object_id == h.object_id # => true
 ```
 
 With no arguments:
-* Returns the receiver, unmodified.
+* Returns <tt>self</tt>, unmodified.
 * The block, if given, is ignored.
 
 ```ruby
@@ -2362,7 +2352,7 @@ h.values # => [0, 1, 2]
 #### values_at
 
 ```ruby
-values_at(*keys) → array
+values_at(*keys) → new_array
 ```
 
 Returns a new Array containing values for the given <tt>*keys</tt>:
