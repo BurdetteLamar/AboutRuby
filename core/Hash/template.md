@@ -351,7 +351,7 @@ Hash[ [ [ key, value ], ... ] ] → new_hash
 Hash[ hashable_object ] → new_hash 
 ```
 
-Creates a new hash populated with the given objects, if any.
+Returns a new Hash object populated with the given objects, if any.
 
 The initial default value and default proc are set to nil (see [Default Values](#default-values)):
 
@@ -424,7 +424,7 @@ new(default_value) → new_hash
 new {|hash, key| ... } → new_hash
 ```
 
-Returns a new empty hash (no entries). The new hash has an initial default value and an initial default proc that depend on which form above was used.  See [Default Values](#default-values).
+Returns a new empty (no entries) Hash object. The new hash has an initial default value and an initial default proc that depend on which form above was used.  See [Default Values](#default-values).
 
 If neither default_value nor block given, initializes both the default value and the default proc to nil
 
@@ -462,10 +462,11 @@ Hash.new(0) { } # Raises ArgumentError (wrong number of arguments (given 1, expe
 #### ::try_convert
 
 ````ruby
- try_convert(obj) → hash or nil
+ try_convert(obj) → new_hash or nil
 ````
 
-Calls method obj.to_hash, returning its return value:
+Returns the new Hash object created by calling
+<tt>obj.to_hash</tt>.
 
 ```ruby
 class HashableSet < Set
@@ -479,7 +480,7 @@ hs = HashableSet.new([:foo, :bar, :baz])
 Hash.try_convert(hs) # => {:foo=>nil, :bar=>nil, :baz=>nil}
 ```
 
-Returns nil unless obj.respond_to?(:to_hash):
+Returns nil unless <tt>obj.respond_to?(:to_hash)</tt>:
 
 ```ruby
 s = 'foo'
@@ -487,7 +488,7 @@ s.respond_to?(:to_hash)
 Hash.try_convert(s) # => nil
 ```
 
-Returns nil unless obj.to_hash returns a Hash object:
+Returns nil unless <tt>obj.to_hash</tt> returns a Hash object:
 
 ```ruby
 class HashableSet < Set
@@ -504,7 +505,7 @@ Hash.try_convert(hs) # => nil
 #### <
 
 ```ruby
- hash < other_hash → true or false
+hash < other_hash → true or false
 ```
 
 Returns <tt>true</tt> if <tt>hash</tt> is a proper subset of <tt>other_hash</tt>,
@@ -528,7 +529,7 @@ h < 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 #### <=
 
 ```ruby
- hash <= other_hash → true or false
+hash <= other_hash → true or false
 ```
 
 Returns <tt>true</tt> if <tt>hash</tt> is a subset of <tt>other_hash</tt>,
@@ -553,14 +554,14 @@ h <= 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 #### ==
 
 ```ruby
-h == other_hash → true or false
+hash == other_hash → true or false
 ```
 
-Returns <tt>true</tt> if:
+Returns <tt>true</tt> if all of the following are true:
 * <tt>other_hash</tt> is a Hash object.
-* <tt>h</tt> and <tt>other_hash</tt> have the same
+* <tt>hash</tt> and <tt>other_hash</tt> have the same
   keys (regardless of order).
-* For each key _key_, <tt>h[key] == other_hash[key]</tt>.
+* For each key _key_, <tt>hash[key] == other_hash[key]</tt>.
 
 Otherwise, returns <tt>false</tt>.
 
@@ -600,7 +601,7 @@ h1 == h2 # => false
 #### >
 
 ```ruby
- hash > other_hash → true or false
+hash > other_hash → true or false
 ```
 
 Returns <tt>true</tt> if <tt>hash</tt> is a proper superset of <tt>other_hash</tt>,
@@ -624,7 +625,7 @@ h > 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 #### >=
 
 ```ruby
- hash >= other_hash → true or false
+hash >= other_hash → true or false
 ```
 
 Returns <tt>true</tt> if <tt>hash</tt> is a superset of <tt>other_hash</tt>,
