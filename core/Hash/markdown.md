@@ -1380,18 +1380,18 @@ h.fetch(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<B
 #### fetch_values
 
 ```ruby
-fetch_values(*keys) → an_array
-fetch_values(*keys) { |key| ... } → an_array
+fetch_values(*keys) → new_array
+fetch_values(*keys) { |key| ... } → new_array
 ```
 
-Returns an Array of the values associated with the given <tt>*keys</tt>:
+Returns a new Array containing the values associated with the given keys <tt>*keys</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
 h.fetch_values(:baz, :foo) # => [2, 0]
 ```
 
-Returns the empty Array if no keys given:
+Returns a new empty Array if no arguments given:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -1421,7 +1421,7 @@ filter → new_enumerator
 
 Hash#filter is an alias for Hash#select.
 
-Returns a new hash consisting of the entries for which the block returns a truthy value:
+Returns a new Hash object consisting of the entries for which the block returns a truthy value:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -1439,13 +1439,11 @@ e.each { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
 #### filter!
 
 ```ruby
-filter! {| key, value | ... } → receiver or nil
+filter! {| key, value | ... } → self or nil
 filter! → new_enumerator
 ```
 
-Hash#filter! is an alias for Hash#select!.
-
-Deletes each hash entry for which the block returns <tt>nil</tt> or <tt>false</tt>, returning the receiver:
+Deletes each hash entry for which the block returns <tt>nil</tt> or <tt>false</tt>, returning the self:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -1473,7 +1471,7 @@ e.each { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
 flatten(level = 1) → new_array 
 ```
 
-Returns a new Array wherein each key and each value of the receiver is an array element:
+Returns a new Array object wherein each key and each value of from <tt>self</tt> is an array element:
 
 ```ruby
 h = {foo: 0, bar: [:bat, 3], baz: 2}
@@ -1559,10 +1557,10 @@ h.has_value?(123) # => false
 #### hash
 
 ```ruby
-hash → integer
+hash → an_integer
 ```
 
-Returns the integer hash value for the hash:
+Returns the Integer hash value for the hash:
 
 ```ruby
 h1 = {foo: 0, bar: 1, baz: 2}
@@ -1631,7 +1629,7 @@ h = {foo: 0, bar: 0, baz: 0}
 h.invert # => {0=>:baz}
 ```
 
-Raises an exception if any new keys i invalid:
+Raises an exception if any value cannot be a key:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: BasicObject.new}
