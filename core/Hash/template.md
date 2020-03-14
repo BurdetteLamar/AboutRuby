@@ -1548,21 +1548,21 @@ h.invert NoMethodError (undefined method `hash' for #<BasicObject:>)
 #### keep_if
 
 ```ruby
-keep_if {| key, value | ... } → this_hash
-keep_if → an_enumerator
+keep_if {| key, value | ... } → self
+keep_if → new_enumerator
 ```
 
 Yields each entry's key-value pair to the block,
 retains the entry if the block returns a truthy value,
 deletes the entry otherwise,
-and returns the hash itself.
+and returns <tt>self</tt>.
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
 h.keep_if { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
 ```
 
-Returns an Enumerator if no block given:
+Returns a new Enumerator if no block given:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -1610,20 +1610,29 @@ h.key?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<Ba
 keys → new_array
 ```
 
-Returns a new Array containing all hash keys:
+Returns a new Array containing all keys in <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
 h.keys # => [:foo, :bar, :baz]
 ```
 
+The Array items are not copies of the keys,
+but are the actual key objects:
+
+```ruby
+h = {[0] => 0}
+a = h.keys
+a.first.push(1)
+h # => {[0, 1]=>0}
+```
 #### length
 
 ```ruby
-length → integer
+length → an_integer
 ```
 
-Returns the count of hash entries:
+Returns the count the entiries in <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -1659,7 +1668,7 @@ merge(*other_hashes) { |key, old_value, new_value| ... } → new_hash
 ```
 
 With arguments and no block:
-* Returns a new Hash object that is the merge of the receiver
+* Returns a new Hash object that is the merge of <tt>self</tt>
 and each given hash.
 * The given hashes are merged left to right.
 * Each new-key entry is added at the end.
@@ -1673,7 +1682,7 @@ h.merge(h1, h2) # => {:foo=>0, :bar=>4, :baz=>2, :bat=>6, :bam=>5}
 ```
 
 With arguments and a block:
-* Returns a new Hash object that is the merge of the receiver
+* Returns a new Hash object that is the merge of <tt>self</tt>
 and each given hash.
 * The given hashes are merged left to right.
 * Each new-key entry is added at the end.
@@ -1690,7 +1699,7 @@ h3 # => {:foo=>0, :bar=>5, :baz=>2, :bat=>9, :bam=>5}
 ```
 
 With no arguments:
-* Returns a copy of the receiver.
+* Returns a copy of <tt>self</tt>.
 * The block, if given, is ignored.
 
 ```ruby
@@ -1706,13 +1715,13 @@ h2.object_id == h.object_id # => false
 #### merge!
 
 ```ruby
-merge! -> this_hash
-merge!(*other_hashes) → this_hash
-merge!(*other_hashes) { |key, old_value, new_value| ... } → this_hash
+merge! -> self
+merge!(*other_hashes) → self
+merge!(*other_hashes) { |key, old_value, new_value| ... } → self
 ```
 
 With arguments and no block:
-* Returns the receiver, after the given hashes are merged into it.
+* Returns <tt>self</tt>, after the given hashes are merged into it.
 * The given hashes are merged left to right.
 * Each new-key entry is added at the end.
 * Each duplicate-key entry's value overwrites the previous value.
@@ -1727,7 +1736,7 @@ h3.object_id == h.object_id # => true
 ```
 
 With arguments and a block:
-* Returns the receiver, after the given hashes are merged.
+* Returns <tt>self</tt>, after the given hashes are merged.
 * The given hashes are merged left to right.
 * Each new-key entry is added at the end.
 * For each duplicate key:
@@ -1744,7 +1753,7 @@ h3.object_id == h.object_id # => true
 ```
 
 With no arguments:
-* Returns the receiver, unmodified.
+* Returns <tt>self</tt>, unmodified.
 * The block, if given, is ignored.
 
 ```ruby
@@ -1779,11 +1788,13 @@ h.rassoc(3) # => nil
 #### rehash
 
 ```ruby
-rehash → this_hash
+rehash → self
 ```
 
-Returns the receiver after rebuilding its index
-from the current hash value for each key object:
+Returns <tt>self</tt> after rebuilding its index
+from the current hash value for each key.
+
+This Hash has keys that are Arrays:
 
 ```ruby
 a0 = [ :foo, :bar ]
@@ -1792,12 +1803,24 @@ h = { a0 => 0, a1 => 1 }
 h.include?(a0) # => true
 h[a0] # => 0
 a0.hash # => 110002110
+```
 
+ Modifying array element <tt>a0[0]</tt> changes its hash value:
+```ruby
 a0[0] = :bam
 a0.hash # => 1069447059
+```
+
+And damages the hash's index:
+
+```ruby
 h.include?(a0) # => false
 h[a0] # => nil
+```
 
+You can repair the hash index using method <tt>rehash</tt>:
+
+```ruby
 h.rehash # => {[:bam, :bar]=>0, [:baz, :bat]=>1}
 h.include?(a0) # => true
 h[a0] # => 0
