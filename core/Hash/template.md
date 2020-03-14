@@ -649,11 +649,11 @@ h >= 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 #### []
 
 ```ruby
-h[key] → value
+hash[key] → value
 ```
 
-If the given key is found,
-returns the value object corresponding to the key:
+Returns the value object corresponding to the key,
+if <tt>key</tt> is found in <tt>hash</tt>,
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -670,12 +670,12 @@ h[:nosuch] # => default value
 #### []=
 
 ```ruby
-h[key] = value → value
+hash[key] = value → value
 ```
 
-Associates the given key and value, and returns the value.
+Associates <tt>value</tt> with <tt>key</tt>, and returns <tt>value</tt>.
 
-If the key exists, replaces its value:
+If key <tt>key</tt> exists, replaces its value:
 
 ```ruby
 h = {foo: 0, bar: 1}
@@ -685,7 +685,7 @@ h # => {:foo=>2, :bar=>1}
 
 The ordering is not affected; see [Entry Order](#entry-order).
 
-If the key does not exist, adds the key and value:
+If key <tt>key</tt> does not exist, adds the key and value:
 
 ```ruby
 h = {foo: 0, bar: 1}
@@ -708,7 +708,7 @@ h[BasicObject.new] = 2 # Raises NoMethodError (undefined method `hash' for #<Bas
 assoc(key) → an_array or nil
 ```
 
-If the key is found, returns a 2-element Array
+If key <tt>key</tt> is found, returns a 2-element Array
 containing the key and its value:
 
 ```ruby
@@ -716,7 +716,7 @@ h = {foo: 0, bar: 1, baz: 2}
 h.assoc(:bar) # => [:bar, 1]
 ```
 
-Returns <tt>nil</tt> if the key is not found:
+Returns <tt>nil</tt> if key <tt>key</tt> is not found:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -734,10 +734,10 @@ h.assoc(BasicObject.new) Raises NoMethodError (undefined method `hash' for #<Bas
 #### clear
 
 ```ruby
-clear → hash
+clear → self
 ```
 
-Removes all hash entries, returning the empty newly-emptied hash:
+Removes all hash entries, returning <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -750,7 +750,7 @@ h.clear # => {}
 compact → new_hash
 ```
 
-Returns a copy of <tt>h</tt> with all nil-valued entries removed:
+Returns a copy of <tt>h</tt> with all <tt>nil</tt>-valued entries removed:
 
 ```ruby
 h = {foo: 0, bar: nil, baz: 2, bat: nil}
@@ -761,10 +761,10 @@ h1 # => {:foo=>0, :baz=>2}
 #### compact!
 
 ```ruby
-compact → h or nil
+compact → self or nil
 ```
 
-Returns <tt>h</tt> with all <tt>nil</tt>-valued entries removed:
+Returns <tt>self</tt> with all <tt>nil</tt>-valued entries removed:
 
 ```ruby
 h = {foo: 0, bar: nil, baz: 2, bat: nil}
@@ -783,10 +783,10 @@ h # => {:foo=>0, :bar=>1, :baz=>2}
 #### compare_by_identiry
 
 ```ruby
-compare_by_identity → this_hash
+compare_by_identity → self
 ```
 
-Sets the hash to consider only identity in comparing keys, returning the hash;
+Sets <tt>self</tt> to consider only identity in comparing keys, returning the hash;
 two keys are considered the same only if they are the same object.
 
 By default, these two keys are considered the same, and therefore overwrite:
@@ -832,7 +832,7 @@ h.compare_by_identity? # true
 #### deconstruct_keys
 
 ```ruby
-deconstruct_keys(p1) → a_hash
+deconstruct_keys(p1) → self
 ```
 
 #### default
@@ -873,7 +873,7 @@ Sets the default value to <tt>obj</tt>, returning <tt>obj</tt>:
 ```ruby
 h = {}
 h.default # => nil
-h.default = false
+h.default = false # => false
 h.default # => false
 ```
 
@@ -883,7 +883,7 @@ See [Default Values](#default-values).
 #### default_proc
 
 ```ruby
-default_proc → proc_obj or nil
+default_proc → proc or nil
 ```
 
 Returns the default proc:
@@ -900,7 +900,7 @@ See [Default Values](#default-values).
 #### default_proc=
 
 ```ruby
-default_proc = proc_obj
+default_proc = proc
 ```
 
 Sets the default proc:
@@ -914,7 +914,7 @@ h.default_proc.class # => Proc
 
 See [Default Values](#default-values).
 
-Raises an exception if the given object is not a <tt>Proc</tt>:
+Raises an exception if <tt>proc</tt> is not a <tt>Proc</tt> object:
 
 ```ruby
 h = {}
