@@ -42,7 +42,6 @@ A Hash has certain similarities to an Array, but:
   - [compact!](#compact-)
   - [compare_by_identiry](#compare_by_identiry)
   - [compare_by_identity?](#compare_by_identity)
-  - [deconstruct_keys](#deconstruct_keys)
   - [default](#default)
   - [default=](#default-1)
   - [default_proc](#default_proc)
@@ -130,7 +129,6 @@ matz = Dev.new(:name => 'Matz', :language => 'Ruby')
 matz # => #<Dev: @name="Matz", @language="Ruby">
 ```
 
-→
 ### Creating a Hash
 
 Here are three ways to create a Hash:
@@ -512,7 +510,7 @@ Hash[Foo.new] # Raises TypeError (can't convert Foo to Hash (Foo#to_hash gives S
 ```ruby
 new → new_hash
 new(default_value) → new_hash
-new {|hash, key| ... } → new_hash
+new { |hash, key| ... } → new_hash
 ```
 
 Returns a new empty (no entries) Hash object. The new hash has an initial default value and an initial default proc that depend on which form above was used.  See [Default Values](#default-values).
@@ -743,8 +741,7 @@ h >= 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 hash[key] → value
 ```
 
-Returns the value object corresponding to the key,
-if <tt>key</tt> is found in <tt>hash</tt>,
+Returns the value object corresponding to key <tt>key</tt>, if found:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -758,6 +755,12 @@ h = {foo: 0, bar: 1, baz: 2}
 h[:nosuch] # => default value
 ```
 
+Raises an exception if <tt>key</tt> is invalid (see [Invalid Hash Keys](#invalid-hash-keys))):
+
+```ruby
+h = {}
+h[BasicObject.new] # Raises NoMethodError (undefined method `to_s' for #<BasicObject:>)
+```
 #### []=
 
 ```ruby
@@ -841,7 +844,7 @@ h.clear # => {}
 compact → new_hash
 ```
 
-Returns a copy of <tt>h</tt> with all <tt>nil</tt>-valued entries removed:
+Returns a copy of <tt>self</tt> with all <tt>nil</tt>-valued entries removed:
 
 ```ruby
 h = {foo: 0, bar: nil, baz: 2, bat: nil}
@@ -920,12 +923,6 @@ h.compare_by_identity
 h.compare_by_identity? # true
 ```
 
-#### deconstruct_keys
-
-```ruby
-deconstruct_keys(p1) → self
-```
-
 #### default
 
 ```ruby
@@ -952,6 +949,13 @@ h.default[:nosuch] # => nil
 
 The returned value will be determined either by the default proc or by the default value.
 See [Default Values](#default-values).
+
+Raises an exception if <tt>key</tt> is invalid (see [Invalid Hash Keys](#invalid-hash-keys)):
+
+```ruby
+h = []
+h.default(BasicObject.new) # Raises NoMethodError (undefined method `to_s' for #<BasicObject:>)
+```
 
 #### default=
 
@@ -991,10 +995,10 @@ See [Default Values](#default-values).
 #### default_proc=
 
 ```ruby
-default_proc = proc
+default_proc = proc → proc
 ```
 
-Sets the default proc:
+Sets the default proc to <tt>proc</tt>:
 
 ```ruby
 h = {}
@@ -1419,8 +1423,6 @@ filter {|key, value| ... } → new_hash
 filter → new_enumerator
 ```
 
-Hash#filter is an alias for Hash#select.
-
 Returns a new Hash object consisting of the entries for which the block returns a truthy value:
 
 ```ruby
@@ -1532,12 +1534,7 @@ Returns <tt>true</tt> if <tt>key</tt> is a key in the hash, otherwise <tt>false<
 h = {foo: 0, bar: 1, baz: 2}
 h.has_key?(:bar) # => true
 h.has_key?(:nosuch) # => false
-```
-
-Raises an exception if <tt>key</tt> is invalid (see [Invalid Hash Keys](#invalid-hash-keys)):
-
-```ruby
-h.has_key?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+h.has_key?(BasicObject.new) # false 
 ```
 
 #### has_value?
@@ -1664,7 +1661,7 @@ e.each { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
 #### key
 
 ```ruby
-key(value) → key
+key(value) → key or nil
 ```
 
 Returns the key for the first-found entry with value <tt>value</tt>:
@@ -1673,6 +1670,13 @@ Returns the key for the first-found entry with value <tt>value</tt>:
 h = {foo: 0, bar: 2, baz: 2}
 h.key(0) # => :foo
 h.key(2) # => :bar
+```
+
+Returns <tt>nil</tt> if so such value is found:
+
+```ruby
+h = {}
+h.key(0) # => nil
 ```
 
 #### key?
@@ -1985,6 +1989,13 @@ h = {foo: 0, bar: 1, baz: 2}
 h.replace({bat: 3, bam: 4}) # => {:bat=>3, :bam=>4}
 ```
 
+Raises an exception if <tt>other_hash</tt> is not convertible to a Hash object:
+
+```ruby
+h = {}
+h.replace(:not_a_hash) # Raises TypeError (no implicit conversion of Symbol into Hash)
+
+```
 #### select
 
 ```ruby
@@ -2412,6 +2423,12 @@ h1 # => {:foo=>0, :bar=>1, :baz=>2}
 h1.object_id == h.object_id # => true
 ```
 
+Raises an exception if any given argument is not convertible to a Hash object:
+
+```ruby
+h = {}
+h.merge(:foo) # Raises TypeError (no implicit conversion of Symbol into Hash)
+```
 #### value
 
 ```ruby
