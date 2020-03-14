@@ -1,7 +1,7 @@
 ## Hash
 
-A Hash is a dictionary-like collection of unique _keys_;
-each key has an associated _value_.
+A Hash is a dictionary-like collection of unique _keys_,
+each of which has an associated _value_.
 
 A Hash has certain similarities to an Array, but:
 * An Array index is always an Integer.
@@ -11,14 +11,14 @@ A Hash has certain similarities to an Array, but:
 
 ### Common Uses
 
-A Hash can be used to give names to objects:
+You can use a Hash to give names to objects:
 
 ```ruby
 matz = {:name => 'Matz', :language => 'Ruby' }
 matz # => {:name=>"Matz", :language=>"Ruby"}
 ```
 
-A Hash can also be used to give names to method arguments:
+You can also use a Hash to give names to method arguments:
 
 ```ruby
 class Dev
@@ -31,7 +31,7 @@ matz = Dev.new({:name => 'Matz', :language => 'Ruby'})
 matz # => #<Dev: @name="Matz", @language="Ruby">
 ```
 
-When the last argument in a method call is a Hash,
+Note: when the last argument in a method call is a Hash,
 the curly braces may be omitted:
 
 ```ruby
