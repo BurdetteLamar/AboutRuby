@@ -928,27 +928,27 @@ delete(key) → value
 delete(key) {| key | ... } → value
 ```
 
-If no block is given and the hash includes the given key, deletes its entry and returns the associated value:
+If no block is given and the hash includes key <tt>key</tt>, deletes its entry and returns the associated value:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
 h.delete(:bar) # => 1
 ```
 
-If no block given and the hash does not include the given key, returns <tt>nil</tt>:
+If no block given and the hash does not include key <tt>key</tt>, returns <tt>nil</tt>:
 
 ```ruby
 h.delete(:nosuch) # => nil
 ```
 
-If a is block given and the hash includes the given key, ignores the block, deletes the entry,
+If a is block given and the hash includes key <tt>key</tt>, ignores the block, deletes the entry,
 and returns the associated value:
 
 ```ruby
 h.delete(:baz) { |key| fail 'Will never happen'} # => 2
 ```
 
-If a block is given and the hash does not include the given key,
+If a block is given and the hash does not include key <tt>key</tt>,
 calls the block and returns the block's return value:
 
 ```ruby
@@ -968,7 +968,7 @@ delete_if {| key, value | ... } → new_hash
 delete_if → an_enumerator
 ```
 
-Returns a new Hash of all entries for which the block returns a truthy value:
+Returns a new Hash object consisting of all entries for which the block returns a truthy value:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -1010,7 +1010,7 @@ h = { foo: [10, 11, 12] }
 h.dig(:foo, 1, 0) # Raises TypeError: Integer does not have #dig method
 ```
 
-Raises an exception if a given key is invalid (see [Invalid Hash Keys](#invalid-hash-keys)):
+Raises an exception if any given key is invalid (see [Invalid Hash Keys](#invalid-hash-keys)):
 
 ```ruby
 h.dig(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
@@ -1023,7 +1023,7 @@ each {| key, value | ... } → self
 each → an_enumerator
 ```
 
-Calls the given block with each key-value pair, returning the hash itself:
+Calls the given block with each key-value pair, returning <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -1057,11 +1057,11 @@ baz: 2
 #### each_key
 
 ```ruby
-each_key { |key| ... } → hsh
+each_key { |key| ... } → self
 each_key → an_enumerator
 ```
 
-Calls the given block with each key, returning the hash itself:
+Calls the given block with each key, returning <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -1099,7 +1099,7 @@ each_pair {| key, value | ... } → self
 each_pair → an_enumerator
 ```
 
-Calls the given block with each key-value pair, returning the hash itself:
+Calls the given block with each key-value pair, returning <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -1133,11 +1133,11 @@ baz: 2
 #### each_value
 
 ```ruby
-each_value { |value| ... } → hsh
+each_value { |value| ... } → self
 each_value → an_enumerator
 ```
 
-Calls the given block with each value, returning the hash itself:
+Calls the given block with each value, returning <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -1231,15 +1231,15 @@ h1.eql? h2 # => false
 #### fetch
 
 ```ruby
-fetch(key) → obj
-fetch(key , default) → obj
-fetch(key) { |key| ... } → obj
+fetch(key) → value
+fetch(key , default) → value
+fetch(key) { |key| ... } → value
 ```
 
-Returns a value for the given <tt>key</tt>.
+Returns the value for key <tt>key</tt>.
 
 If neither <tt>default</tt> nor a block given:
-* If <tt>key</tt> found, returns its associated value.
+* If key <tt>key</tt> found, returns its associated value.
 * Otherwise, raises an exception:
 
 ```ruby
@@ -1249,7 +1249,7 @@ h.fetch(:nosuch) # Raises KeyError (key not found: :nosuch)
 ```
 
 If <tt>default</tt> is given, but no block:
-* If <tt>key</tt> found, returns its associated value.
+* If key <tt>key</tt> found, returns its associated value.
 * Otherwise, returns <tt>default</tt>:
 
 ```ruby
@@ -1259,7 +1259,7 @@ h.fetch(:nosuch, :default) # => :default
 ```
 
 If a block is given, but no <tt>default</tt>:
-* If <tt>key</tt> found, returns its associated value.
+* If key <tt>key</tt> found, returns its associated value.
 * Otherwise, calls the block with <tt>key</tt>, and returns the block's return value.
 
 ```ruby
@@ -1270,7 +1270,7 @@ h.fetch(:nosuch) { |key| "Value for #{key}"} # => "Value for nosuch"
 
 If both <tt>default</tt> and a block are given:
 * Ignores <tt>default</tt> and issues a warning 'block supersedes default value argument'.
-* If <tt>key</tt> found, returns its associated value.
+* If kkey <tt>key</tt> found, returns its associated value.
 * Otherwise, calls the block with <tt>key</tt>, and   returns the block's return value.
 
 ```ruby
