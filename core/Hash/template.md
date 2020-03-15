@@ -346,7 +346,7 @@ objects as keys  over at [ruby-doc.org](https://ruby-doc.org/core-2.7.0/Hash.htm
 Some Hash methods accept one or more Hash-convertible objects as arguments.
 
 Here, "Hash-convertible object" means an object that:
-* Has an instance method <tt>to_hash</tt> that.
+* Has an instance method <tt>to_hash</tt>.
 * The method accepts no arguments.
 * The method returns an object <tt>obj</tt> for which <tt>obj.kind_of?(Hash)</tt> returns <tt>true</tt>.
 
@@ -572,7 +572,8 @@ h2 < h1 # => false
 h1 < h1 # => false
 ```
 
-Raises an exception if <tt>other_hash</tt> is not a Hash object:
+Raises an exception if <tt>other_hash</tt>
+is not a [Hash-convertible object](#hash-convertible-object):
 
 ```ruby
 h = {}
