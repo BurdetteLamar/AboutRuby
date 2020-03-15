@@ -178,10 +178,12 @@ h[:nosuch] # => false
 
 For certain kinds of default values (e.g., a String), the default can be modified thus:
 
+```ruby
 h = Hash.new('Foo')
 h[:nosuch] # => "Foo"
 h[:nosuch_0].upcase! # => "FOO"
 h[:nosuch_1] # => "FOO"
+```
 
 #### Default Proc
 
@@ -339,7 +341,7 @@ first_key.equal?(s) # => false
 I can't improve on the discussion of user-defined
 objects as keys  over at [ruby-doc.org](https://ruby-doc.org/core-2.7.0/Hash.html#class-Hash-label-Hash+Keys) (and don't want to steal from it).
 
-#### Hash-Convertible Arguments
+### Hash-Convertible Arguments
 
 Some Hash methods accept one or more Hash-convertible objects as arguments.
 
