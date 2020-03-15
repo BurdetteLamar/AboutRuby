@@ -628,7 +628,7 @@ Returns nil unless <tt>obj.respond_to?(:to_hash)</tt>:
 
 ```ruby
 s = 'foo'
-s.respond_to?(:to_hash)
+s.respond_to?(:to_hash) # => false
 Hash.try_convert(s) # => nil
 ```
 
@@ -688,7 +688,8 @@ h2 <= h1 # => false
 h1 <= h1 # => true
 ```
 
-Raises an exception if <tt>other_hash</tt> is not a Hash object:
+Raises an exception if <tt>other_hash</tt>
+is not a [Hash-convertible object](#hash-convertible-objects)
 
 ```ruby
 h = {}
@@ -760,7 +761,8 @@ h2 > h1 # => false
 h1 > h1 # => false
 ```
 
-Raises an exception if <tt>other_hash</tt> is not a Hash object:
+Raises an exception if <tt>other_hash</tt>
+ is not a [Hash-convertible object](#hash-convertible-objects):
 
 ```ruby
 h = {}
@@ -784,7 +786,8 @@ h2 >= h1 # => false
 h1 >= h1 # => true
 ```
 
-Raises an exception if <tt>other_hash</tt> is not a Hash object:
+Raises an exception if <tt>other_hash</tt>
+is not a [Hash-convertible object](#hash-convertible-objects):
 
 ```ruby
 h = {}
@@ -1342,7 +1345,7 @@ Returns <tt>true</tt> if:
 * <tt>other_hash</tt> is a Hash object.
 * <tt>h</tt> and <tt>other_hash</tt> have the same
   keys (regardless of order).
-* For each key _key_, <tt>h[key] eql? other_hash[key]</tt>.
+* For each key <tt>key</tt>, <tt>h[key] eql? other_hash[key]</tt>.
 
 Otherwise, returns <tt>false</tt>.
 
@@ -1854,6 +1857,14 @@ h2 # => {:foo=>0, :bar=>1, :baz=>2}
 h2.object_id == h.object_id # => false
 ```
 
+Raises an exception if any given argument
+is not a [Hash-convertible object](#hash-convertible-objects):
+
+```ruby
+h = {}
+h.merge(1) # Raises TypeError (no implicit conversion of Integer into Hash)
+```
+
 #### merge!
 
 ```ruby
@@ -1904,6 +1915,14 @@ h.merge # => {:foo=>0, :bar=>1, :baz=>2}
 h1 = h.merge! { |key, old_value, new_value| fail 'Cannot happen' }
 h1 # => {:foo=>0, :bar=>1, :baz=>2}
 h1.object_id == h.object_id # => true
+```
+
+Raises an exception if any given argument
+is not a [Hash-convertible object](#hash-convertible-objects):
+
+```ruby
+h = {}
+h.merge!(1) # Raises TypeError (no implicit conversion of Integer into Hash)
 ```
 
 #### rassoc
@@ -2045,7 +2064,8 @@ h = {foo: 0, bar: 1, baz: 2}
 h.replace({bat: 3, bam: 4}) # => {:bat=>3, :bam=>4}
 ```
 
-Raises an exception if <tt>other_hash</tt> is not convertible to a Hash object:
+Raises an exception if <tt>other_hash</tt>
+is not a [Hash-convertible object](#hash-convertible-objects):
 
 ```ruby
 h = {}
@@ -2479,7 +2499,8 @@ h1 # => {:foo=>0, :bar=>1, :baz=>2}
 h1.object_id == h.object_id # => true
 ```
 
-Raises an exception if any given argument is not convertible to a Hash object:
+Raises an exception if any given argument
+is not a [Hash-convertible object](#hash-convertible-objects):
 
 ```ruby
 h = {}
