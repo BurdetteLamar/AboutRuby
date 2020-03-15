@@ -573,7 +573,7 @@ h1 < h1 # => false
 ```
 
 Raises an exception if <tt>other_hash</tt>
-is not a [Hash-convertible object](#hash-convertible-object):
+is not a [Hash-convertible object](#hash-convertible-objects):
 
 ```ruby
 h = {}
