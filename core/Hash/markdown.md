@@ -24,7 +24,7 @@ A Hash has certain similarities to an Array, but:
   - [Invalid Hash Keys](#invalid-hash-keys)
   - [Modifying an Active Hash Key](#modifying-an-active-hash-key)
   - [User-Defined Hash Keys](#user-defined-hash-keys)
-- [Hash-Convertible Arguments](#hash-convertible-arguments)
+- [Hash-Convertible Objects](#hash-convertible-objects)
 - [Public Class Methods](#public-class-methods)
   - [::[]](#-)
   - [::new](#-new)
@@ -432,7 +432,7 @@ first_key.equal?(s) # => false
 I can't improve on the discussion of user-defined
 objects as keys  over at [ruby-doc.org](https://ruby-doc.org/core-2.7.0/Hash.html#class-Hash-label-Hash+Keys) (and don't want to steal from it).
 
-### Hash-Convertible Arguments
+### Hash-Convertible Objects
 
 Some Hash methods accept one or more Hash-convertible objects as arguments.
 
