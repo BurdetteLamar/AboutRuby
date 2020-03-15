@@ -1,7 +1,7 @@
 ## Hash
 
-A Hash is a dictionary-like collection of unique _keys_,
-each of which has an associated _value_.
+A Hash is a dictionary-like collection of key-value pairs,
+wherein the keys are unique.
 
 A Hash has certain similarities to an Array, but:
 * An Array index is always an Integer.
@@ -413,14 +413,14 @@ Hash[].default # => nil
 Hash[].default_proc # => nil
 ```
 
-When an even number of arguments is given, returns a new hash wherein each successive even/odd pair of arguments forms a key/value entry:
+When an even number of arguments is given, returns a new hash wherein each successive even/odd pair of arguments forms a key-value entry:
 
 ```ruby
 Hash[] # => {}
 Hash[:foo, 0, :bar, 1] # => {:foo=>0, :bar=>1}
 ```
 
-When the only argument is an array of 2-element arrays, returns a new hash wherein each 2-element array forms a key/value entry:
+When the only argument is an array of 2-element arrays, returns a new hash wherein each 2-element array forms a key-value entry:
 
 ```ruby
 Hash[ [ [:foo, 0], [:bar, 1] ] ] # => {:foo=>0, :bar=>1}
