@@ -497,7 +497,7 @@ Hash[ hashable_object ] → new_hash
 
 Returns a new Hash object populated with the given objects, if any.
 
-The initial default value and default proc are set to nil (see [Default Values](#default-values)):
+The initial default value and default proc are set to <tt>nil</tt> (see [Default Values](#default-values)):
 
 ```Ruby
 Hash[].default # => nil
@@ -570,7 +570,7 @@ new { |hash, key| ... } → new_hash
 
 Returns a new empty (no entries) Hash object. The new hash has an initial default value and an initial default proc that depend on which form above was used.  See [Default Values](#default-values).
 
-If neither default_value nor block given, initializes both the default value and the default proc to nil
+If neither default_value nor block given, initializes both the default value and the default proc to <tt>nil</tt>:
 
 ```ruby
 h = Hash.new
@@ -579,7 +579,7 @@ h.default_proc # => nil
 h[:nosuch] # => nil
 ```
 
-If <tt>default_value</tt> given but no block given, initializes the default value to the given value and the default proc to +nil:
+If <tt>default_value</tt> given but no block given, initializes the default value to the given value and the default proc to <tt>nil</tt>:
 
 ```ruby
 h = Hash.new(false)
@@ -588,7 +588,7 @@ h.default_proc # => nil
 h[:nosuch] # => false
 ```
 
-If block given but no argument given, stores the block as the default proc, and sets the default value (which will be ignored) to nil:
+If block given but no argument given, stores the block as the default proc, and sets the default value (which will be ignored) to <tt>nil</tt>:
 
 ```ruby
 h = Hash.new { |hash, key| "Default value for #{key}" }
@@ -624,7 +624,7 @@ hs = HashableSet.new([:foo, :bar, :baz])
 Hash.try_convert(hs) # => {:foo=>nil, :bar=>nil, :baz=>nil}
 ```
 
-Returns nil unless <tt>obj.respond_to?(:to_hash)</tt>:
+Returns <tt>nil</tt> unless <tt>obj.respond_to?(:to_hash)</tt>:
 
 ```ruby
 s = 'foo'
@@ -632,7 +632,7 @@ s.respond_to?(:to_hash) # => false
 Hash.try_convert(s) # => nil
 ```
 
-Returns nil unless <tt>obj.to_hash</tt> returns a Hash object:
+Returns <tt>nil</tt> unless <tt>obj.to_hash</tt> returns a Hash object:
 
 ```ruby
 class HashableSet < Set
