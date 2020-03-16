@@ -1,7 +1,7 @@
 ## Hash
 
 A Hash is a dictionary-like collection of key-value pairs,
-wherein the keys are unique.
+wherein the keys are unique. (The values need not be unique.)
 
 A Hash has certain similarities to an Array, but:
 * An Array index is always an Integer.
@@ -9,12 +9,57 @@ A Hash has certain similarities to an Array, but:
 
 @[:page_toc](### Contents)
 
+### Hash Syntax
+
+Until its version 1.9,
+Ruby supported only the "hash rocket" syntax for Hash data:
+
+```ruby
+h = {:foo => 0, :bar => 1, :baz => 2}
+h # => {:foo=>0, :bar=>1, :baz=>2}
+```
+
+(The "hash rocket" is <tt>=></tt>,
+sometimes in other languages called the "fat comma.")
+
+
+Beginning with version 1.9,
+you can write a Hash key that's a Symbol in a JSON-style syntax,
+where each bareword becomes a Symbol:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h # => {:foo=>0, :bar=>1, :baz=>2}
+```
+
+You can also use Strings instead of barewords:
+
+```ruby
+h = {'foo': 0, 'bar': 1, 'baz': 2}
+h # => {:foo=>0, :bar=>1, :baz=>2}
+```
+
+And you can mix the styles:
+
+```ruby
+h = {foo: 0, :bar => 1, 'baz': 2}
+h # => {:foo=>0, :bar=>1, :baz=>2}
+```
+
+But it's an error to try the JSON-style syntax
+for a key that's not a bareword or a String:
+
+```ruby
+h = {0: 'zero'} # Raises SyntaxError ((irb):42: syntax error, unexpected ':', expecting =>)
+
+```
+
 ### Common Uses
 
 You can use a Hash to give names to objects:
 
 ```ruby
-matz = {:name => 'Matz', :language => 'Ruby' }
+matz = {name: 'Matz', language: 'Ruby'}
 matz # => {:name=>"Matz", :language=>"Ruby"}
 ```
 
@@ -27,7 +72,7 @@ class Dev
     @language = hash[:language]
   end
 end
-matz = Dev.new({:name => 'Matz', :language => 'Ruby'})
+matz = Dev.new(name: 'Matz', language: 'Ruby')
 matz # => #<Dev: @name="Matz", @language="Ruby">
 ```
 
@@ -35,7 +80,7 @@ Note: when the last argument in a method call is a Hash,
 the curly braces may be omitted:
 
 ```ruby
-matz = Dev.new(:name => 'Matz', :language => 'Ruby')
+matz = Dev.new(name: 'Matz', language: 'Ruby')
 matz # => #<Dev: @name="Matz", @language="Ruby">
 ```
 
@@ -54,8 +99,8 @@ Create an empty Hash:
 
 ```ruby
 h = Hash.new
-p h
-p h.class
+h # => {}
+h.class # => Hash
 ```
 
 #### Hash Literal
@@ -72,21 +117,7 @@ h # => {}
 Create a Hash with initial entries:
 
 ```ruby
-h = Hash[:foo => 0, :bar => 1, :baz => 2]
-h # => {:foo=>0, :bar=>1, :baz=>2}
-```
-
-For any key that's to be a Symbol, there's this shorthand:
-
-```ruby
 h = Hash[foo: 0, bar: 1, baz: 2]
-h # => {:foo=>0, :bar=>1, :baz=>2}
-```
-
-And you can mix the two styles:
-
-```ruby
-h = Hash[:foo => 0, bar: 1, :baz => 2]
 h # => {:foo=>0, :bar=>1, :baz=>2}
 ```
 
@@ -104,24 +135,9 @@ h # => {}
 Create a Hash with initial entries:
 
 ```ruby
-h = {:foo => 0, :bar => 1, :baz => 2}
-h # => {:foo=>0, :bar=>1, :baz=>2}
-```
-
-For any key that's to be a Symbol, there's this shorthand:
-
-```ruby
 h = {foo: 0, bar: 1, baz: 2}
 h # => {:foo=>0, :bar=>1, :baz=>2}
 ```
-
-And you can mix the two styles:
-
-```ruby
-h = {foo: 0, :bar => 1, baz: 2}
-h # => {:foo=>0, :bar=>1, :baz=>2}
-```
-
 
 ### Getting a Hash Value
 
@@ -296,7 +312,7 @@ This Hash has keys that are Arrays:
 ```ruby
 a0 = [ :foo, :bar ]
 a1 = [ :baz, :bat ]
-h = { a0 => 0, a1 => 1 }
+h = {a0 => 0, a1 => 1}
 h.include?(a0) # => true
 h[a0] # => 0
 a0.hash # => 110002110

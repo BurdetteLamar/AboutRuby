@@ -1,13 +1,14 @@
 ## Hash
 
 A Hash is a dictionary-like collection of key-value pairs,
-wherein the keys are unique.
+wherein the keys are unique. (The values need not be unique.)
 
 A Hash has certain similarities to an Array, but:
 * An Array index is always an Integer.
 * A Hash key can be (almost) any object.
 
 ### Contents
+- [Hash Syntax](#hash-syntax)
 - [Common Uses](#common-uses)
 - [Creating a Hash](#creating-a-hash)
   - [Constructor Hash.new](#constructor-hashnew)
@@ -100,12 +101,57 @@ A Hash has certain similarities to an Array, but:
   - [values](#values)
   - [values_at](#values_at)
 
+### Hash Syntax
+
+Until its version 1.9,
+Ruby supported only the "hash rocket" syntax for Hash data:
+
+```ruby
+h = {:foo => 0, :bar => 1, :baz => 2}
+h # => {:foo=>0, :bar=>1, :baz=>2}
+```
+
+(The "hash rocket" is <tt>=></tt>,
+sometimes in other languages called the "fat comma.")
+
+
+Beginning with version 1.9,
+you can write a Hash key that's a Symbol in a JSON-style syntax,
+where each bareword becomes a Symbol:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h # => {:foo=>0, :bar=>1, :baz=>2}
+```
+
+You can also use Strings instead of barewords:
+
+```ruby
+h = {'foo': 0, 'bar': 1, 'baz': 2}
+h # => {:foo=>0, :bar=>1, :baz=>2}
+```
+
+And you can mix the styles:
+
+```ruby
+h = {foo: 0, :bar => 1, 'baz': 2}
+h # => {:foo=>0, :bar=>1, :baz=>2}
+```
+
+But it's an error to try the JSON-style syntax
+for a key that's not a bareword or a String:
+
+```ruby
+h = {0: 'zero'} # Raises SyntaxError ((irb):42: syntax error, unexpected ':', expecting =>)
+
+```
+
 ### Common Uses
 
 You can use a Hash to give names to objects:
 
 ```ruby
-matz = {:name => 'Matz', :language => 'Ruby' }
+matz = {name: 'Matz', language: 'Ruby'}
 matz # => {:name=>"Matz", :language=>"Ruby"}
 ```
 
@@ -118,7 +164,7 @@ class Dev
     @language = hash[:language]
   end
 end
-matz = Dev.new({:name => 'Matz', :language => 'Ruby'})
+matz = Dev.new(name: 'Matz', language: 'Ruby')
 matz # => #<Dev: @name="Matz", @language="Ruby">
 ```
 
@@ -126,7 +172,7 @@ Note: when the last argument in a method call is a Hash,
 the curly braces may be omitted:
 
 ```ruby
-matz = Dev.new(:name => 'Matz', :language => 'Ruby')
+matz = Dev.new(name: 'Matz', language: 'Ruby')
 matz # => #<Dev: @name="Matz", @language="Ruby">
 ```
 
@@ -145,8 +191,8 @@ Create an empty Hash:
 
 ```ruby
 h = Hash.new
-p h
-p h.class
+h # => {}
+h.class # => Hash
 ```
 
 #### Hash Literal
@@ -163,21 +209,7 @@ h # => {}
 Create a Hash with initial entries:
 
 ```ruby
-h = Hash[:foo => 0, :bar => 1, :baz => 2]
-h # => {:foo=>0, :bar=>1, :baz=>2}
-```
-
-For any key that's to be a Symbol, there's this shorthand:
-
-```ruby
 h = Hash[foo: 0, bar: 1, baz: 2]
-h # => {:foo=>0, :bar=>1, :baz=>2}
-```
-
-And you can mix the two styles:
-
-```ruby
-h = Hash[:foo => 0, bar: 1, :baz => 2]
 h # => {:foo=>0, :bar=>1, :baz=>2}
 ```
 
@@ -195,24 +227,9 @@ h # => {}
 Create a Hash with initial entries:
 
 ```ruby
-h = {:foo => 0, :bar => 1, :baz => 2}
-h # => {:foo=>0, :bar=>1, :baz=>2}
-```
-
-For any key that's to be a Symbol, there's this shorthand:
-
-```ruby
 h = {foo: 0, bar: 1, baz: 2}
 h # => {:foo=>0, :bar=>1, :baz=>2}
 ```
-
-And you can mix the two styles:
-
-```ruby
-h = {foo: 0, :bar => 1, baz: 2}
-h # => {:foo=>0, :bar=>1, :baz=>2}
-```
-
 
 ### Getting a Hash Value
 
@@ -387,7 +404,7 @@ This Hash has keys that are Arrays:
 ```ruby
 a0 = [ :foo, :bar ]
 a1 = [ :baz, :bat ]
-h = { a0 => 0, a1 => 1 }
+h = {a0 => 0, a1 => 1}
 h.include?(a0) # => true
 h[a0] # => 0
 a0.hash # => 110002110
@@ -497,7 +514,7 @@ Hash[ hashable_object ] → new_hash
 
 Returns a new Hash object populated with the given objects, if any.
 
-The initial default value and default proc are set to <tt>nil</tt> (see [Default Values](#default-values)):
+The initial default value and default proc are set to nil (see [Default Values](#default-values)):
 
 ```Ruby
 Hash[].default # => nil
@@ -570,7 +587,7 @@ new { |hash, key| ... } → new_hash
 
 Returns a new empty (no entries) Hash object. The new hash has an initial default value and an initial default proc that depend on which form above was used.  See [Default Values](#default-values).
 
-If neither default_value nor block given, initializes both the default value and the default proc to <tt>nil</tt>:
+If neither default_value nor block given, initializes both the default value and the default proc to nil
 
 ```ruby
 h = Hash.new
@@ -579,7 +596,7 @@ h.default_proc # => nil
 h[:nosuch] # => nil
 ```
 
-If <tt>default_value</tt> given but no block given, initializes the default value to the given value and the default proc to <tt>nil</tt>:
+If <tt>default_value</tt> given but no block given, initializes the default value to the given value and the default proc to +nil:
 
 ```ruby
 h = Hash.new(false)
@@ -588,7 +605,7 @@ h.default_proc # => nil
 h[:nosuch] # => false
 ```
 
-If block given but no argument given, stores the block as the default proc, and sets the default value (which will be ignored) to <tt>nil</tt>:
+If block given but no argument given, stores the block as the default proc, and sets the default value (which will be ignored) to nil:
 
 ```ruby
 h = Hash.new { |hash, key| "Default value for #{key}" }
@@ -624,7 +641,7 @@ hs = HashableSet.new([:foo, :bar, :baz])
 Hash.try_convert(hs) # => {:foo=>nil, :bar=>nil, :baz=>nil}
 ```
 
-Returns <tt>nil</tt> unless <tt>obj.respond_to?(:to_hash)</tt>:
+Returns nil unless <tt>obj.respond_to?(:to_hash)</tt>:
 
 ```ruby
 s = 'foo'
@@ -632,7 +649,7 @@ s.respond_to?(:to_hash) # => false
 Hash.try_convert(s) # => nil
 ```
 
-Returns <tt>nil</tt> unless <tt>obj.to_hash</tt> returns a Hash object:
+Returns nil unless <tt>obj.to_hash</tt> returns a Hash object:
 
 ```ruby
 class HashableSet < Set
