@@ -422,7 +422,7 @@ Hash[ hashable_object ] → new_hash
 
 Returns a new Hash object populated with the given objects, if any.
 
-The initial default value and default proc are set to nil (see [Default Values](#default-values)):
+The initial default value and default proc are set to <tt>nil</tt> (see [Default Values](#default-values)):
 
 ```Ruby
 Hash[].default # => nil
@@ -495,28 +495,31 @@ new { |hash, key| ... } → new_hash
 
 Returns a new empty (no entries) Hash object. The new hash has an initial default value and an initial default proc that depend on which form above was used.  See [Default Values](#default-values).
 
-If neither default_value nor block given, initializes both the default value and the default proc to nil
+If neither default_value nor block given, initializes both the default value and the default proc to <tt>nil</tt>:
 
 ```ruby
 h = Hash.new
+h # => {}
 h.default # => nil
 h.default_proc # => nil
 h[:nosuch] # => nil
 ```
 
-If <tt>default_value</tt> given but no block given, initializes the default value to the given value and the default proc to +nil:
+If <tt>default_value</tt> given but no block given, initializes the default value to the given value and the default proc to <tt>nil</tt<:
 
 ```ruby
 h = Hash.new(false)
+h # => {}
 h.default # => false
 h.default_proc # => nil
 h[:nosuch] # => false
 ```
 
-If block given but no argument given, stores the block as the default proc, and sets the default value (which will be ignored) to nil:
+If block given but no argument given, stores the block as the default proc, and sets the default value (which will be ignored) to <tt>nil</tt>:
 
 ```ruby
 h = Hash.new { |hash, key| "Default value for #{key}" }
+h # => {}
 h.default # => nil
 h.default_proc.class # => Proc
 h[:nosuch] # => "Default value for nosuch"
@@ -1004,7 +1007,7 @@ h.default_proc = 0 # Raises TypeError (wrong default_proc type Integer (expected
 
 ```ruby
 delete(key) → value
-delete(key) {| key | ... } → value
+delete(key) { |key| ... } → value
 ```
 
 If no block is given and the hash includes key <tt>key</tt>, deletes its entry and returns the associated value:
@@ -1012,46 +1015,57 @@ If no block is given and the hash includes key <tt>key</tt>, deletes its entry a
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
 h.delete(:bar) # => 1
+h # => {:foo=>0, :baz=>2}
 ```
 
 If no block given and the hash does not include key <tt>key</tt>, returns <tt>nil</tt>:
 
 ```ruby
+h = {foo: 0, bar: 1, baz: 2}
 h.delete(:nosuch) # => nil
+h # => {:foo=>0, :bar=>1, :baz=>2}
 ```
 
 If a is block given and the hash includes key <tt>key</tt>, ignores the block, deletes the entry,
 and returns the associated value:
 
 ```ruby
+h = {foo: 0, bar: 1, baz: 2}
 h.delete(:baz) { |key| fail 'Will never happen'} # => 2
+h # => {:foo=>0, :bar=>1}
 ```
 
 If a block is given and the hash does not include key <tt>key</tt>,
 calls the block and returns the block's return value:
 
 ```ruby
+h = {foo: 0, bar: 1, baz: 2}
 h.delete(:nosuch) { |key| "Key #{key} not found" } # => "Key nosuch not found"
+h # => {:foo=>0, :bar=>1, :baz=>2}
 ```
 
 Raises an exception if <tt>key</tt> is invalid (see [Invalid Hash Keys](#invalid-hash-keys)):
 
 ```ruby
+h = {foo: 0, bar: 1, baz: 2}
 h.delete(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 ```
 
 #### delete_if
 
 ```ruby
-delete_if {| key, value | ... } → new_hash
+delete_if { |key, value| ... } → self
 delete_if → new_enumerator
 ```
 
-Returns a new Hash object consisting of all entries for which the block returns a truthy value:
+Calls the block with each key-value pair,
+deletes each entry for which the block returns <tt>false</tt> or <tt>nil</tt>,
+and returns <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.delete_if { |key, value| value > 0 } # => {:foo=>0}
+obj = h.delete_if { |key, value| value > 0 } # => {:foo=>0}
+obj.object_id == h.object_id # => true
 ```
 
 Returns an <tt>Enumerator</tt> if no block given:
@@ -1059,7 +1073,15 @@ Returns an <tt>Enumerator</tt> if no block given:
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
 e = h.delete_if # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:delete_if>
-e.each { |key, value| value > 0 } # => {:foo=>0}
+obj = e.each { |key, value| value > 0 } # => {:foo=>0}
+obj.object_id == h.object_id # => true
+```
+
+Raises an exception if the block attempts to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.delete_if { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new key into hash during iteration)
 ```
 
 #### dig
@@ -1098,7 +1120,7 @@ h.dig(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<Bas
 #### each
 
 ```ruby
-each {| key, value | ... } → self
+each { |key, value| ... } → self
 each → new_enumerator
 ```
 
@@ -1133,6 +1155,13 @@ bar: 1
 baz: 2
 ```
 
+Raises an exception if the block attempts to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.each { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new key into hash during iteration)
+```
+
 #### each_key
 
 ```ruby
@@ -1159,7 +1188,7 @@ Returns an <tt>Enumerator</tt> if no block given:
 
 ```ruby
 e = h.each_key
-e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each+key>
+e #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each_key>
 e.each { |key| puts key }
 ```
 
@@ -1171,10 +1200,17 @@ bar
 baz
 ```
 
+Raises an exception if the block attempts to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.each_key { |key| h[:new_key] = 3 } # Raises RuntimeError (can't add a new key into hash during iteration)
+```
+
 #### each_pair
 
 ```ruby
-each_pair {| key, value | ... } → self
+each_pair { |key, value| ... } → self
 each_pair → new_enumerator
 ```
 
@@ -1197,7 +1233,7 @@ Returns an <tt>Enumerator</tt> if no block given:
 
 ```ruby
 e = h.each
-e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each+pair>
+e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each_pair>
 e.each { |key, value| puts "#{key}: #{value}"}
 ```
 
@@ -1207,6 +1243,13 @@ Output:
 foo: 0
 bar: 1
 baz: 2
+```
+
+Raises an exception if the block attempts to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.each_pair { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new key into hash during iteration)
 ```
 
 #### each_value
@@ -1235,7 +1278,7 @@ Returns an <tt>Enumerator</tt> if no block given:
 
 ```ruby
 e = h.each_value
-e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each+value>
+e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each_value>
 e.each { |value| puts value }
 ```
 
@@ -1245,6 +1288,13 @@ Output:
 0
 1
 2
+```
+
+Raises an exception if the block attempts to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.each_value { |value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new key into hash during iteration)
 ```
 
 #### empty?
@@ -1329,7 +1379,7 @@ h.fetch(:nosuch) # Raises KeyError (key not found: :nosuch)
 
 If <tt>default</tt> is given, but no block:
 * If key <tt>key</tt> found, returns its associated value.
-* Otherwise, returns <tt>default</tt>:
+* Otherwise, returns the given <tt>default</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -1349,7 +1399,7 @@ h.fetch(:nosuch) { |key| "Value for #{key}"} # => "Value for nosuch"
 
 If both <tt>default</tt> and a block are given:
 * Ignores <tt>default</tt> and issues a warning 'block supersedes default value argument'.
-* If kkey <tt>key</tt> found, returns its associated value.
+* If key <tt>key</tt> found, returns its associated value.
 * Otherwise, calls the block with <tt>key</tt>, and   returns the block's return value.
 
 ```ruby
@@ -1403,7 +1453,7 @@ h.fetch_values(:baz, BasicObject.new) # Raises NoMethodError (undefined method `
 #### filter
 
 ```ruby
-filter {|key, value| ... } → new_hash
+filter { |key, value| ... } → new_hash
 filter → new_enumerator
 ```
 
@@ -1411,7 +1461,8 @@ Returns a new Hash object consisting of the entries for which the block returns 
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.filter { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+obj = h.filter { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+obj.object_id == h.object_id # => false
 ```
 
 Returns a new Enumerator if no block given:
@@ -1419,13 +1470,21 @@ Returns a new Enumerator if no block given:
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
 e = h.filter # => {:bar=>1, :baz=>2} # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:filter>
-e.each { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+obj = e.each { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+obj.object_id == h.object_id # => false
+```
+
+Raises an exception if the block attempts to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.filter { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new key into hash during iteration)
 ```
 
 #### filter!
 
 ```ruby
-filter! {| key, value | ... } → self or nil
+filter! { |key, value| ... } → self or nil
 filter! → new_enumerator
 ```
 
@@ -1433,7 +1492,8 @@ Deletes each hash entry for which the block returns <tt>nil</tt> or <tt>false</t
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.filter! { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+obj = h.filter! { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+obj.object_id == h.object_id # => true
 ```
 
 Returns <tt>nil</tt> if no entries were deleted:
@@ -1441,6 +1501,7 @@ Returns <tt>nil</tt> if no entries were deleted:
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
 h.filter! { |key, value| true } # => nil
+h # => {:foo=>0, :bar=>1, :baz=>2}
 ```
 
 Returns a new Enumerator if no block given:
@@ -1449,6 +1510,13 @@ Returns a new Enumerator if no block given:
 h = {foo: 0, bar: 1, baz: 2}
 e = h.filter! # => {:bar=>1, :baz=>2} # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:filter!>
 e.each { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+```
+
+Raises an exception if the block attempts to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.filter! { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new key into hash during iteration)
 ```
 
 #### flatten
@@ -1620,11 +1688,11 @@ h.invert NoMethodError (undefined method `hash' for #<BasicObject:>)
 #### keep_if
 
 ```ruby
-keep_if {| key, value | ... } → self
+keep_if { |key, value| ... } → self
 keep_if → new_enumerator
 ```
 
-Yields each entry's key-value pair to the block,
+Calls the block for each key-value pair,
 retains the entry if the block returns a truthy value,
 deletes the entry otherwise,
 and returns <tt>self</tt>.
@@ -1640,6 +1708,13 @@ Returns a new Enumerator if no block given:
 h = {foo: 0, bar: 1, baz: 2}
 e = h.keep_if # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:keep_if>
 e.each { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+```
+
+Raises an exception if the block attempts to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.keep_if { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new key into hash during iteration)
 ```
 
 #### key
@@ -1748,12 +1823,12 @@ and each given hash.
 h = {foo: 0, bar: 1, baz: 2}
 h1 = {bat: 3, bar: 4}
 h2 = {bam: 5, bat:6}
-h.merge(h1, h2) # => {:foo=>0, :bar=>4, :baz=>2, :bat=>6, :bam=>5}
+obj = h.merge(h1, h2) # => {:foo=>0, :bar=>4, :baz=>2, :bat=>6, :bam=>5}
+obj.object_id == h.object_id # false
 ```
 
 With arguments and a block:
-* Returns a new Hash object that is the merge of <tt>self</tt>
-and each given hash.
+* Returns a new Hash object that is the merge of <tt>self</tt> and each given hash.
 * The given hashes are merged left to right.
 * Each new-key entry is added at the end.
 * For each duplicate key:
@@ -1764,8 +1839,20 @@ and each given hash.
 h = {foo: 0, bar: 1, baz: 2}
 h1 = {bat: 3, bar: 4}
 h2 = {bam: 5, bat:6}
-h3 = h.merge(h1, h2) { |key, old_value, new_value| old_value + new_value }
-h3 # => {:foo=>0, :bar=>5, :baz=>2, :bat=>9, :bam=>5}
+obj = h.merge(h1, h2) { |key, old_value, new_value| old_value + new_value }
+obj 
+obj.object_id == h.object_id # => false
+```
+
+Ignores an attempt in the block to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h1 = {bat: 3, bar: 4}
+h2 = {bam: 5, bat:6}
+obj = h.merge(h1, h2) { |key, old_value, new_value| h[:new_key] = 10 }
+obj # => {:foo=>0, :bar=>10, :baz=>2, :bat=>10, :bam=>5}
+obj.object_id == h.object_id # => false
 ```
 
 With no arguments:
@@ -1777,9 +1864,8 @@ h = {foo: 0, bar: 1, baz: 2}
 h1 = h.merge
 h1 # => {:foo=>0, :bar=>1, :baz=>2}
 h1.object_id == h.object_id # => false
-h2 = h.merge { |key, old_value, new_value| fail 'Cannot happen' }
-h2 # => {:foo=>0, :bar=>1, :baz=>2}
-h2.object_id == h.object_id # => false
+obj = h.merge { |key, old_value, new_value| fail 'Cannot happen' } # => {:foo=>0, :bar=>1, :baz=>2}
+obj.object_id == h.object_id # => false
 ```
 
 Raises an exception if any given argument
@@ -1808,9 +1894,8 @@ With arguments and no block:
 h = {foo: 0, bar: 1, baz: 2}
 h1 = {bat: 3, bar: 4}
 h2 = {bam: 5, bat:6}
-h3 = h.merge!(h1, h2)
-h3 # => {:foo=>0, :bar=>4, :baz=>2, :bat=>6, :bam=>5}
-h3.object_id == h.object_id # => true
+obj = h.merge!(h1, h2) # => {:foo=>0, :bar=>4, :baz=>2, :bat=>6, :bam=>5}
+obj.object_id == h.object_id # => true
 ```
 
 With arguments and a block:
@@ -1828,6 +1913,17 @@ h2 = {bam: 5, bat:6}
 h3 = h.merge!(h1, h2) { |key, old_value, new_value| old_value + new_value }
 h3 # => {:foo=>0, :bar=>5, :baz=>2, :bat=>9, :bam=>5}
 h3.object_id == h.object_id # => true
+```
+
+Allows the block to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h1 = {bat: 3, bar: 4}
+h2 = {bam: 5, bat:6}
+obj = h.merge!(h1, h2) { |key, old_value, new_value| h[:new_key] = 10 }
+obj # => {:foo=>0, :bar=>10, :baz=>2, :bat=>10, :new_key=>10, :bam=>5}
+obj.object_id == h.object_id # => true
 ```
 
 With no arguments:
@@ -1975,6 +2071,13 @@ e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:reject!>
 e.each { |key, value| key.start_with?('b') } # => {:foo=>0}
 ```
 
+Raises an exception if the block attempts to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.reject! { |key, value| h[:new_Key] = 3 } # Raises RuntimeError (can't add a new key into hash during iteration)
+```
+
 #### replace
 
 ```ruby
@@ -2008,9 +2111,9 @@ Returns a new Hash object whose entries are those for which the block returns a 
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h1 = h.select { |key, value| value < 2 }
-h1 # => {:foo=>0, :bar=>1}
-h1.object_id == h.object_id # => false
+obj = h.select { |key, value| value < 2 }
+obj # => {:foo=>0, :bar=>1}
+obj.object_id == h.object_id # => false
 ```
 
 Returns a new Enumerator if no block given:
@@ -2020,6 +2123,13 @@ h = {foo: 0, bar: 1, baz: 2}
 e = h.select
 e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:select>
 e.each { |key, value| value < 2 } # => {:foo=>0, :bar=>1}
+```
+
+Raises an exception if the block attempts to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.select { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new key into hash during iteration)
 ```
 
 #### select!
@@ -2053,6 +2163,13 @@ e = h.select!
 e # => # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:select!>
 e.each { |key, value| value < 2 } # => {:foo=>0, :bar=>1}
 h # => {:foo=>0, :bar=>1}
+```
+
+Raises an exception if the block attempts to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.select! { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new key into hash during iteration)
 ```
 
 #### shift
@@ -2207,6 +2324,13 @@ h = {foo: 0, bar: 1, baz: 2}
 h1 = h.to_h { |key, value| [BasicObject.new, 0] } # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 ```
 
+Raises an exception if the block attempts to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.to_h { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new key into hash during iteration)
+```
+
 #### to_hash
 
 ```ruby
@@ -2256,7 +2380,7 @@ h.to_s # => "{:foo=>0, :bar=>1, :baz=>2}"
 #### transform_keys
 
 ```ruby
-transform_keys {|key| ... } → new_hash
+transform_keys { |key| ... } → new_hash
 transform_keys → new_enumerator
 ```
 
@@ -2284,10 +2408,17 @@ h = {foo: 0, bar: 1, baz: 2}
 h.transform_keys { |key| BasicObject.new } # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 ```
 
+Raises an exception if the block attempts to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.transform_keys { |key| h[:new_key] = 3 } # Raises RuntimeError (can't add a new key into hash during iteration)
+```
+
 #### transform_keys!
 
 ```ruby
-transform_keys! {|key| ... } → self
+transform_keys! { |key| ... } → self
 transform_keys! → new_enumerator
 ```
 
@@ -2317,10 +2448,17 @@ h = {foo: 0, bar: 1, baz: 2}
 h.transform_keys! { |key| BasicObject.new } # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 ```
 
+Allows the block to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.transform_keys! { |key| h[:new_key] = key.to_s } # => {:new_key=>"baz", "foo"=>0, "bar"=>1, "baz"=>2}
+```
+
 #### transform_values
 
 ```ruby
-transform_values {|value| ... } → new_hash
+transform_values { |value| ... } → new_hash
 transform_values → new_enumerator
 ```
 
@@ -2347,10 +2485,17 @@ h1 # => {:foo=>0, :bar=>100, :baz=>200}
 h1.object_id == h.object_id # => false
 ```
 
+Ignores an attempt in the block to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.transform_values { |key| h[:new_key] = 3 } # => {:foo=>3, :bar=>3, :baz=>3}
+```
+
 #### transform_values!
 
 ```ruby
-transform_values {|value| ... } → self
+transform_values { |value| ... } → self
 transform_values → new_enumerator
 ```
 
@@ -2370,6 +2515,13 @@ h = {foo: 0, bar: 1, baz: 2}
 e = h.transform_values!
 e.each { |value| value * 100} # => {:foo=>0, :bar=>100, :baz=>200}
 h # => {:foo=>0, :bar=>100, :baz=>200}
+```
+
+Allows the block to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.transform_values! { |key| h[:new_key] = 3 } # => {:foo=>3, :bar=>3, :baz=>3, :new_key=>3}
 ```
 
 #### update
@@ -2431,6 +2583,17 @@ is not a [Hash-convertible object](#hash-convertible-objects):
 h = {}
 h.merge(:foo) # Raises TypeError (no implicit conversion of Symbol into Hash)
 ```
+Allows the block to add a new key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h1 = {bat: 3, bar: 4}
+h2 = {bam: 5, bat:6}
+h3 = h.update(h1, h2) { |key, old_value, new_value| h[:new_key] = 3 }
+h3 # => {:foo=>0, :bar=>3, :baz=>2, :bat=>3, :new_key=>3, :bam=>5}
+h3.object_id == h.object_id # => true
+```
+
 #### value
 
 ```ruby
