@@ -629,7 +629,7 @@ Hash.new(0) { } # Raises ArgumentError (wrong number of arguments (given 1, expe
  try_convert(obj) → new_hash or nil
 ````
 
-Returns the new Hash object created by calling
+Returns the Hash object created by calling
 <tt>obj.to_hash</tt>.
 
 ```ruby
@@ -1406,7 +1406,7 @@ Returns <tt>true</tt> if there are no hash entries, <tt>false</tt> otherwise:
 
 #### eql?
 
-```ruby
+```
 eql? other_hash → true or false
 ```
 
@@ -1913,7 +1913,7 @@ h.member?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #
 #### merge
 
 ```
-merge -> new_copy_of_hash
+merge → new_copy_of_hash
 merge(*other_hashes) → new_hash
 merge(*other_hashes) { |key, old_value, new_value| ... } → new_hash 
 ```
@@ -1985,7 +1985,7 @@ h.merge(1) # Raises TypeError (no implicit conversion of Integer into Hash)
 #### merge!
 
 ```
-merge! -> self
+merge! → self
 merge!(*other_hashes) → self
 merge!(*other_hashes) { |key, old_value, new_value| ... } → self
 ```
@@ -2636,7 +2636,7 @@ h.transform_values! { |key| h[:new_key] = 3 } # => {:foo=>3, :bar=>3, :baz=>3, :
 #### update
 
 ```
-update -> self
+update → self
 update(*other_hashes) → self
 update(*other_hashes) { |key, old_value, new_value| ... } → self
 ```
