@@ -822,7 +822,8 @@ Removes all hash entries, returning <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.clear # => {}
+h1 = h.clear # => {}
+h1.object_id == h.object_id # => true
 ```
 
 #### compact
@@ -849,8 +850,8 @@ Returns <tt>self</tt> with all <tt>nil</tt>-valued entries removed:
 
 ```ruby
 h = {foo: 0, bar: nil, baz: 2, bat: nil}
-h.compact!
-h # => {:foo=>0, :baz=>2}
+h1 = h.compact! # => {:foo=>0, :baz=>2}
+h1.object_id == h.object_id # => true
 ```
 
 Returns <tt>nil</tt> if no entries were removed:
@@ -867,7 +868,7 @@ h # => {:foo=>0, :bar=>1, :baz=>2}
 compare_by_identity → self
 ```
 
-Sets <tt>self</tt> to consider only identity in comparing keys, returning the hash;
+Sets <tt>self</tt> to consider only identity in comparing keys, returning <tt>self</tt>;
 two keys are considered the same only if they are the same object.
 
 By default, these two keys are considered the same, and therefore overwrite:
@@ -886,14 +887,18 @@ h.size # => 1
 After calling <tt>compare_by_identity</tt>, the keys are considered different,
 the therefore do not overwrite:
 
-``ruby
+```ruby
+s0 = 'x'
+s1 = 'x'
+s0.object_id == s1.object_id # => false
 h = {}
-h.compare_by_identity # => {}
+h1 = h.compare_by_identity # => {}
+h1.object_id == h.object_id # => true
 h.compare_by_identity? # => true
 h[s0] = 0
 h[s1] = 1
 h.size # => 2
-``
+````
 
 #### compare_by_identity?
 
@@ -1064,8 +1069,8 @@ and returns <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-obj = h.delete_if { |key, value| value > 0 } # => {:foo=>0}
-obj.object_id == h.object_id # => true
+h1 = h.delete_if { |key, value| value > 0 } # => {:foo=>0}
+h1.object_id == h.object_id # => true
 ```
 
 Returns an <tt>Enumerator</tt> if no block given:
@@ -1128,7 +1133,8 @@ Calls the given block with each key-value pair, returning <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.each { |key, value| puts "#{key}: #{value}"} # => {:foo=>0, :bar=>1, :baz=>2}
+h1 = h.each { |key, value| puts "#{key}: #{value}"} # => {:foo=>0, :bar=>1, :baz=>2}
+h1.object_id == h.object_id # => true
 ```
 
 Output:
@@ -1175,7 +1181,8 @@ Calls the given block with each key, returning <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.each_key { |key| puts key } # => {:foo=>0, :bar=>1, :baz=>2}
+h1 = h.each_key { |key| puts key } # => {:foo=>0, :bar=>1, :baz=>2}
+h1.object_id == h.object_id # => true
 ```
 
 Output:
@@ -1220,7 +1227,8 @@ Calls the given block with each key-value pair, returning <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.each_pair { |key, value| puts "#{key}: #{value}"} # => {:foo=>0, :bar=>1, :baz=>2}
+h1 = h.each_pair { |key, value| puts "#{key}: #{value}"} # => {:foo=>0, :bar=>1, :baz=>2}
+h1.object_id == h.object_id # => true
 ```
 
 Output:
@@ -1265,7 +1273,8 @@ Calls the given block with each value, returning <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.each_value { |value| puts value } # => {:foo=>0, :bar=>1, :baz=>2}
+h1 = h.each_value { |value| puts value } # => {:foo=>0, :bar=>1, :baz=>2}
+h1.object_id == h.object_id # => true
 ```
 
 Output:
@@ -1492,12 +1501,12 @@ filter! { |key, value| ... } → self or nil
 filter! → new_enumerator
 ```
 
-Deletes each hash entry for which the block returns <tt>nil</tt> or <tt>false</tt>, returning the self:
+Deletes each hash entry for which the block returns <tt>nil</tt> or <tt>false</tt>, returning <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-obj = h.filter! { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
-obj.object_id == h.object_id # => true
+h1 = h.filter! { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+h1.object_id == h.object_id # => true
 ```
 
 Returns <tt>nil</tt> if no entries were deleted:
@@ -1707,7 +1716,8 @@ and returns <tt>self</tt>.
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.keep_if { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+h1 = h.keep_if { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+h1.object_id == h.object_id # => true
 ```
 
 Returns a new Enumerator if no block given:
@@ -1908,8 +1918,8 @@ With arguments and no block:
 h = {foo: 0, bar: 1, baz: 2}
 h1 = {bat: 3, bar: 4}
 h2 = {bam: 5, bat:6}
-obj = h.merge!(h1, h2) # => {:foo=>0, :bar=>4, :baz=>2, :bat=>6, :bam=>5}
-obj.object_id == h.object_id # => true
+h3 = h.merge!(h1, h2) # => {:foo=>0, :bar=>4, :baz=>2, :bat=>6, :bam=>5}
+h3.object_id == h.object_id # => true
 ```
 
 With arguments and a block:
@@ -2003,7 +2013,7 @@ h[a0] # => 0
 a0.hash # => 110002110
 ```
 
- Modifying array element <tt>a0[0]</tt> changes its hash value:
+Modifying array element <tt>a0[0]</tt> changes its hash value:
 ```ruby
 a0[0] = :bam
 a0.hash # => 1069447059
@@ -2019,9 +2029,10 @@ h[a0] # => nil
 You can repair the hash index using method <tt>rehash</tt>:
 
 ```ruby
-h.rehash # => {[:bam, :bar]=>0, [:baz, :bat]=>1}
+h1 = h.rehash # => {[:bam, :bar]=>0, [:baz, :bat]=>1}
 h.include?(a0) # => true
 h[a0] # => 0
+h1.object_id == h.object_id # => true
 ```
 
 Raises an exception if called while hash iteration in progress:
@@ -2067,8 +2078,9 @@ for which the block returns <tt>false</tt> or <tt>nil</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.reject! { |key, value| key.start_with?('b') } # => nil
+h1 = h.reject! { |key, value| key.start_with?('b') } # => nil
 h # => {:foo=>0} # => {:foo=>0, :bar=>1, :baz=>2}
+h1.object_id == h.object_id # => true
 ```
 
 Returns <tt>nil</tt> if no entries were removed:
@@ -2105,7 +2117,8 @@ returns <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.replace({bat: 3, bam: 4}) # => {:bat=>3, :bam=>4}
+h1 = h.replace({bat: 3, bam: 4}) # => {:bat=>3, :bam=>4}
+h1.object_id == h.object_id # => true
 ```
 
 Raises an exception if <tt>other_hash</tt>
@@ -2155,12 +2168,13 @@ select! { |key, value| ... } → self
 select → new_enumerator
 ```
 
-Returns <tt>self</tt> whose entries are those for which the block returns a truthy value:
+Returns <tt>self</tt>, whose entries are those for which the block returns a truthy value:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.select! { |key, value| value < 2 } # => {:foo=>0, :bar=>1}
+h1 = h.select! { |key, value| value < 2 } # => {:foo=>0, :bar=>1}
 h # => {:foo=>0, :bar=>1}
+h1.object_id == h.object_id # => true
 ```
 
 Returns <tt>nil</tt> if no entries were removed:
@@ -2521,8 +2535,8 @@ and whose values are determined by the given block.
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.transform_values! { |value| value * 100} # => {:foo=>0, :bar=>100, :baz=>200}
-h # => {:foo=>0, :bar=>100, :baz=>200}
+h1 = h.transform_values! { |value| value * 100} # => {:foo=>0, :bar=>100, :baz=>200}
+h1.object_id == h.object_id # => true
 ```
 
 Returns a new Enumerator if no block given:
