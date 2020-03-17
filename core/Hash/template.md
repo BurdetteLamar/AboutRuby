@@ -1162,6 +1162,8 @@ h = {foo: 0, bar: 1, baz: 2}
 h.each { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new key into hash during iteration)
 ```
 
+<tt>each</tt> is an alias for <tt>#each_pair</tt>.
+
 #### each_key
 
 ```ruby
@@ -1481,6 +1483,8 @@ h = {foo: 0, bar: 1, baz: 2}
 h.filter { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new key into hash during iteration)
 ```
 
+<tt>#filter</tt> is an alias for <tt>#select</tt>.
+
 #### filter!
 
 ```ruby
@@ -1518,6 +1522,8 @@ Raises an exception if the block attempts to add a new key:
 h = {foo: 0, bar: 1, baz: 2}
 h.filter! { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new key into hash during iteration)
 ```
+
+<tt>#filter!</tt> is an alias for <tt>#select!</tt>.
 
 #### flatten
 
@@ -1645,6 +1651,8 @@ Raises an exception if <tt>key</tt> is invalid (see [Invalid Hash Keys](#invalid
 h.include?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 ```
 
+<tt>#include?</tt> is an alias for <tt>#has_key?</tt>.
+
 #### inspect
 
 ```ruby
@@ -1758,6 +1766,8 @@ Raises an exception if <tt>key</tt> is invalid (see [Invalid Hash Keys](#invalid
 h.key?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 ```
 
+<tt>#key?</tt> is an alias for <tt>#has_key?</tt>.
+
 #### keys
 
 ```ruby
@@ -1784,6 +1794,8 @@ h = {foo: 0, bar: 1, baz: 2}
 h.length # => 3
 ```
 
+<tt>#length</tt> is an alias for <tt>#size</tt>.
+
 #### member?
 
 ```ruby
@@ -1803,6 +1815,8 @@ Raises an exception if <tt>key</tt> is invalid (see [Invalid Hash Keys](#invalid
 ```ruby
 h.member?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 ```
+
+<tt>#member?</tt> is an alias for <tt>#has_key?</tt>.
 
 #### merge
 
@@ -1945,6 +1959,8 @@ is not a [Hash-convertible object](#hash-convertible-objects):
 h = {}
 h.merge!(1) # Raises TypeError (no implicit conversion of Integer into Hash)
 ```
+
+<tt>#merge!</tt> is an alias for <tt>#update</tt>.
 
 #### rassoc
 
@@ -2376,6 +2392,7 @@ Returns a new String showing the hash entries:
 h = {foo: 0, bar: 1, baz: 2}
 h.to_s # => "{:foo=>0, :bar=>1, :baz=>2}"
 ```
+<tt>#to_s</tt> is an alias for <tt>#inspect</tt>.
 
 #### transform_keys
 
@@ -2594,7 +2611,7 @@ h3 # => {:foo=>0, :bar=>3, :baz=>2, :bat=>3, :new_key=>3, :bam=>5}
 h3.object_id == h.object_id # => true
 ```
 
-#### value
+#### value?
 
 ```ruby
 value?(value) → true or false
@@ -2608,6 +2625,8 @@ h = {foo: 0, bar: 1, baz: 2}
 h.value?(0) # => true
 h.value?(3) # => false
 ```
+
+<tt>#value?</tt> is an alias for <tt>#has_value?</tt>.
 
 #### values
 
