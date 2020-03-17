@@ -505,7 +505,7 @@ h.default_proc # => nil
 h[:nosuch] # => nil
 ```
 
-If <tt>default_value</tt> given but no block given, initializes the default value to the given value and the default proc to <tt>nil</tt<:
+If <tt>default_value</tt> given but no block given, initializes the default value to the given value and the default proc to <tt>nil</tt>:
 
 ```ruby
 h = Hash.new(false)
