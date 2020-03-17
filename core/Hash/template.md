@@ -413,7 +413,7 @@ h.merge(NotHashConvertible.new) # Raises TypeError (can't convert NotHashConvert
 
 #### ::[]
 
-```ruby
+```
 Hash[] → new_empty_hash
 Hash[ key, value, ... ] → new_hash
 Hash[ [ [ key, value ], ... ] ] → new_hash
@@ -487,7 +487,7 @@ Hash[Foo.new] # Raises TypeError (can't convert Foo to Hash (Foo#to_hash gives S
 
 #### ::new
 
-```ruby
+```
 new → new_hash
 new(default_value) → new_hash
 new { |hash, key| ... } → new_hash
@@ -533,7 +533,7 @@ Hash.new(0) { } # Raises ArgumentError (wrong number of arguments (given 1, expe
 
 #### ::try_convert
 
-````ruby
+````
  try_convert(obj) → new_hash or nil
 ````
 
