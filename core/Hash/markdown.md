@@ -1924,7 +1924,7 @@ With arguments and a block:
 * The given hashes are merged left to right.
 * Each new-key entry is added at the end.
 * For each duplicate key:
-  * Yields the key and the old and new values to the block.
+  * Calls the block with the key and the old and new values.
   * The block's return value becomes the new value for the entry.
 
 ```ruby
@@ -1995,7 +1995,7 @@ With arguments and a block:
 * The given hashes are merged left to right.
 * Each new-key entry is added at the end.
 * For each duplicate key:
-  * Yields the key and the old and new values to the block.
+  * Calls the block with the key and the old and new values.
   * The block's return value becomes the new value for the entry.
 
 ```ruby
@@ -2644,7 +2644,7 @@ With arguments and a block:
 * The given hashes are merged left to right.
 * Each new-key entry is added at the end.
 * For each duplicate key:
-  * Yields the key and the old and new values to the block.
+  * Calls the block with the key and the old and new values.
   * The block's return value becomes the new value for the entry.
 
 ```ruby
