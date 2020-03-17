@@ -1318,7 +1318,7 @@ Returns <tt>true</tt> if there are no hash entries, <tt>false</tt> otherwise:
 eql? other_hash → true or false
 ```
 
-Returns <tt>true</tt> if:
+Returns <tt>true</tt> if all of the following are true:
 * <tt>other_hash</tt> is a Hash object.
 * <tt>h</tt> and <tt>other_hash</tt> have the same
   keys (regardless of order).
