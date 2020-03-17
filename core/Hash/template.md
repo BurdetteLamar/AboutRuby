@@ -576,7 +576,7 @@ Hash.try_convert(hs) # => nil
 
 #### <
 
-```ruby
+```
 hash < other_hash → true or false
 ```
 
@@ -601,7 +601,7 @@ h < 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 
 #### <=
 
-```ruby
+```
 hash <= other_hash → true or false
 ```
 
@@ -627,7 +627,7 @@ h <= 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 
 #### ==
 
-```ruby
+```
 hash == other_hash → true or false
 ```
 
@@ -674,7 +674,7 @@ h1 == h2 # => false
 
 #### >
 
-```ruby
+```
 hash > other_hash → true or false
 ```
 
@@ -699,7 +699,7 @@ h > 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 
 #### >=
 
-```ruby
+```
 hash >= other_hash → true or false
 ```
 
@@ -724,7 +724,7 @@ h >= 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 
 #### []
 
-```ruby
+```
 hash[key] → value
 ```
 
@@ -750,7 +750,7 @@ h[BasicObject.new] # Raises NoMethodError (undefined method `to_s' for #<BasicOb
 ```
 #### []=
 
-```ruby
+```
 hash[key] = value → value
 ```
 
@@ -785,7 +785,7 @@ h[BasicObject.new] = 2 # Raises NoMethodError (undefined method `hash' for #<Bas
 
 #### assoc
 
-```ruby
+```
 assoc(key) → new_array or nil
 ```
 
@@ -814,7 +814,7 @@ h.assoc(BasicObject.new) Raises NoMethodError (undefined method `hash' for #<Bas
 
 #### clear
 
-```ruby
+```
 clear → self
 ```
 
@@ -827,7 +827,7 @@ h.clear # => {}
 
 #### compact
 
-```ruby
+```
 compact → new_hash
 ```
 
@@ -841,7 +841,7 @@ h1 # => {:foo=>0, :baz=>2}
 
 #### compact!
 
-```ruby
+```
 compact → self or nil
 ```
 
@@ -863,7 +863,7 @@ h # => {:foo=>0, :bar=>1, :baz=>2}
 
 #### compare_by_identiry
 
-```ruby
+```
 compare_by_identity → self
 ```
 
@@ -897,7 +897,7 @@ h.size # => 2
 
 #### compare_by_identity?
 
-```ruby
+```
 compare_by_identity? → true or false
 ```
 
@@ -912,7 +912,7 @@ h.compare_by_identity? # true
 
 #### default
 
-```ruby
+```
 default → obj
 default(key) → obj
 ```
@@ -946,7 +946,7 @@ h.default(BasicObject.new) # Raises NoMethodError (undefined method `to_s' for #
 
 #### default=
 
-```ruby
+```
 default = obj → obj
 ```
 
@@ -964,7 +964,7 @@ See [Default Values](#default-values).
 
 #### default_proc
 
-```ruby
+```
 default_proc → proc or nil
 ```
 
@@ -981,7 +981,7 @@ See [Default Values](#default-values).
 
 #### default_proc=
 
-```ruby
+```
 default_proc = proc → proc
 ```
 
@@ -1005,7 +1005,7 @@ h.default_proc = 0 # Raises TypeError (wrong default_proc type Integer (expected
 
 #### delete
 
-```ruby
+```
 delete(key) → value
 delete(key) { |key| ... } → value
 ```
@@ -1053,7 +1053,7 @@ h.delete(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<
 
 #### delete_if
 
-```ruby
+```
 delete_if { |key, value| ... } → self
 delete_if → new_enumerator
 ```
@@ -1086,7 +1086,7 @@ h.delete_if { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a 
 
 #### dig
 
-```ruby
+```
 dig(*keys) → value
 ```
 
@@ -1119,7 +1119,7 @@ h.dig(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<Bas
 
 #### each
 
-```ruby
+```
 each { |key, value| ... } → self
 each → new_enumerator
 ```
@@ -1166,7 +1166,7 @@ h.each { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new k
 
 #### each_key
 
-```ruby
+```
 each_key { |key| ... } → self
 each_key → new_enumerator
 ```
@@ -1211,7 +1211,7 @@ h.each_key { |key| h[:new_key] = 3 } # Raises RuntimeError (can't add a new key 
 
 #### each_pair
 
-```ruby
+```
 each_pair { |key, value| ... } → self
 each_pair → new_enumerator
 ```
@@ -1256,7 +1256,7 @@ h.each_pair { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a 
 
 #### each_value
 
-```ruby
+```
 each_value { |value| ... } → self
 each_value → new_enumerator
 ```
@@ -1301,7 +1301,7 @@ h.each_value { |value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new 
 
 #### empty?
 
-```ruby
+```
 empty? → true or false
 ```
 
@@ -1361,7 +1361,7 @@ h1.eql? h2 # => false
 
 #### fetch
 
-```ruby
+```
 fetch(key) → value
 fetch(key , default) → value
 fetch(key) { |key| ... } → value
@@ -1419,7 +1419,7 @@ h.fetch(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<B
 
 #### fetch_values
 
-```ruby
+```
 fetch_values(*keys) → new_array
 fetch_values(*keys) { |key| ... } → new_array
 ```
@@ -1454,7 +1454,7 @@ h.fetch_values(:baz, BasicObject.new) # Raises NoMethodError (undefined method `
 
 #### filter
 
-```ruby
+```
 filter { |key, value| ... } → new_hash
 filter → new_enumerator
 ```
@@ -1487,7 +1487,7 @@ h.filter { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new
 
 #### filter!
 
-```ruby
+```
 filter! { |key, value| ... } → self or nil
 filter! → new_enumerator
 ```
@@ -1527,7 +1527,7 @@ h.filter! { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a ne
 
 #### flatten
 
-```ruby
+```
 flatten(level = 1) → new_array 
 ```
 
@@ -1582,7 +1582,7 @@ h.flatten(:nosuch) # Raises TypeError (no implicit conversion of Symbol into Int
 
 #### has_key?
 
-```ruby
+```
 has_key?(key) → true or false
 ```
 
@@ -1597,7 +1597,7 @@ h.has_key?(BasicObject.new) # false
 
 #### has_value?
 
-```ruby
+```
  has_value?(value) → true or false
 ```
 
@@ -1611,7 +1611,7 @@ h.has_value?(123) # => false
 
 #### hash
 
-```ruby
+```
 hash → an_integer
 ```
 
@@ -1633,7 +1633,7 @@ h2.eql? h1 # => true
 
 #### include?
 
-```ruby
+```
 include?(key) → true or false
 ```
 
@@ -1655,7 +1655,7 @@ h.include?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for 
 
 #### inspect
 
-```ruby
+```
 inspect → new_string
 ```
 
@@ -1668,7 +1668,7 @@ h.inspect # => "{:foo=>0, :bar=>1, :baz=>2}"
 
 #### invert
 
-```ruby
+```
 invert → new_hash
 ```
 
@@ -1695,7 +1695,7 @@ h.invert NoMethodError (undefined method `hash' for #<BasicObject:>)
 
 #### keep_if
 
-```ruby
+```
 keep_if { |key, value| ... } → self
 keep_if → new_enumerator
 ```
@@ -1727,7 +1727,7 @@ h.keep_if { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a ne
 
 #### key
 
-```ruby
+```
 key(value) → key or nil
 ```
 
@@ -1748,7 +1748,7 @@ h.key(0) # => nil
 
 #### key?
 
-```ruby
+```
 key?(key) → true or false
 ```
 
@@ -1770,7 +1770,7 @@ h.key?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<Ba
 
 #### keys
 
-```ruby
+```
 keys → new_array
 ```
 
@@ -1783,7 +1783,7 @@ h.keys # => [:foo, :bar, :baz]
 
 #### length
 
-```ruby
+```
 length → an_integer
 ```
 
@@ -1798,7 +1798,7 @@ h.length # => 3
 
 #### member?
 
-```ruby
+```
 member?(key) → true or false
 ```
 
@@ -1820,7 +1820,7 @@ h.member?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #
 
 #### merge
 
-```ruby
+```
 merge -> new_copy_of_hash
 merge(*other_hashes) → new_hash
 merge(*other_hashes) { |key, old_value, new_value| ... } → new_hash 
@@ -1892,7 +1892,7 @@ h.merge(1) # Raises TypeError (no implicit conversion of Integer into Hash)
 
 #### merge!
 
-```ruby
+```
 merge! -> self
 merge!(*other_hashes) → self
 merge!(*other_hashes) { |key, old_value, new_value| ... } → self
@@ -1964,7 +1964,7 @@ h.merge!(1) # Raises TypeError (no implicit conversion of Integer into Hash)
 
 #### rassoc
 
-```ruby
+```
 rassoc(value) → new_array or nil
 ```
 
@@ -1985,7 +1985,7 @@ h.rassoc(3) # => nil
 
 #### rehash
 
-```ruby
+```
 rehash → self
 ```
 
@@ -2033,7 +2033,7 @@ h.each { |key, value| h.rehash } # Raises RuntimeError (rehash during iteration)
 
 #### reject
 
-```ruby
+```
 reject { |key, value| ...} → new_hash
 reject → new_enumerator 
 ```
@@ -2057,7 +2057,7 @@ e.each { |key, value| key.start_with?('b') } # => {:foo=>0}
 
 #### reject!
 
-```ruby
+```
 reject! { |key, value| ... } → self or nil
 reject! → new_enumerator
 ```
@@ -2096,7 +2096,7 @@ h.reject! { |key, value| h[:new_Key] = 3 } # Raises RuntimeError (can't add a ne
 
 #### replace
 
-```ruby
+```
 replace(other_hash) → self
 ```
 
@@ -2118,7 +2118,7 @@ h.replace(:not_a_hash) # Raises TypeError (no implicit conversion of Symbol into
 ```
 #### select
 
-```ruby
+```
 select { |key, value| ... } → new_hash
 select → new_enumerator
 ```
@@ -2150,7 +2150,7 @@ h.select { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new
 
 #### select!
 
-```ruby
+```
 select! { |key, value| ... } → self
 select → new_enumerator
 ```
@@ -2190,7 +2190,7 @@ h.select! { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a ne
 
 #### shift
 
-```ruby
+```
 shift → [key, value] or default_value
 ```
 
@@ -2212,7 +2212,7 @@ h.shift # => nil
 
 #### size
 
-```ruby
+```
 size → an_integer
 ```
 
@@ -2227,7 +2227,7 @@ h.size # => 2
 
 #### slice
 
-```ruby
+```
 slice(*keys) → new_hash
 ```
 
@@ -2247,7 +2247,7 @@ h.slice(:foo, BasicObject.new) # Raises NoMethodError (undefined method `hash' f
 
 #### store
 
-```ruby
+```
 store(key, value) → value
 ```
 
@@ -2269,7 +2269,7 @@ h.store(BasicObject.new, 3) # Raises NoMethodError (undefined method `hash' for 
 
 #### to_a
 
-```ruby
+```
 to_a → new_array
 ```
 
@@ -2283,7 +2283,7 @@ h.to_a # => [[:foo, 0], [:bar, 1], [:baz, 2]]
 
 #### to_h
 
-```ruby
+```
 to_h → self or new_hash
 to_h { |key, value| ... } → new_hash
 ```
@@ -2349,7 +2349,7 @@ h.to_h { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new k
 
 #### to_hash
 
-```ruby
+```
 to_hash → self
 ```
 
@@ -2364,7 +2364,7 @@ h1.object_id == h.object_id # => true
 
 #### to_proc
 
-```ruby
+```
 to_proc → proc
 ```
 
@@ -2382,7 +2382,7 @@ proc.call(:nosuch) # => nil
 
 #### to_s
 
-```ruby
+```
 to_s → new_string
 ```
 
@@ -2396,7 +2396,7 @@ h.to_s # => "{:foo=>0, :bar=>1, :baz=>2}"
 
 #### transform_keys
 
-```ruby
+```
 transform_keys { |key| ... } → new_hash
 transform_keys → new_enumerator
 ```
@@ -2434,7 +2434,7 @@ h.transform_keys { |key| h[:new_key] = 3 } # Raises RuntimeError (can't add a ne
 
 #### transform_keys!
 
-```ruby
+```
 transform_keys! { |key| ... } → self
 transform_keys! → new_enumerator
 ```
@@ -2474,7 +2474,7 @@ h.transform_keys! { |key| h[:new_key] = key.to_s } # => {:new_key=>"baz", "foo"=
 
 #### transform_values
 
-```ruby
+```
 transform_values { |value| ... } → new_hash
 transform_values → new_enumerator
 ```
@@ -2511,7 +2511,7 @@ h.transform_values { |key| h[:new_key] = 3 } # => {:foo=>3, :bar=>3, :baz=>3}
 
 #### transform_values!
 
-```ruby
+```
 transform_values { |value| ... } → self
 transform_values → new_enumerator
 ```
@@ -2543,7 +2543,7 @@ h.transform_values! { |key| h[:new_key] = 3 } # => {:foo=>3, :bar=>3, :baz=>3, :
 
 #### update
 
-```ruby
+```
 update -> self
 update(*other_hashes) → self
 update(*other_hashes) { |key, old_value, new_value| ... } → self
@@ -2613,7 +2613,7 @@ h3.object_id == h.object_id # => true
 
 #### value?
 
-```ruby
+```
 value?(value) → true or false
 ```
 
@@ -2630,7 +2630,7 @@ h.value?(3) # => false
 
 #### values
 
-```ruby
+```
 values → new_array
 ```
 
@@ -2643,7 +2643,7 @@ h.values # => [0, 1, 2]
 
 #### values_at
 
-```ruby
+```
 values_at(*keys) → new_array
 ```
 
