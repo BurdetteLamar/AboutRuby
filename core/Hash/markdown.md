@@ -1174,7 +1174,9 @@ Returns an <tt>Enumerator</tt> if no block given:
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
 e = h.delete_if # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:delete_if>
-e.each { |key, value| value > 0 } # => {:foo=>0}
+h1 = e.each { |key, value| value > 0 }
+h1 # => {:foo=>0}
+h1.object_id == h.object_id # => true
 ```
 
 Raises an exception if the block attempts to add a new key:
@@ -1244,9 +1246,11 @@ baz: 2
 Returns an <tt>Enumerator</tt> if no block given:
 
 ```ruby
-e = h.each
-e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each>
-e.each { |key, value| puts "#{key}: #{value}"}
+h = {foo: 0, bar: 1, baz: 2}
+e = h.each # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each>
+h1 = e.each { |key, value| puts "#{key}: #{value}"}
+h1 # => {:foo=>0, :bar=>1, :baz=>2}
+h1.object_id == h.object_id # => true
 ```
 
 Output:
@@ -1293,9 +1297,11 @@ baz
 Returns an <tt>Enumerator</tt> if no block given:
 
 ```ruby
-e = h.each_key
-e #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each_key>
-e.each { |key| puts key }
+h = {foo: 0, bar: 1, baz: 2}
+e = h.each_key # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each_key>
+h1 = e.each { |key| puts key }
+h1 # => {:foo=>0, :bar=>1, :baz=>2}
+h1.object_id == h.object_id # => true
 ```
 
 Output:
@@ -1340,9 +1346,11 @@ baz: 2
 Returns an <tt>Enumerator</tt> if no block given:
 
 ```ruby
-e = h.each
-e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each_pair>
-e.each { |key, value| puts "#{key}: #{value}"}
+h = {foo: 0, bar: 1, baz: 2}
+e = h.each # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each_pair>
+h1 = e.each { |key, value| puts "#{key}: #{value}"}
+h1 # => {:foo=>0, :bar=>1, :baz=>2}
+h1.object_id == h.object_id # => true
 ```
 
 Output:
@@ -1387,9 +1395,11 @@ Output:
 Returns an <tt>Enumerator</tt> if no block given:
 
 ```ruby
-e = h.each_value
-e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each_value>
-e.each { |value| puts value }
+h = {foo: 0, bar: 1, baz: 2}
+e = h.each_value # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each_value>
+h1 = e.each { |value| puts value }
+h1 # => {:foo=>0, :bar=>1, :baz=>2}
+h1.object_id == h.object_id # => true
 ```
 
 Output:
@@ -1580,7 +1590,7 @@ Returns a new Enumerator if no block given:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-e = h.filter # => {:bar=>1, :baz=>2} # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:filter>
+e = h.filter # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:filter>
 h1 = e.each { |key, value| key.start_with?('b') }
 h1 # => {:bar=>1, :baz=>2}
 h1.object_id == h.object_id # => false
@@ -1623,8 +1633,10 @@ Returns a new Enumerator if no block given:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-e = h.filter! # => {:bar=>1, :baz=>2} # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:filter!>
-e.each { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+e = h.filter! # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:filter!>
+h1 = e.each { |key, value| key.start_with?('b') }
+h1 # => {:bar=>1, :baz=>2}
+h1.object_id == h.object_id # => true
 ```
 
 Raises an exception if the block attempts to add a new key:
@@ -1830,7 +1842,9 @@ Returns a new Enumerator if no block given:
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
 e = h.keep_if # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:keep_if>
-e.each { |key, value| key.start_with?('b') } # => {:bar=>1, :baz=>2}
+h1 = e.each { |key, value| key.start_with?('b') }
+h1 # => {:bar=>1, :baz=>2}
+h1.object_id == h.object_id # => true
 ```
 
 Raises an exception if the block attempts to add a new key:
@@ -2170,9 +2184,10 @@ Returns a new Enumerator if no block given:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-e = h.reject
-e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:reject>
-e.each { |key, value| key.start_with?('b') } # => {:foo=>0}
+e = h.reject # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:reject>
+h1 = e.each { |key, value| key.start_with?('b') }
+h1 # => {:foo=>0}
+h1.object_id == h.object_id # => false
 ```
 
 #### reject!
@@ -2203,9 +2218,10 @@ Returns a new Enumerator if no block given:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-e = h.reject!
-e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:reject!>
-e.each { |key, value| key.start_with?('b') } # => {:foo=>0}
+e = h.reject! # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:reject!>
+h1 = e.each { |key, value| key.start_with?('b') }
+h1 # => {:foo=>0}
+h1.object_id == h.object_id # => true
 ```
 
 Raises an exception if the block attempts to add a new key:
@@ -2258,9 +2274,10 @@ Returns a new Enumerator if no block given:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-e = h.select
-e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:select>
-e.each { |key, value| value < 2 } # => {:foo=>0, :bar=>1}
+e = h.select # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:select>
+h1 = e.each { |key, value| value < 2 }
+h1 # => {:foo=>0, :bar=>1}
+h1.object_id == h.object_id # => false
 ```
 
 Raises an exception if the block attempts to add a new key:
@@ -2298,10 +2315,10 @@ Returns a new Enumerator if no block given:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-e = h.select!
-e # => # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:select!>
-e.each { |key, value| value < 2 } # => {:foo=>0, :bar=>1}
-h # => {:foo=>0, :bar=>1}
+e = h.select! # => # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:select!>
+h1 = e.each { |key, value| value < 2 }
+h1 # => {:foo=>0, :bar=>1}
+h1.object_id == h.object_id # => true
 ```
 
 Raises an exception if the block attempts to add a new key:
@@ -2541,8 +2558,10 @@ h1.object_id == h.object_id # => false
 Returns a new Enumerator if no block given:
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-e = h.transform_keys
-e.each { |key| key.to_s } # => {"foo"=>0, "bar"=>1, "baz"=>2}
+e = h.transform_keys # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:transform_keys>
+h1 = e.each { |key| key.to_s }
+h1 # => {"foo"=>0, "bar"=>1, "baz"=>2}
+h1.object_id == h.object_id # => false
 ```
 
 Raises an exception if the block returns an invalid key (see [Invalid Hash Keys](#invalid-hash-keys)):
@@ -2579,7 +2598,7 @@ Returns a new Enumerator if no block given:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-e = h.transform_keys!
+e = h.transform_keys! # => #<Enumerator: {"foo"=>0, "bar"=>1, "baz"=>2}:transform_keys!>
 h1 = e.each { |key| key.to_s }
 h1 # => {"foo"=>0, "bar"=>1, "baz"=>2}
 h1.object_id == h.object_id # => true
@@ -2624,8 +2643,7 @@ Returns a new Enumerator if no block given:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-e = h.transform_values
-e
+e = h.transform_values # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:transform_values>
 h1 = e.each { |value| value * 100}
 h1 # => {:foo=>0, :bar=>100, :baz=>200}
 h1.object_id == h.object_id # => false
@@ -2660,9 +2678,10 @@ Returns a new Enumerator if no block given:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-e = h.transform_values!
-e.each { |value| value * 100} # => {:foo=>0, :bar=>100, :baz=>200}
-h # => {:foo=>0, :bar=>100, :baz=>200}
+e = h.transform_values! # => #<Enumerator: {:foo=>0, :bar=>100, :baz=>200}:transform_values!>
+h1 = e.each { |value| value * 100}
+h1 # => {:foo=>0, :bar=>100, :baz=>200}
+h1.object_id == h.object_id # => true
 ```
 
 Allows the block to add a new key:
