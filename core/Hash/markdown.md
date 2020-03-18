@@ -518,6 +518,7 @@ The initial default value and default proc are set to <tt>nil</tt> (see [Default
 
 ```Ruby
 h = Hash[]
+h # => {}
 h.class # => Hash
 h.default # => nil
 h.default_proc # => nil
@@ -536,7 +537,7 @@ When the only argument is an array of 2-element arrays, returns a new hash where
 Hash[ [ [:foo, 0], [:bar, 1] ] ] # => {:foo=>0, :bar=>1}
 ```
 
-When the only argument is a [Hash-convertible objects](#hash-convertible-objects),
+When the only argument is a [Hash-convertible object](#hash-convertible-objects),
 converts the object and returns the new hash:
 
 ```ruby
@@ -587,7 +588,9 @@ new(default_value) → new_hash
 new { |hash, key| ... } → new_hash
 ```
 
-Returns a new empty (no entries) Hash object. The new hash has an initial default value and an initial default proc that depend on which form above was used.  See [Default Values](#default-values).
+Returns a new empty Hash object.
+
+The new hash has an initial default value and an initial default proc that depend on which form above was used.  See [Default Values](#default-values).
 
 If neither default_value nor block given, initializes both the default value and the default proc to <tt>nil</tt>:
 
@@ -599,24 +602,24 @@ h.default # => nil
 h.default_proc # => nil
 ```
 
-If <tt>default_value</tt> given but no block given, initializes the default value to the given value and the default proc to <tt>nil</tt>:
+If <tt>default_value</tt> given but no block given,
+initializes the default value to the given <tt>default_value</tt> and the default proc to <tt>nil</tt>:
 
 ```ruby
 h = Hash.new(false)
 h # => {}
 h.default # => false
 h.default_proc # => nil
-h[:nosuch] # => false
 ```
 
-If block given but no argument given, stores the block as the default proc, and sets the default value (which will be ignored) to <tt>nil</tt>:
+If block given but no argument given, stores the block as the default proc,
+and sets the default value (which will be ignored) to <tt>nil</tt>:
 
 ```ruby
 h = Hash.new { |hash, key| "Default value for #{key}" }
 h # => {}
 h.default # => nil
 h.default_proc.class # => Proc
-h[:nosuch] # => "Default value for nosuch"
 ```
 
 Raises an exception if both default_value and a block are given:
@@ -646,7 +649,7 @@ hs = HashableSet.new([:foo, :bar, :baz])
 Hash.try_convert(hs) # => {:foo=>nil, :bar=>nil, :baz=>nil}
 ```
 
-Returns nil unless <tt>obj.respond_to?(:to_hash)</tt>:
+Returns <tt>nil</tt> unless <tt>obj.respond_to?(:to_hash)</tt>:
 
 ```ruby
 s = 'foo'
@@ -654,7 +657,7 @@ s.respond_to?(:to_hash) # => false
 Hash.try_convert(s) # => nil
 ```
 
-Returns nil unless <tt>obj.to_hash</tt> returns a Hash object:
+Returns <tt>nil</tt> unless <tt>obj.to_hash</tt> returns a Hash object:
 
 ```ruby
 class HashableSet < Set
@@ -730,7 +733,6 @@ Returns <tt>true</tt> if all of the following are true:
 * <tt>hash</tt> and <tt>other_hash</tt> have the same
   keys (regardless of order).
 * For each key <tt>key</tt>, <tt>hash[key] == other_hash[key]</tt>.
-
 Otherwise, returns <tt>false</tt>.
 
 Equal:
@@ -822,18 +824,18 @@ h >= 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 hash[key] → value
 ```
 
-Returns the value object corresponding to key <tt>key</tt>, if found:
+Returns the value associated with key <tt>key</tt>, if found:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
 h[:foo] # => 0
 ```
 
-Otherwise, returns the default value (see [Default Values](#default-values)):
+If <tt>key</tt> not found, returns the default value (see [Default Values](#default-values)):
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h[:nosuch] # => default value
+h[:nosuch] # => nil
 ```
 
 Raises an exception if <tt>key</tt> is invalid (see [Invalid Hash Keys](#invalid-hash-keys))):
@@ -850,7 +852,8 @@ hash[key] = value → value
 
 Associates <tt>value</tt> with <tt>key</tt>, and returns <tt>value</tt>.
 
-If key <tt>key</tt> exists, replaces its value:
+If key <tt>key</tt> exists, replaces its value;
+the ordering is not affected (see [Entry Order](#entry-order)):
 
 ```ruby
 h = {foo: 0, bar: 1}
@@ -858,16 +861,14 @@ h[:foo] = 2 # => 2
 h # => {:foo=>2, :bar=>1}
 ```
 
-The ordering is not affected; see [Entry Order](#entry-order).
-
-If key <tt>key</tt> does not exist, adds the key and value:
+If key <tt>key</tt> does not exist, adds the key and value;
+the new entry is last in the order (see [Entry Order](#entry-order)):
 
 ```ruby
 h = {foo: 0, bar: 1}
 h[:baz] = 2 # => 2
 h # => {:foo=>0, :bar=>1, :baz=>2}
 ```
-The new entry is last in the order; see [Entry Order](#entry-order).
 
 Raises an exception if the key is invalid
 (see [Invalid Hash Keys](#invalid-hash-keys)):
@@ -884,7 +885,7 @@ assoc(key) → new_array or nil
 ```
 
 If key <tt>key</tt> is found, returns a 2-element Array
-containing the key and its value:
+containing that key and its value:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -945,7 +946,8 @@ Returns <tt>self</tt> with all <tt>nil</tt>-valued entries removed:
 
 ```ruby
 h = {foo: 0, bar: nil, baz: 2, bat: nil}
-h1 = h.compact! # => {:foo=>0, :baz=>2}
+h1 = h.compact!
+h1 # => {:foo=>0, :baz=>2}
 h1.object_id == h.object_id # => true
 ```
 
@@ -976,7 +978,7 @@ h = {}
 h.compare_by_identity? # => false
 h[s0] = 0
 h[s1] = 1
-h.size # => 1
+h # => {"x"=>1}
 ```
 
 After calling <tt>compare_by_identity</tt>, the keys are considered different,
@@ -992,7 +994,7 @@ h1.object_id == h.object_id # => true
 h.compare_by_identity? # => true
 h[s0] = 0
 h[s1] = 1
-h.size # => 2
+h # => {"x"=>0, "x"=>1}
 ````
 
 #### compare_by_identity?
@@ -1110,7 +1112,7 @@ delete(key) → value
 delete(key) { |key| ... } → value
 ```
 
-If no block is given and the hash includes key <tt>key</tt>, deletes its entry and returns the associated value:
+If no block is given and key <tt>key</tt> is found, deletes its entry and returns the associated value:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -1118,7 +1120,7 @@ h.delete(:bar) # => 1
 h # => {:foo=>0, :baz=>2}
 ```
 
-If no block given and the hash does not include key <tt>key</tt>, returns <tt>nil</tt>:
+If no block given and key <tt>key</tt> is not found, returns <tt>nil</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -1126,7 +1128,7 @@ h.delete(:nosuch) # => nil
 h # => {:foo=>0, :bar=>1, :baz=>2}
 ```
 
-If a is block given and the hash includes key <tt>key</tt>, ignores the block, deletes the entry,
+If a is block given and key <tt>key</tt> is found, ignores the block, deletes the entry,
 and returns the associated value:
 
 ```ruby
@@ -1135,7 +1137,7 @@ h.delete(:baz) { |key| fail 'Will never happen'} # => 2
 h # => {:foo=>0, :bar=>1}
 ```
 
-If a block is given and the hash does not include key <tt>key</tt>,
+If a block is given and key <tt>key</tt> is not found,
 calls the block and returns the block's return value:
 
 ```ruby
@@ -1192,10 +1194,28 @@ h.delete_if { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a 
 dig(*keys) → value
 ```
 
-Returns the value for a specified key in nested objects:
+Returns the value for a specified object in nested objects.
+
+For nested Hash objects:
+* Retrieves the value associated with each successive key.
+* The first value is the one associated in <tt>self</tt> with the first key.
+* Each successive value is the one associated in the previous value with the next key.
+* The value finally returned from <tt>dig</tt> is the value found for the last key.
+
+Examples:
 
 ```ruby
-h = { foo: {bar: {baz: 2}}}
+h = {foo: 0}
+h.dig(:foo) # => 0
+```
+
+```ruby
+h = {foo: {bar: 1}}
+h.dig(:foo, :bar) # => 1
+```
+
+```ruby
+h = {foo: {bar: {baz: 2}}}
 h.dig(:foo, :bar, :baz) # => 2
 ```
 
@@ -1206,17 +1226,33 @@ h = { foo: {bar: {baz: 2}}}
 h.dig(:foo, :nosuch) # => nil
 ```
 
-Raises an exception if a traversed entry does not respond to <tt>dig</tt>:
+The nested objects may include any that respond to <tt>:dig</tt>,
+which includes instances of:
+* Hash
+* Array
+* Struct
+* OpenStruct
+* CSV::Table
+* CSV::Row
+
+Example:
 
 ```ruby
-h = { foo: [10, 11, 12] }
-h.dig(:foo, 1, 0) # Raises TypeError: Integer does not have #dig method
+h = {foo: {bar: [:a, :b, :c]}}
+h.dig(:foo, :bar, 2) # => :c
 ```
 
 Raises an exception if any given key is invalid (see [Invalid Hash Keys](#invalid-hash-keys)):
 
 ```ruby
 h.dig(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+```
+
+Raises an exception if a traversed entry does not respond to <tt>dig</tt>:
+
+```ruby
+h = { foo: 1 }
+h.dig(:foo, 1) # Raises TypeError: Integer does not have #dig method
 ```
 
 #### each
