@@ -1778,7 +1778,7 @@ Returns the Integer hash value for the hash:
 
 ```ruby
 h1 = {foo: 0, bar: 1, baz: 2}
-h1.hash # => 983977779
+h1.hash.class # => Integer
 ```
 
 Two Hash objects have the same hash value if their content is the same:
@@ -1851,7 +1851,7 @@ Raises an exception if any value cannot be a key:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: BasicObject.new}
-h.invert NoMethodError (undefined method `hash' for #<BasicObject:>)
+h.invert # =>> Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 ```
 
 #### keep_if
@@ -2845,7 +2845,7 @@ Returns an empty Array if no arguments given:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.values_at # => [0, 2]
+h.values_at # => []
 ```
 
 Raises an exception if any given key is invalid
