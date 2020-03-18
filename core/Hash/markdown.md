@@ -904,7 +904,7 @@ Raises an exception if the key is invalid
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.assoc(BasicObject.new) Raises NoMethodError (undefined method `hash' for #<BasicObject>)
+h.assoc(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject>)
 ```
 
 #### clear
@@ -1851,7 +1851,7 @@ Raises an exception if any value cannot be a key:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: BasicObject.new}
-h.invert # =>> Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+h.invert # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 ```
 
 #### keep_if
@@ -2853,5 +2853,5 @@ Raises an exception if any given key is invalid
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h.values_at(BasicObject.new) # => [0, 2]
+h.values_at(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:0x0000000006c13800>)
 ```
