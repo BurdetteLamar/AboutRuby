@@ -424,7 +424,7 @@ Returns a new Hash object populated with the given objects, if any.
 
 The initial default value and default proc are set to <tt>nil</tt> (see [Default Values](#default-values)):
 
-```Ruby
+```ruby
 h = Hash[]
 h # => {}
 h.class # => Hash
