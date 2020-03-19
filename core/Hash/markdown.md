@@ -2493,9 +2493,10 @@ For a subclass of Hash, returns a new Hash containing the content of <tt>self</t
 class H < Hash; end
 h = H[foo: 0, bar: 1, baz: 2]
 h # => {:foo=>0, :bar=>1, :baz=>2}
-h.class # => Hhash = h.to_h
-hash # => {:foo=>0, :bar=>1, :baz=>2}
-hash.class # => Hash
+h.class # => H
+h1 = h.to_h
+h1 # => {:foo=>0, :bar=>1, :baz=>2}
+h1.class # => Hash
 ```
 
 When a block is given, returns a new Hash object
