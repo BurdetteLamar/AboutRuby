@@ -1011,11 +1011,13 @@ h = {}
 h.default_proc # => nil
 h.default_proc = proc { |hash, key| "Default value for #{key}" }
 h.default_proc.class # => Proc
+h.default_proc = nil
+h.default_proc # => nil
 ```
 
 See [Default Values](#default-values).
 
-Raises an exception if <tt>proc</tt> is not a <tt>Proc</tt> object:
+Raises an exception if <tt>proc</tt> is not a <tt>Proc</tt> object or <tt>nil</tt>:
 
 ```ruby
 h = {}
