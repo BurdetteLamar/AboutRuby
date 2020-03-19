@@ -1208,10 +1208,10 @@ dig(*keys) → value
 Returns the value for a specified object in nested objects.
 
 For nested Hash objects:
-* Retrieves the value associated with each successive key.
-* The first value is the one associated in <tt>self</tt> with the first key.
-* Each successive value is the one associated in the previous value with the next key.
-* The value finally returned from <tt>dig</tt> is the value found for the last key.
+* For each key in <tt>*keys</tt>, calls method <tt>dig</tt> on a receiver.
+* The first receiver is <tt>self</tt>.
+* Each successive receiver is the value returned by the previous call to <tt>dig</tt>.
+* The value finally returned is the value returned by the last call to <tt>dig</tt>.
 
 Examples:
 
@@ -1230,7 +1230,7 @@ h = {foo: {bar: {baz: 2}}}
 h.dig(:foo, :bar, :baz) # => 2
 ```
 
-Returns <tt>nil</tt> if the key is not found:
+Returns <tt>nil</tt> if any key is not found:
 
 ```ruby
 h = { foo: {bar: {baz: 2}}}
@@ -1259,7 +1259,7 @@ Raises an exception if any given key is invalid (see [Invalid Hash Keys](#invali
 h.dig(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 ```
 
-Raises an exception if a traversed entry does not respond to <tt>dig</tt>:
+Raises an exception if any receiver does not respond to <tt>dig</tt>:
 
 ```ruby
 h = { foo: 1 }
