@@ -1871,7 +1871,7 @@ h.keys # => [:foo, :bar, :baz]
 length → an_integer
 ```
 
-Returns the count the entiries in <tt>self</tt>:
+Returns the count the entries in <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
