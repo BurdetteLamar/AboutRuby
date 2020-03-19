@@ -1315,7 +1315,7 @@ h = {foo: 0, bar: 1, baz: 2}
 h.each { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new key into hash during iteration)
 ```
 
-<tt>each</tt> is an alias for <tt>#each_pair</tt>.
+<tt>#each</tt> is an alias for <tt>#each_pair</tt>.
 
 #### each_key
 
