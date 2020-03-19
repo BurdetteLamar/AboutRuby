@@ -665,16 +665,16 @@ s.respond_to?(:to_hash) # => false
 Hash.try_convert(s) # => nil
 ```
 
-Returns <tt>nil</tt> unless <tt>obj.to_hash</tt> returns a Hash object:
+Raises an exception unless <tt>obj.to_hash</tt> returns a Hash object:
 
 ```ruby
 class HashableSet < Set
   def to_hash
-    nil
+    1
   end
 end
 hs = HashableSet.new([:foo, :bar, :baz])
-Hash.try_convert(hs) # => nil
+Hash.try_convert(hs) # Raises TypeError (can't convert HashableSet to Hash (HashableSet#to_hash gives Integer))
 ```
 
 ### Public Instance Methods
