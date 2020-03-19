@@ -439,7 +439,8 @@ h.default # => nil
 h.default_proc # => nil
 ```
 
-When an even number of arguments is given, returns a new hash wherein each successive even/odd pair of arguments forms a key-value entry:
+When an even number of arguments is given,
+returns a new hash wherein each successive pair of arguments has become a key-value entry:
 
 ```ruby
 Hash[] # => {}
