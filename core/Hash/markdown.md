@@ -1172,7 +1172,7 @@ delete_if → new_enumerator
 ```
 
 Calls the block with each key-value pair,
-deletes each entry for which the block returns <tt>false</tt> or <tt>nil</tt>,
+deletes each entry for which the block returns a truthy value,
 and returns <tt>self</tt>:
 
 ```ruby
