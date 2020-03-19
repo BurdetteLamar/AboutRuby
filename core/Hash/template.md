@@ -1939,7 +1939,7 @@ h = {foo: 0, bar: 1, baz: 2}
 h1 = {bat: 3, bar: 4}
 h2 = {bam: 5, bat:6}
 h3 = h.merge(h1, h2) { |key, old_value, new_value| old_value + new_value }
-h3 
+h3 # => {:foo=>0, :bar=>5, :baz=>2, :bat=>9, :bam=>5}
 h3.object_id == h.object_id # => false
 ```
 
@@ -1963,9 +1963,9 @@ h = {foo: 0, bar: 1, baz: 2}
 h1 = h.merge
 h1 # => {:foo=>0, :bar=>1, :baz=>2}
 h1.object_id == h.object_id # => false
-h3 = h.merge { |key, old_value, new_value| fail 'Cannot happen' }
-h3 # => {:foo=>0, :bar=>1, :baz=>2}
-h3.object_id == h.object_id # => false
+h2 = h.merge { |key, old_value, new_value| fail 'Cannot happen' }
+h2 # => {:foo=>0, :bar=>1, :baz=>2}
+h2.object_id == h.object_id # => false
 ```
 
 Raises an exception if any given argument
