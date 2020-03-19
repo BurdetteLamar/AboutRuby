@@ -264,7 +264,7 @@ h[:nosuch] # => false
 
 ### Entry Order
 
-A Hash object presents its entries in the of their creation. This is seen in:
+A Hash object presents its entries in the order of their creation. This is seen in:
 
 * Iterative methods such as <tt>each</tt>, <tt>each_key</tt>, <tt>each_pair</tt>, <tt>each_value</tt>.
 * Other order-sensitive methods such as <tt>shift</tt>, <tt>keys</tt>, <tt>values</tt>.
