@@ -2289,7 +2289,8 @@ returns <tt>self</tt>:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-h1 = h.replace({bat: 3, bam: 4}) # => {:bat=>3, :bam=>4}
+h1 = h.replace({bat: 3, bam: 4})
+h1 # => {:bat=>3, :bam=>4}
 h1.object_id == h.object_id # => true
 ```
 
