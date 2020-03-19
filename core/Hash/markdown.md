@@ -365,9 +365,15 @@ A Hash object presents its entries in the order of their creation. This is seen 
 A new Hash has its initial ordering per the given entries:
 
 ```ruby
-h = Hash[foo: 0, bar: 1, baz: 2]
-h # => {:foo=>0, :bar=>1, :baz=>2}
+h = Hash[foo: 0, bar: 1]
+h # => {:foo=>0, :bar=>1}
+```
 
+New entries are added at the end:
+
+```ruby
+h[:baz] = 2
+h # => {:foo=>0, :bar=>1, :baz=>2}
 ```
 
 Updating a value does not affect the order:
