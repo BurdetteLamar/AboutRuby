@@ -2476,7 +2476,7 @@ proc.class # => Proc
 proc.call(:foo) # => 0
 proc.call(:bar) # => 1
 proc.call(:nosuch) # => nil
-[:foo, :bar, :noosuch].map(&h) # => [0, 1, nil]
+[:foo, :bar, :nosuch].map(&h) # => [0, 1, nil]
 ```
 
 #### to_s
