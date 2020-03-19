@@ -2382,7 +2382,7 @@ h.select! { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a ne
 shift → [key, value] or default_value
 ```
 
-Removes the first entry from <tt>self</tt>,
+Removes the first entry from <tt>self</tt> (see [Entry Order](#entry-order),
 returning a 2-element Array containing the removed key and its value:
 
 ```ruby
