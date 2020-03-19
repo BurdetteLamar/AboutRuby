@@ -50,7 +50,7 @@ But it's an error to try the JSON-style syntax
 for a key that's not a bareword or a String:
 
 ```ruby
-h = {0: 'zero'} # Raises SyntaxError ((irb):42: syntax error, unexpected ':', expecting =>)
+h = {0: 'zero'} # Raises SyntaxError (syntax error, unexpected ':', expecting =>)
 
 ```
 
@@ -87,13 +87,13 @@ matz # => #<Dev: @name="Matz", @language="Ruby">
 ### Creating a Hash
 
 Here are three ways to create a Hash:
-* Constructor method: Hash.new.
-* Literal method: Hash.[].
-* Implicit Form: {}.
+* Constructor method: <tt>Hash.new.</tt>
+* Literal method: <tt>Hash[]</tt>.
+* Implicit Form: <tt>{}</tt>.
 
 #### Constructor Hash.new
 
-You can create a Hash by using the constructor method, Hash.new.
+You can create a Hash by using the constructor method, <tt>Hash.new</tt>.
 
 Create an empty Hash:
 
@@ -105,7 +105,7 @@ h.class # => Hash
 
 #### Hash Literal
 
-You can create a Hash by using its literal method, Hash.[].
+You can create a Hash by using its literal method, <tt>Hash[]</tt>.
 
 Create an empty Hash:
 
