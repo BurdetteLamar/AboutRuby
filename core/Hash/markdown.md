@@ -741,6 +741,7 @@ Returns <tt>true</tt> if all of the following are true:
 * <tt>hash</tt> and <tt>other_hash</tt> have the same
   keys (regardless of order).
 * For each key <tt>key</tt>, <tt>hash[key] == other_hash[key]</tt>.
+
 Otherwise, returns <tt>false</tt>.
 
 Equal:
