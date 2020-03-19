@@ -261,7 +261,8 @@ h # => {:foo=>4, :bar=>1, :baz=>2}
 
 ### Default Values
 
-For a Hash key that does not exist, method <tt>[]</tt> returns a default value that is based on both:
+For a Hash key that does not exist, method <tt>[]</tt> returns a default value
+that is based on two settings in the Hash:
 
 * Its default value.
 * Its default proc.
