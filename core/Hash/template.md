@@ -2512,6 +2512,15 @@ h1 # => {"foo"=>0, "bar"=>1, "baz"=>2}
 h1.object_id == h.object_id # => false
 ```
 
+Overwrites values for duplicate keys:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h1 = h.transform_keys { |key| :bat }
+h1 # => {:bat=>2}
+h1.object_id == h.object_id # => false
+```
+
 Returns a new Enumerator if no block given:
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
@@ -2548,6 +2557,15 @@ Returns <tt>self</tt> with new keys provided by the block:
 h = {foo: 0, bar: 1, baz: 2}
 h1 = h.transform_keys! { |key| key.to_s }
 h1 # => {"foo"=>0, "bar"=>1, "baz"=>2}
+h1.object_id == h.object_id # => true
+```
+
+Overwrites values for duplicate keys:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h1 = h.transform_keys! { |key| :bat }
+h1 # => {:bat=>2}
 h1.object_id == h.object_id # => true
 ```
 
