@@ -207,7 +207,7 @@ h[:nosuch_1] # => "FOO"
 When the default proc for a Hash is set, the returned default value is determined by the default proc alone
 (and the default value is ignored).
 
-For a Hash that's to be created by Hash.new, you can initialize the default proc by including a block:
+For a Hash that's to be created by <tt>Hash.new</tt>, you can initialize the default proc by including a block:
 
 ```ruby
 h = Hash.new { |hash, key| "Default value for #{key}" }
