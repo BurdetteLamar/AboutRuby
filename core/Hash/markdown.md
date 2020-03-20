@@ -27,17 +27,17 @@ A Hash has certain similarities to an Array, but:
   - [User-Defined Hash Keys](#user-defined-hash-keys)
 - [Hash-Convertible Objects](#hash-convertible-objects)
 - [Public Class Methods](#public-class-methods)
-  - [::[]](#)
+  - [::[] (Literal)](#-literal)
   - [::new](#new)
   - [::try_convert](#try_convert)
 - [Public Instance Methods](#public-instance-methods)
-  - [<](#-1)
-  - [<=](#-2)
-  - [==](#-3)
-  - [>](#-4)
-  - [>=](#-5)
-  - [[]](#-6)
-  - [[]=](#-7)
+  - [< (Proper Subset)](#-proper-subset)
+  - [<= (Subset)](#-subset)
+  - [== (Equality)](#-equality)
+  - [> (Proper Superset)](#-proper-superset)
+  - [>= (Superset)](#-superset)
+  - [[] (Index)](#-index)
+  - [[]= (Assignment)](#-assignment)
   - [assoc](#assoc)
   - [clear](#clear)
   - [compact](#compact)
@@ -510,7 +510,7 @@ h.merge(NotHashConvertible.new) # Raises TypeError (can't convert NotHashConvert
 
 ### Public Class Methods
 
-#### ::[]
+#### ::[] (Literal)
 
 ```
 Hash[] → new_empty_hash
@@ -679,7 +679,7 @@ Hash.try_convert(hs) # Raises TypeError (can't convert HashableSet to Hash (Hash
 
 ### Public Instance Methods
 
-#### <
+#### < (Proper Subset)
 
 ```
 hash < other_hash → true or false
@@ -704,7 +704,7 @@ h = {}
 h < 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 ```
 
-#### <=
+#### <= (Subset)
 
 ```
 hash <= other_hash → true or false
@@ -730,7 +730,7 @@ h <= 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 ```
 
 
-#### ==
+#### == (Equality)
 
 ```
 hash == other_hash → true or false
@@ -777,7 +777,7 @@ h2 = {foo: 0, bar: 1, baz: 3}
 h1 == h2 # => false
 ```
 
-#### >
+#### > (Proper Superset)
 
 ```
 hash > other_hash → true or false
@@ -802,7 +802,7 @@ h = {}
 h > 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 ```
 
-#### >=
+#### >= (Superset)
 
 ```
 hash >= other_hash → true or false
@@ -827,7 +827,7 @@ h = {}
 h >= 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 ```
 
-#### []
+#### [] (Index)
 
 ```
 hash[key] → value
@@ -853,7 +853,7 @@ Raises an exception if <tt>key</tt> is invalid (see [Invalid Hash Keys](#invalid
 h = {}
 h[BasicObject.new] # Raises NoMethodError (undefined method `to_s' for #<BasicObject:>)
 ```
-#### []=
+#### []= (Assignment)
 
 ```
 hash[key] = value → value

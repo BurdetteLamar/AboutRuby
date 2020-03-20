@@ -425,7 +425,7 @@ h.merge(NotHashConvertible.new) # Raises TypeError (can't convert NotHashConvert
 
 ### Public Class Methods
 
-#### ::[]
+#### ::[] (Literal)
 
 ```
 Hash[] → new_empty_hash
@@ -594,7 +594,7 @@ Hash.try_convert(hs) # Raises TypeError (can't convert HashableSet to Hash (Hash
 
 ### Public Instance Methods
 
-#### <
+#### < (Proper Subset)
 
 ```
 hash < other_hash → true or false
@@ -619,7 +619,7 @@ h = {}
 h < 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 ```
 
-#### <=
+#### <= (Subset)
 
 ```
 hash <= other_hash → true or false
@@ -645,7 +645,7 @@ h <= 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 ```
 
 
-#### ==
+#### == (Equality)
 
 ```
 hash == other_hash → true or false
@@ -692,7 +692,7 @@ h2 = {foo: 0, bar: 1, baz: 3}
 h1 == h2 # => false
 ```
 
-#### >
+#### > (Proper Superset)
 
 ```
 hash > other_hash → true or false
@@ -717,7 +717,7 @@ h = {}
 h > 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 ```
 
-#### >=
+#### >= (Superset)
 
 ```
 hash >= other_hash → true or false
@@ -742,7 +742,7 @@ h = {}
 h >= 1 # Raises TypeError (no implicit conversion of Integer into Hash)
 ```
 
-#### []
+#### [] (Index)
 
 ```
 hash[key] → value
@@ -768,7 +768,7 @@ Raises an exception if <tt>key</tt> is invalid (see [Invalid Hash Keys](#invalid
 h = {}
 h[BasicObject.new] # Raises NoMethodError (undefined method `to_s' for #<BasicObject:>)
 ```
-#### []=
+#### []= (Assignment)
 
 ```
 hash[key] = value → value
