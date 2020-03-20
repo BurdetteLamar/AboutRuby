@@ -186,7 +186,14 @@ h.default # => nil
 h[:nosuch] # => nil
 ```
 
-You can set the default value with method <tt>default=</tt>:
+You can initialize the default value with method <tt>Hash.new</tt>:
+
+```ruby
+h = Hash.new(false)
+h.default # => false
+h[:nosuch] # => false
+```
+You can update the default value with method <tt>default=</tt>:
 
 ```ruby
 h.default = false
