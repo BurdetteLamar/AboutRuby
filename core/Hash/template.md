@@ -169,59 +169,86 @@ h # => {:foo=>4, :bar=>1, :baz=>2}
 
 ### Default Values
 
-For a Hash key that does not exist, method <tt>[]</tt> returns a default value
-that is based on two settings in the Hash:
+For a key that is not found, method <tt>[]</tt> returns a default value
+determined by:
 
-* Its default value.
-* Its default proc.
+* Its default proc, if the default proc is not <tt>nil</tt>.
+* Its default value, otherwise.
 
 #### Default Value
 
-The simplest case is seen when the default proc for the Hash has not been set (i.e., is <tt>nil</tt>). In that case the value of method default (initially <tt>nil</tt>) is returned:
+A Hash object's default value is relevant only
+when its default proc is <tt>nil</tt>.
+(Initially, both are <tt>nil</tt>.)
+
+You can retrieve the default value with method #default:
+
+```ruby
+h = Hash.new
+h.default # => nil
+```
+
+You can initialize the default value by passing an argument to method Hash.new:
+
+```ruby
+h = Hash.new(false)
+h.default # => false
+```
+
+You can update the default value with method #default=:
+
+```ruby
+h = Hash.new
+h.default # => nil
+h.default = false
+h.default # => false
+```
+
+When the default proc is <tt>nil</tt>,
+method #[] returns the value of method #default:
 
 ```ruby
 h = Hash.new
 h.default_proc # => nil
 h.default # => nil
 h[:nosuch] # => nil
-```
-
-You can initialize the default value with method <tt>Hash.new</tt>:
-
-```ruby
-h = Hash.new(false)
-h.default # => false
-h[:nosuch] # => false
-```
-You can update the default value with method <tt>default=</tt>:
-
-```ruby
 h.default = false
 h[:nosuch] # => false
 ```
 
-For certain kinds of default values (e.g., a String), the default can be modified thus:
+For certain kinds of default values, the default value can be modified thus:
 
 ```ruby
 h = Hash.new('Foo')
 h[:nosuch] # => "Foo"
-h[:nosuch_0].upcase! # => "FOO"
-h[:nosuch_1] # => "FOO"
+h[:nosuch].upcase! # => "FOO"
+h[:nosuch] # => "FOO"
+h.default = [0, 1]
+h[:nosuch] # => [0, 1]
+h[:nosuch].reverse! # => [1, 0]
+h[:nosuch] # => [1, 0]
 ```
 
-#### Default Proc
+#### Default \Proc
 
-When the default proc for a Hash is set, the returned default value is determined by the default proc alone
-(and the default value is ignored).
+When the default proc for a Hash is set (i.e., not <tt>nil</tt>),
+the default value returned by method #[] is determined by the default proc alone.
 
-For a Hash that's to be created by <tt>Hash.new</tt>, you can initialize the default proc by including a block:
+You can retrieve the default proc with method #default_proc:
+
+```ruby
+h = Hash.new
+h.default_proc # => nil
+```
+
+You can initialize the default proc by by calling Hash.new with a block:
 
 ```ruby
 h = Hash.new { |hash, key| "Default value for #{key}" }
 h.default_proc.class # => Proc
 ```
 
-You can also set the default proc with method <tt>default_proc=</tt>:
+You can update the default proc with method #default_proc=:
 
 ```ruby
 h = Hash.new
@@ -230,27 +257,30 @@ h.default_proc = proc { |hash, key| "Default value for #{key}" }
 h.default_proc.class # => Proc
 ```
 
-When the default proc is set (i.e., not <tt>nil</tt>) and method <tt>[]</tt> is called with with a non-existent key, the block is called with both the Hash object itself and the missing key; the block's return value is returned as the key's value:
+When the default proc is set (i.e., not <tt>nil</tt>)
+and method #[] is called with with a non-existent key,
+method #[] calls the default proc with both the Hash object itself and the missing key,
+then returns the proc's return value:
 
 ```ruby
 h = Hash.new { |hash, key| "Default value for #{key}" }
 h[:nosuch] # => "Default value for nosuch"
 ```
 
-In this case, the default value is ignored:
+And the default value is ignored:
 
 ```ruby
 h.default = false
 h[:nosuch] # => "Default value for nosuch"
 ```
 
-Note also that in the example above no entry for key <tt>:nosuch</tt> is created:
+Note that in the example above no entry for key +:nosuch+ is created:
 
 ```ruby
 h.include?(:nosuch) # => false
 ```
 
-However, the block itself can add a new entry:
+However, the proc itself can add a new entry:
 
 ```ruby
 h = Hash.new { |hash, key| hash[key] = "Subsequent value for #{key}"; "First value for #{key}" }
@@ -261,13 +291,13 @@ h[:nosuch] # => "Subsequent value for nosuch"
 h[:nosuch] # => "Subsequent value for nosuch"
 ```
 
-Setting the default proc to <tt>nil</tt> causes a missing-key reference to return the default value:
-
+You can set the default proc to <tt>nil</tt>, which restores control to the default value:
+ 
 ```ruby
 h.default_proc = nil
 h.default = false
 h[:nosuch] # => false
-```
+````
 
 ### Entry Order
 
@@ -461,7 +491,7 @@ Hash[ [ [:foo, 0], [:bar, 1] ] ] # => {:foo=>0, :bar=>1}
 ```
 
 When the only argument is a [Hash-convertible object](#hash-convertible-objects),
-converts the object and returns the new hash:
+converts the object and returns the resulting Hash:
 
 ```ruby
 class Foo
@@ -553,9 +583,9 @@ Hash.new(0) { } # Raises ArgumentError (wrong number of arguments (given 1, expe
 
 #### ::try_convert
 
-````
+```
  try_convert(obj) → new_hash or nil
-````
+```
 
 Returns the Hash object created by calling
 <tt>obj.to_hash</tt>.
@@ -919,7 +949,7 @@ h.compare_by_identity? # => true
 h[s0] = 0
 h[s1] = 1
 h # => {"x"=>0, "x"=>1}
-````
+```
 
 #### compare_by_identity?
 
