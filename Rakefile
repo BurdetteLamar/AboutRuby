@@ -1,4 +1,11 @@
+require 'rake/testtask'
 require 'markdown_helper'
+
+Rake::TestTask.new(:test) do |t|
+  t.libs << 'test'
+  t.libs << 'lib'
+  t.test_files = FileList['test/**/*_test.rb']
+end
 
 RakefileDirPath = File.dirname(__FILE__)
 
@@ -16,7 +23,6 @@ namespace :build do
     template_file_paths.each do |template_file_path|
       template_dir_path = File.dirname(template_file_path)
       section_name, topic_name = template_dir_path.split('/')
-      next unless topic_name == 'Hash'
       if section_name != current_section_name
         contents.push("- #{section_name}")
         current_section_name = section_name
@@ -33,3 +39,5 @@ namespace :build do
     markdown_helper.include('README.template.md', 'README.md')
   end
 end
+
+task :default => :test

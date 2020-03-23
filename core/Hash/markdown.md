@@ -14,12 +14,14 @@ A Hash has certain similarities to an Array, but:
   - [Constructor Hash.new](#constructor-hashnew)
   - [Hash Literal](#hash-literal)
   - [Hash Implicit Form](#hash-implicit-form)
-- [Getting a Hash Value](#getting-a-hash-value)
-- [Setting a Hash Value](#setting-a-hash-value)
-- [Deleting a Hash Value](#deleting-a-hash-value)
+- [Hash Value Basics](#hash-value-basics)
+  - [Getting a Hash Value](#getting-a-hash-value)
+  - [Setting a Hash Value](#setting-a-hash-value)
+  - [Deleting a Hash Value](#deleting-a-hash-value)
+- [Chaining Method Calls](#chaining-method-calls)
 - [Default Values](#default-values)
   - [Default Value](#default-value)
-  - [Default \Proc](#default-proc)
+  - [Default Proc](#default-proc)
 - [Entry Order](#entry-order)
 - [Hash Keys](#hash-keys)
   - [Invalid Hash Keys](#invalid-hash-keys)
@@ -231,7 +233,9 @@ h = {foo: 0, bar: 1, baz: 2}
 h # => {:foo=>0, :bar=>1, :baz=>2}
 ```
 
-### Getting a Hash Value
+### Hash Value Basics
+
+#### Getting a Hash Value
 
 The simplest way to get a Hash value (instance method <tt>[]</tt>):
 
@@ -239,7 +243,7 @@ The simplest way to get a Hash value (instance method <tt>[]</tt>):
 h[:foo] # => 0
 ```
 
-### Setting a Hash Value
+#### Setting a Hash Value
 
 The simplest way to create or update a Hash value (instance method <tt>[]=</tt>):
 
@@ -250,13 +254,23 @@ h[:foo] = 4 # => 4
 h # => {:foo=>4, :bar=>1, :baz=>2, :bat=>3}
 ```
 
-### Deleting a Hash Value
+#### Deleting a Hash Value
 
 The simplest way to delete a Hash entry (instance method <tt>delete</tt>):
 
 ```ruby
 h.delete(:bat) # => 3
 h # => {:foo=>4, :bar=>1, :baz=>2}
+```
+
+### Chaining Method Calls
+
+Many Hash instance methods return <tt>self</tt>.
+For those methods, you can chain method calls:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+h.keep_if { |key, value| key.start_with?('b') }.size # => 2
 ```
 
 ### Default Values
@@ -321,7 +335,7 @@ h[:nosuch].reverse! # => [1, 0]
 h[:nosuch] # => [1, 0]
 ```
 
-#### Default \Proc
+#### Default Proc
 
 When the default proc for a Hash is set (i.e., not <tt>nil</tt>),
 the default value returned by method #[] is determined by the default proc alone.
