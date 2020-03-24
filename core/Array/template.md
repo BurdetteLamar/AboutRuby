@@ -677,7 +677,6 @@ a.slice(-2..2) # => ["bar", 2]
 a.slice(-3..2) # => [:foo, "bar", 2]
 ```
 
-
 #### unshift
 
 ```

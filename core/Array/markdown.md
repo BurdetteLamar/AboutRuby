@@ -633,13 +633,22 @@ a.slice(0, 2) # => [:foo, "bar"]
 a.slice(1, 2) # => ["bar", 2]
 ```
 
-It <tt>start + length</tt> is greater than <tt>ary.length</tt>,
+If <tt>start + length</tt> is greater than <tt>ary.length</tt>,
 returns <tt>ary.size - start</tt> elements:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
 a.slice(0, 50) # => [:foo, "bar", 2]
 a.slice(1, 50) # => ["bar", 2]
+```
+
+If <tt>start == a.size</tt> and <tt>length >= 0</tt>,
+returns a new empty Array:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[a.size, 0] # => []
+a[a.size, 50] # => []
 ```
 
 If <tt>length</tt> is negative,
@@ -658,12 +667,21 @@ and <tt>rng.size</tt> as <tt>length</tt> above:
 ```ruby
 a = [:foo, 'bar', baz = 2]
 a.slice(0..1) # => [:foo, "bar"]
-a.slice(0, 2) # => [:foo, "bar"]
 a.slice(1..2) # => ["bar", 2]
-a.slice(1, 2) # => ["bar", 2]
 ```
 
-When <tt>rng.end</tt> is negative,
+If <tt>rng.start == a.size</tt>,
+returns a new empty Array:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.slice(a.size..0) # => []
+a.slice(a.size..50) # => []
+a.slice(a.size..-1) # => []
+a.slice(a.size..-50) # => []
+```
+
+If <tt>rng.end</tt> is negative,
 calculates the end index from the end of <tt>ary</tt>:
 
 ```ruby
@@ -674,7 +692,7 @@ a.slice(0..-3) # => [:foo]
 a.slice(0..-4) # => []
 ```
 
-When <tt>rng.start</tt> is negative,
+If <tt>rng.start</tt> is negative,
 calculates the start index from the end of <tt>ary</tt>:
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -682,7 +700,6 @@ a.slice(-1..2) # => [2]
 a.slice(-2..2) # => ["bar", 2]
 a.slice(-3..2) # => [:foo, "bar", 2]
 ```
-
 
 #### unshift
 
