@@ -27,6 +27,7 @@ An Array element can be accessed via an Integer index:
   - [::try_convert](#try_convert)
 - [Public Instance Methods](#public-instance-methods)
   - [<< (Append)](#-append)
+  - [[] (Element Reference)](#-element-reference)
   - [append](#append)
   - [freeze](#freeze)
   - [pop](#pop)
@@ -343,6 +344,122 @@ Chained:
 a = [:foo, 'bar', baz = 2]
 a << :bam << :bat
 a # => [:foo, "bar", 2, :bam, :bat]
+```
+
+#### [] (Element Reference)
+
+```
+ary[n] → obj or nil
+ary[start, length] → new_array or nil
+ary[range] → new_array or nil
+```
+
+Returns elements from <tt>ary</tt>; does not remove the elements from <tt>ary</tt>.
+
+When the only argument is an Integer <tt>n</tt>,
+returns the <tt>n</tt>th element in <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[0] # => :foo
+a[2] # => 2
+a # => [:foo, "bar", 2]
+```
+
+If <tt>n</tt> is negative,
+counts relative to the end of <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[-1] # => 2
+a[-2] # => "bar"
+```
+
+If <tt>n</tt> is out of range,
+returns <tt>nil</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[50] # => nil
+a[-50] # => nil
+```
+
+When the only arguments are Integers <tt>start</tt> and <tt>length</tt>,
+returns a new array of size <tt>length</tt>
+containing elements of <tt>ary</tt> beginning at index <tt>start</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[0, 2] # => [:foo, "bar"]
+a[1, 2] # => ["bar", 2]
+```
+
+If <tt>start + length</tt> is greater than <tt>ary.length</tt>,
+returns <tt>ary.size - start</tt> elements:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[0, 50] # => [:foo, "bar", 2]
+a[1, 50] # => ["bar", 2]
+```
+
+If <tt>start == a.size</tt> and <tt>length >= 0</tt>,
+returns a new empty Array:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[a.size, 0] # => []
+a[a.size, 50] # => []
+```
+
+If <tt>length</tt> is negative,
+returns <tt>nil</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[2, -1] # => nil
+a[1, -2] # => nil
+```
+
+When the only argument is a Range object <rng>,
+treats <tt>rng.min</tt> as <tt>start</tt> above
+and <tt>rng.size</tt> as <tt>length</tt> above:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[0..1] # => [:foo, "bar"]
+a[1..2] # => ["bar", 2]
+```
+
+If <tt>rng.start == a.size</tt>,
+returns a new empty Array:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[a.size..0] # => []
+a[a.size..50] # => []
+a[a.size..-1] # => []
+a[a.size..-50] # => []
+```
+
+If <tt>rng.end</tt> is negative,
+calculates the end index from the end of <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[0..-1] # => [:foo, "bar", 2]
+a[0..-2] # => [:foo, "bar"]
+a[0..-3] # => [:foo]
+a[0..-4] # => []
+```
+
+If <tt>rng.start</tt> is negative,
+calculates the start index from the end of <tt>ary</tt>:
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[-1..2] # => [2]
+a[-2..2] # => ["bar", 2]
+a[-3..2] # => [:foo, "bar", 2]
 ```
 
 #### append
