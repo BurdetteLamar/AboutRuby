@@ -18,7 +18,7 @@ Here are four ways to create an Array:
 * Constructor method: <tt>Array.new.</tt>
 * Literal method: <tt>Array[]</tt>.
 * Implicit Form: <tt>[]</tt>.
-* Kernel method: <tt>Array(*elements)
+* Kernel method: <tt>Array(*elements)</tt>
 
 #### Constructor Array.new
 
@@ -123,55 +123,6 @@ a = [:foo, 'bar', baz = 2]
 a.freeze.frozen? # => true
 ```
 
-### Array-Convertible Objects
-
-Some Array methods accept one or more Array-convertible objects as arguments.
-
-Here, "Array-convertible object" means an object that:
-* Has an instance method <tt>to_ary</tt>.
-* The method accepts no arguments.
-* The method returns an object <tt>obj</tt> for which <tt>obj.kind_of?(Array)</tt> returns <tt>true</tt>.
-
-This class is Array-convertible:
-
-```ruby
-class ArrayConvertible
-  def to_ary
-    [:foo, 'bar', baz = 2]
-  end
-end
-a = Array.new(ArrayConvertible.new)
-a # => [:foo, "bar", 2]
-```
-
-Class Symbol is not Array-convertible (no <tt>to_ary</tt> method):
-
-```ruby
-Array.new(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
-```
-
-This class is not Array-convertible (method <tt>to_ary</tt> takes arguments):
-
-```ruby
-class NotArrayConvertible
-  def to_ary(x)
-    [:foo, 'bar', baz = 2]
-  end
-end
-Array.new(NotArrayConvertible.new) # Raises ArgumentError (wrong number of arguments (given 0, expected 1))
-```
-
-This class is not Array-convertible (method <tt>to_ary</tt> returns non-Array):
-
-```ruby
-class NotArrayConvertible
-  def to_ary
-    :foo
-  end
-end
-Array.new(NotArrayConvertible.new) # Raises TypeError (can't convert NotArrayConvertible to Array (NotArrayConvertible#to_ary gives Symbol))
-```
-
 ### Public Class Methods
 
 #### ::new
@@ -191,15 +142,14 @@ a = Array.new
 a # => []
 ```
 
-With no block and a single argument
-that is an [Array-convertible object](#array-convertible-objects),
+With no block and a single [Array-convertible object](#array-convertible-objects) argument,
 converts the object and returns the resulting Array:
 
 ```ruby
 Array.new([:foo, 'bar', baz = 2]) # => [:foo, "bar", 2]
 ```
 
-With no block and a single Integer argument,
+With no block and a single [Integer-convertible object](#integer-convertible-objects) argument <tt>size</tt>,
 returns a new Array object of the given size
 whose elements are all <tt>nil</tt>:
 
@@ -210,16 +160,20 @@ a = Array.new(3)
 a # => [nil, nil, nil]
 ```
 
-With no block and two arguments -- an Integer <tt>size</tt> and another object <tt>obj</tt> --
+With no block and two arguments,
+an [Integer-convertible object](#integer-convertible-objects)  <tt>size</tt>
+and another object <tt>obj</tt>,
 returns an Array object of the given size
-whose elements are all <tt>obj</tt>:
+eac of whose elements is that same <tt>obj</tt>:
 
 ```ruby
-a = Array.new(3, :foo) 
-a # => [:foo, :foo, :foo]
+a = Array.new(3, 'x') 
+a # => ["x", "x", "x"]
+a[0].object_id == a[1].object_id # => true
+a[1].object_id == a[2].object_id # => true
 ```
 
-With a block and a single Integer argument <tt>size</tt>,
+With a block and a single [Integer-convertible object](#integer-convertible-objects) argument <tt>size</tt>,
 returns an Array object of the given size;
 the block is called with each successive integer <tt>n</tt>,
 and each <tt>n</tt>th element is the return value from the block:
@@ -229,7 +183,8 @@ a = Array.new(3) { |n| "Element #{n}" }
 a # => ["Element 0", "Element 1", "Element 2"]
 ```
 
-With a block and no argument, or a single argument <tt>0</tt>,
+With a block and no argument,
+or a single [Integer-convertible object](#integer-convertible-objects) argument that converts to <tt>0</tt>,
 ignores the block and returns a new empty Array:
 
 ```ruby
@@ -239,8 +194,7 @@ a = Array.new { |n| fail 'Cannot happen' }
 a # => []
 ```
 
-Raises an exception if the size argument
-is a negative integer:
+Raises an exception if <tt>size</tt> is a negative integer:
 
 ```ruby
 Array.new(-1) # Raises ArgumentError (negative array size)
@@ -437,6 +391,21 @@ a[-2..2] # => ["bar", 2]
 a[-3..2] # => [:foo, "bar", 2]
 ```
 
+Raises an exception if given a single argument that is not an Integer:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[:foo] # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+Raises an exception if given two arguments that are not both Integers:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[:foo, 3] # Raises TypeError (no implicit conversion of Symbol into Integer)
+a[1, :bar] # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
 #### append
 
 ```
@@ -458,6 +427,20 @@ Chained:
 a = [:foo, 'bar', baz = 2]
 a.append(:bam, :bat).append(:bad, :bah)
 a # => [:foo, "bar", 2, :bam, :bat, :bad, :bah]
+```
+
+#### at
+
+```
+ary.at(index) → obj
+```
+
+Returns the element at <tt>index</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.at(0) # => :foo
+a.at(2) # => 2
 ```
 
 #### freeze
@@ -739,8 +722,8 @@ returns a new empty Array:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
-a[a.size, 0] # => []
-a[a.size, 50] # => []
+a.slice(a.size, 0) # => []
+a.slice(a.size, 50) # => []
 ```
 
 If <tt>length</tt> is negative,
@@ -791,6 +774,21 @@ a = [:foo, 'bar', baz = 2]
 a.slice(-1..2) # => [2] 
 a.slice(-2..2) # => ["bar", 2]
 a.slice(-3..2) # => [:foo, "bar", 2]
+```
+
+Raises an exception if given a single argument that is not an Integer:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.slice(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+Raises an exception if given two arguments that are not both Integers:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.slice(:foo, 3) # Raises TypeError (no implicit conversion of Symbol into Integer)
+a.slice(1, :bar) # Raises TypeError (no implicit conversion of Symbol into Integer)
 ```
 
 #### unshift

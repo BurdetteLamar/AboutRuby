@@ -565,9 +565,9 @@ h.merge(NotHashConvertible.new) # Raises TypeError (can't convert NotHashConvert
 
 ```
 Hash[] → new_empty_hash
-Hash[ key, value, ... ] → new_hash
-Hash[ [ [ key, value ], ... ] ] → new_hash
-Hash[ hashable_object ] → new_hash 
+Hash[*keys_and_values] → new_hash
+Hash[[*2_element_arrays]] → new_hash
+Hash[hashable_object] → new_hash
 ```
 
 Returns a new Hash object populated with the given objects, if any.
@@ -642,9 +642,9 @@ Hash[Foo.new] # Raises TypeError (can't convert Foo to Hash (Foo#to_hash gives S
 #### ::new
 
 ```
-new → new_hash
-new(default_value) → new_hash
-new { |hash, key| ... } → new_hash
+Hash.new → new_hash
+Hash.new(default_value) → new_hash
+Hash.new { |hash, key| ... } → new_hash
 ```
 
 Returns a new empty Hash object.
@@ -690,7 +690,7 @@ Hash.new(0) { } # Raises ArgumentError (wrong number of arguments (given 1, expe
 #### ::try_convert
 
 ```
- try_convert(obj) → new_hash or nil
+Hash.try_convert(obj) → new_hash or nil
 ```
 
 Returns the Hash object created by calling
@@ -941,7 +941,7 @@ h[BasicObject.new] = 2 # Raises NoMethodError (undefined method `hash' for #<Bas
 #### assoc
 
 ```
-assoc(key) → new_array or nil
+hash.assoc(key) → new_array or nil
 ```
 
 If key <tt>key</tt> is found, returns a 2-element Array
@@ -970,7 +970,7 @@ h.assoc(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<B
 #### clear
 
 ```
-clear → self
+hash.clear → self
 ```
 
 Removes all hash entries, returning <tt>self</tt>:
@@ -984,7 +984,7 @@ h1.object_id == h.object_id # => true
 #### compact
 
 ```
-compact → new_hash
+hash.compact → new_hash
 ```
 
 Returns a copy of <tt>self</tt> with all <tt>nil</tt>-valued entries removed:
@@ -999,7 +999,7 @@ h1.object_id == h.object_id # => false
 #### compact!
 
 ```
-compact → self or nil
+hash.compact! → self or nil
 ```
 
 Returns <tt>self</tt> with all <tt>nil</tt>-valued entries removed:
@@ -1022,7 +1022,7 @@ h # => {:foo=>0, :bar=>1, :baz=>2}
 #### compare_by_identiry
 
 ```
-compare_by_identity → self
+hash.compare_by_identity → self
 ```
 
 Sets <tt>self</tt> to consider only identity in comparing keys, returning <tt>self</tt>;
@@ -1060,7 +1060,7 @@ h # => {"x"=>0, "x"=>1}
 #### compare_by_identity?
 
 ```
-compare_by_identity? → true or false
+hash.compare_by_identity? → true or false
 ```
 
 Returns <tt>true</tt> if <compare_by_identity> has been called, <tt>false</tt> otherwise:
@@ -1075,8 +1075,8 @@ h.compare_by_identity? # true
 #### default
 
 ```
-default → value
-default(key) → value
+hash.default → value
+hash.default(key) → value
 ```
 
 With no argument, returns the current default value:
@@ -1109,7 +1109,7 @@ h.default(BasicObject.new) # Raises NoMethodError (undefined method `to_s' for #
 #### default=
 
 ```
-default = value → value
+hash.default = value → value
 ```
 
 Sets the default value to <tt>value</tt>, returning <tt>value</tt>:
@@ -1127,7 +1127,7 @@ See [Default Values](#default-values).
 #### default_proc
 
 ```
-default_proc → proc or nil
+hash.default_proc → proc or nil
 ```
 
 Returns the default proc:
@@ -1144,7 +1144,7 @@ See [Default Values](#default-values).
 #### default_proc=
 
 ```
-default_proc = proc → proc
+hash.default_proc = proc → proc
 ```
 
 Sets the default proc to <tt>proc</tt>:
@@ -1170,8 +1170,8 @@ h.default_proc = 0 # Raises TypeError (wrong default_proc type Integer (expected
 #### delete
 
 ```
-delete(key) → value
-delete(key) { |key| ... } → value
+hash.delete(key) → value
+hash.delete(key) { |key| ... } → value
 ```
 
 If no block is given and key <tt>key</tt> is found, deletes its entry and returns the associated value:
@@ -1218,8 +1218,8 @@ h.delete(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<
 #### delete_if
 
 ```
-delete_if { |key, value| ... } → self
-delete_if → new_enumerator
+hash.delete_if { |key, value| ... } → self
+hash.delete_if → new_enumerator
 ```
 
 Calls the block with each key-value pair,
@@ -1253,7 +1253,7 @@ h.delete_if { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a 
 #### dig
 
 ```
-dig(*keys) → value
+hash.dig(*keys) → value
 ```
 
 Returns the value for a specified object in nested objects.
@@ -1320,8 +1320,8 @@ h.dig(:foo, 1) # Raises TypeError: Integer does not have #dig method
 #### each
 
 ```
-each { |key, value| ... } → self
-each → new_enumerator
+hash.each { |key, value| ... } → self
+hash.each → new_enumerator
 ```
 
 Calls the given block with each key-value pair, returning <tt>self</tt>:
@@ -1371,8 +1371,8 @@ h.each { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new k
 #### each_key
 
 ```
-each_key { |key| ... } → self
-each_key → new_enumerator
+hash.each_key { |key| ... } → self
+hash.each_key → new_enumerator
 ```
 
 Calls the given block with each key, returning <tt>self</tt>:
@@ -1420,8 +1420,8 @@ h.each_key { |key| h[:new_key] = 3 } # Raises RuntimeError (can't add a new key 
 #### each_pair
 
 ```
-each_pair { |key, value| ... } → self
-each_pair → new_enumerator
+hash.each_pair { |key, value| ... } → self
+hash.each_pair → new_enumerator
 ```
 
 Calls the given block with each key-value pair, returning <tt>self</tt>:
@@ -1469,8 +1469,8 @@ h.each_pair { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a 
 #### each_value
 
 ```
-each_value { |value| ... } → self
-each_value → new_enumerator
+hash.each_value { |value| ... } → self
+hash.each_value → new_enumerator
 ```
 
 Calls the given block with each value, returning <tt>self</tt>:
@@ -1518,7 +1518,7 @@ h.each_value { |value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new 
 #### empty?
 
 ```
-empty? → true or false
+hash.empty? → true or false
 ```
 
 Returns <tt>true</tt> if there are no hash entries, <tt>false</tt> otherwise:
@@ -1531,7 +1531,7 @@ Returns <tt>true</tt> if there are no hash entries, <tt>false</tt> otherwise:
 #### eql?
 
 ```
-eql? other_hash → true or false
+hash.eql? other_hash → true or false
 ```
 
 Returns <tt>true</tt> if all of the following are true:
@@ -1578,9 +1578,9 @@ h1.eql? h2 # => false
 #### fetch
 
 ```
-fetch(key) → value
-fetch(key , default) → value
-fetch(key) { |key| ... } → value
+hash.fetch(key) → value
+hash.fetch(key , default) → value
+hash.fetch(key) { |key| ... } → value
 ```
 
 Returns the value for key <tt>key</tt>.
@@ -1636,8 +1636,8 @@ h.fetch(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<B
 #### fetch_values
 
 ```
-fetch_values(*keys) → new_array
-fetch_values(*keys) { |key| ... } → new_array
+hash.fetch_values(*keys) → new_array
+hash.fetch_values(*keys) { |key| ... } → new_array
 ```
 
 Returns a new Array containing the values associated with the given keys <tt>*keys</tt>:
@@ -1671,8 +1671,8 @@ h.fetch_values(:baz, BasicObject.new) # Raises NoMethodError (undefined method `
 #### filter
 
 ```
-filter { |key, value| ... } → new_hash
-filter → new_enumerator
+hash.filter { |key, value| ... } → new_hash
+hash.filter → new_enumerator
 ```
 
 Returns a new Hash object consisting of the entries for which the block returns a truthy value:
@@ -1706,8 +1706,8 @@ h.filter { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new
 #### filter!
 
 ```
-filter! { |key, value| ... } → self or nil
-filter! → new_enumerator
+hash.filter! { |key, value| ... } → self or nil
+hash.filter! → new_enumerator
 ```
 
 Deletes each hash entry for which the block returns <tt>nil</tt> or <tt>false</tt>, returning <tt>self</tt>:
@@ -1749,7 +1749,7 @@ h.filter! { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a ne
 #### flatten
 
 ```
-flatten(level = 1) → new_array 
+hash.flatten(level = 1) → new_array
 ```
 
 Returns a new Array object wherein each key and each value of from <tt>self</tt> is an array element:
@@ -1804,7 +1804,7 @@ h.flatten(:nosuch) # Raises TypeError (no implicit conversion of Symbol into Int
 #### has_key?
 
 ```
-has_key?(key) → true or false
+hash.has_key?(key) → true or false
 ```
 
 Returns <tt>true</tt> if <tt>key</tt> is a key in the hash, otherwise <tt>false</tt>:
@@ -1819,7 +1819,7 @@ h.has_key?(BasicObject.new) # false
 #### has_value?
 
 ```
- has_value?(value) → true or false
+hash.has_value?(value) → true or false
 ```
 
 Returns <tt>true</tt> if <tt>value</tt> is a value in the hash, otherwise <tt>false</tt>:
@@ -1833,7 +1833,7 @@ h.has_value?(123) # => false
 #### hash
 
 ```
-hash → an_integer
+hash.hash → an_integer
 ```
 
 Returns the Integer hash value for the hash:
@@ -1855,7 +1855,7 @@ h2.eql? h1 # => true
 #### include?
 
 ```
-include?(key) → true or false
+hash.include?(key) → true or false
 ```
 
 Returns <tt>true</tt> if <tt>key</tt> is a key in the hash, otherwise <tt>false</tt>:
@@ -1877,7 +1877,7 @@ h.include?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for 
 #### inspect
 
 ```
-inspect → new_string
+hash.inspect → new_string
 ```
 
 Returns a new String showing the hash entries:
@@ -1890,7 +1890,7 @@ h.inspect # => "{:foo=>0, :bar=>1, :baz=>2}"
 #### invert
 
 ```
-invert → new_hash
+hash.invert → new_hash
 ```
 
 Returns a new Hash object with the each key-value pair reversed:
@@ -1919,8 +1919,8 @@ h.invert # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
 #### keep_if
 
 ```
-keep_if { |key, value| ... } → self
-keep_if → new_enumerator
+hash.keep_if { |key, value| ... } → self
+hash.keep_if → new_enumerator
 ```
 
 Calls the block for each key-value pair,
@@ -1955,7 +1955,7 @@ h.keep_if { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a ne
 #### key
 
 ```
-key(value) → key or nil
+hash.key(value) → key or nil
 ```
 
 Returns the key for the first-found entry with value <tt>value</tt>:
@@ -1976,7 +1976,7 @@ h.key(0) # => nil
 #### key?
 
 ```
-key?(key) → true or false
+hash.key?(key) → true or false
 ```
 
 Returns <tt>true</tt> if <tt>key</tt> is a key in the hash, <tt>false</tt> otherwise:
@@ -1998,7 +1998,7 @@ h.key?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #<Ba
 #### keys
 
 ```
-keys → new_array
+hash.keys → new_array
 ```
 
 Returns a new Array containing all keys in <tt>self</tt>:
@@ -2011,7 +2011,7 @@ h.keys # => [:foo, :bar, :baz]
 #### length
 
 ```
-length → an_integer
+hash.length → an_integer
 ```
 
 Returns the count the entries in <tt>self</tt>:
@@ -2026,7 +2026,7 @@ h.length # => 3
 #### member?
 
 ```
-member?(key) → true or false
+hash.member?(key) → true or false
 ```
 
 Returns <tt>true</tt> if <tt>key</tt> is a key in the hash, <tt>false</tt> otherwise:
@@ -2048,9 +2048,9 @@ h.member?(BasicObject.new) # Raises NoMethodError (undefined method `hash' for #
 #### merge
 
 ```
-merge → new_copy_of_hash
-merge(*other_hashes) → new_hash
-merge(*other_hashes) { |key, old_value, new_value| ... } → new_hash 
+hash.merge → new_copy_of_hash
+hash.merge(*other_hashes) → new_hash
+hash.merge(*other_hashes) { |key, old_value, new_value| ... } → new_hash
 ```
 
 With arguments and no block:
@@ -2122,9 +2122,9 @@ h.merge(1) # Raises TypeError (no implicit conversion of Integer into Hash)
 #### merge!
 
 ```
-merge! → self
-merge!(*other_hashes) → self
-merge!(*other_hashes) { |key, old_value, new_value| ... } → self
+hash.merge! → self
+hash.merge!(*other_hashes) → self
+hash.merge!(*other_hashes) { |key, old_value, new_value| ... } → self
 ```
 
 With arguments and no block:
@@ -2194,7 +2194,7 @@ h.merge!(1) # Raises TypeError (no implicit conversion of Integer into Hash)
 #### rassoc
 
 ```
-rassoc(value) → new_array or nil
+hash.rassoc(value) → new_array or nil
 ```
 
 Returns a new 2-element Array consisting of the key and value
@@ -2215,7 +2215,7 @@ h.rassoc(3) # => nil
 #### rehash
 
 ```
-rehash → self
+hash.rehash → self
 ```
 
 Returns <tt>self</tt> after rebuilding its index
@@ -2264,8 +2264,8 @@ h.each { |key, value| h.rehash } # Raises RuntimeError (rehash during iteration)
 #### reject
 
 ```
-reject { |key, value| ...} → new_hash
-reject → new_enumerator 
+hash.reject { |key, value| ...} → new_hash
+hash.reject → new_enumerator 
 ```
 
 Returns a new Hash object whose entries are all those from <tt>self</tt>
@@ -2291,8 +2291,8 @@ h1.object_id == h.object_id # => false
 #### reject!
 
 ```
-reject! { |key, value| ... } → self or nil
-reject! → new_enumerator
+hash.reject! { |key, value| ... } → self or nil
+hash.reject! → new_enumerator
 ```
 
 Returns <tt>self</tt>, whose remaining entries are all those
@@ -2332,7 +2332,7 @@ h.reject! { |key, value| h[:new_Key] = 3 } # Raises RuntimeError (can't add a ne
 #### replace
 
 ```
-replace(other_hash) → self
+hash.replace(other_hash) → self
 ```
 
 Replaces the entire contents of <tt>self</tt> with the contents of <tt>other_hash</tt>;
@@ -2356,8 +2356,8 @@ h.replace(:not_a_hash) # Raises TypeError (no implicit conversion of Symbol into
 #### select
 
 ```
-select { |key, value| ... } → new_hash
-select → new_enumerator
+hash.select { |key, value| ... } → new_hash
+hash.select → new_enumerator
 ```
 
 Returns a new Hash object whose entries are those for which the block returns a truthy value:
@@ -2389,8 +2389,8 @@ h.select { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new
 #### select!
 
 ```
-select! { |key, value| ... } → self
-select → new_enumerator
+hash.select! { |key, value| ... } → self
+hash.select! → new_enumerator
 ```
 
 Returns <tt>self</tt>, whose entries are those for which the block returns a truthy value:
@@ -2430,7 +2430,7 @@ h.select! { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a ne
 #### shift
 
 ```
-shift → [key, value] or default_value
+hash.shift → [key, value] or default_value
 ```
 
 Removes the first entry from <tt>self</tt> (see [Entry Order](#entry-order)),
@@ -2452,7 +2452,7 @@ h.shift # => nil
 #### size
 
 ```
-size → an_integer
+hash.size → an_integer
 ```
 
 Returns the count of hash entries:
@@ -2467,7 +2467,7 @@ h.size # => 2
 #### slice
 
 ```
-slice(*keys) → new_hash
+hash.slice(*keys) → new_hash
 ```
 
 Returns a new Hash object containing the entries for the given <tt>*keys</tt>:
@@ -2489,7 +2489,7 @@ h.slice(:foo, BasicObject.new) # Raises NoMethodError (undefined method `hash' f
 #### store
 
 ```
-store(key, value) → value
+hash.store(key, value) → value
 ```
 
 Creates or updates an entry with the given <tt>key</tt> and <tt>value</tt>, returning <tt>value</tt>:
@@ -2511,7 +2511,7 @@ h.store(BasicObject.new, 3) # Raises NoMethodError (undefined method `hash' for 
 #### to_a
 
 ```
-to_a → new_array
+hash.to_a → new_array
 ```
 
 Returns a new Array of 2-element Array objects;
@@ -2525,8 +2525,8 @@ h.to_a # => [[:foo, 0], [:bar, 1], [:baz, 2]]
 #### to_h
 
 ```
-to_h → self or new_hash
-to_h { |key, value| ... } → new_hash
+hash.to_h → self or new_hash
+hash.to_h { |key, value| ... } → new_hash
 ```
 
 For an instance of Hash, returns <tt>self</tt>:
@@ -2592,7 +2592,7 @@ h.to_h { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new k
 #### to_hash
 
 ```
-to_hash → self
+hash.to_hash → self
 ```
 
 Returns <tt>self</tt>:
@@ -2607,7 +2607,7 @@ h1.object_id == h.object_id # => true
 #### to_proc
 
 ```
-to_proc → proc
+hash.to_proc → proc
 ```
 
 Returns a Proc object that maps a key to its value:
@@ -2625,7 +2625,7 @@ proc.call(:nosuch) # => nil
 #### to_s
 
 ```
-to_s → new_string
+hash.to_s → new_string
 ```
 
 Returns a new String showing the hash entries:
@@ -2639,8 +2639,8 @@ h.to_s # => "{:foo=>0, :bar=>1, :baz=>2}"
 #### transform_keys
 
 ```
-transform_keys { |key| ... } → new_hash
-transform_keys → new_enumerator
+hash.transform_keys { |key| ... } → new_hash
+hash.transform_keys → new_enumerator
 ```
 
 Returns a new Hash object of size <tt>self.size</tt>;
@@ -2690,8 +2690,8 @@ h.transform_keys { |key| h[:new_key] = 3 } # Raises RuntimeError (can't add a ne
 #### transform_keys!
 
 ```
-transform_keys! { |key| ... } → self
-transform_keys! → new_enumerator
+hash.transform_keys! { |key| ... } → self
+hash.transform_keys! → new_enumerator
 ```
 
 Returns <tt>self</tt> with new keys provided by the block:
@@ -2741,8 +2741,8 @@ h1.object_id == h.object_id # => true
 #### transform_values
 
 ```
-transform_values { |value| ... } → new_hash
-transform_values → new_enumerator
+hash.transform_values { |value| ... } → new_hash
+hash.transform_values → new_enumerator
 ```
 
 Returns a new Hash object of size <tt>self.size</tt>;
@@ -2778,8 +2778,8 @@ h1 # => {:foo=>3, :bar=>3, :baz=>3}
 #### transform_values!
 
 ```
-transform_values { |value| ... } → self
-transform_values → new_enumerator
+hash.transform_values! { |value| ... } → self
+hash.transform_values! → new_enumerator
 ```
 
 Returns <tt>self</tt>, whose keys are unchanged,
@@ -2813,9 +2813,9 @@ h1 # => {:foo=>3, :bar=>3, :baz=>3, :new_key=>3}
 #### update
 
 ```
-update → self
-update(*other_hashes) → self
-update(*other_hashes) { |key, old_value, new_value| ... } → self
+hash.update → self
+hash.update(*other_hashes) → self
+hash.update(*other_hashes) { |key, old_value, new_value| ... } → self
 ```
 
 With arguments and no block:
@@ -2883,7 +2883,7 @@ h3.object_id == h.object_id # => true
 #### value?
 
 ```
-value?(value) → true or false
+hash.value?(value) → true or false
 ```
 
 Returns <tt>true</tt> if <tt>value</tt> is a value in the hash,
@@ -2900,7 +2900,7 @@ h.value?(3) # => false
 #### values
 
 ```
-values → new_array
+hash.values → new_array
 ```
 
 Returns a new Array containing all values in <tt>self</tt>:
@@ -2913,7 +2913,7 @@ h.values # => [0, 1, 2]
 #### values_at
 
 ```
-values_at(*keys) → new_array
+hash.values_at(*keys) → new_array
 ```
 
 Returns a new Array containing values for the given <tt>*keys</tt>:
