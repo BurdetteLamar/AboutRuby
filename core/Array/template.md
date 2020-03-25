@@ -149,7 +149,7 @@ converts the object and returns the resulting Array:
 Array.new([:foo, 'bar', baz = 2]) # => [:foo, "bar", 2]
 ```
 
-With no block and a single [Integer-convertible object]((../../doc/convertibles.md#integer-convertible-objects) argument <tt>size</tt>,
+With no block and a single [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects) argument <tt>size</tt>,
 returns a new Array object of the given size
 whose elements are all <tt>nil</tt>:
 
