@@ -135,6 +135,18 @@ Array.new(size, default) → new_array
 Array.new(size) { |index| ... } → new_array
 ```
 
+Returns a new Array.
+
+Argument <tt>array</tt>, if given, must be an
+[Array-convertible object](../../doc/convertibles.md#array-convertible-objects),
+which will be converted to an Array.
+
+Argument <tt>size</tt>, if given must be an
+[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects),
+which will be converted to an Integer.
+
+Argument <tt>default</tt> may be any object.
+
 With no block and no arguments, returns a new empty Array object:
 
 ```ruby
@@ -142,14 +154,16 @@ a = Array.new
 a # => []
 ```
 
-With no block and a single [Array-convertible object](../../doc/convertibles.md#array-convertible-objects) argument,
-converts the object and returns the resulting Array:
+With no block and a single argument <tt>array</tt>,
+returns a new Array:
 
 ```ruby
-Array.new([:foo, 'bar', baz = 2]) # => [:foo, "bar", 2]
+a = Array.new([:foo, 'bar', baz = 2])
+a.class # => Array
+a # => [:foo, "bar", 2]
 ```
 
-With no block and a single [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects) argument <tt>size</tt>,
+With no block and a single argument <tt>size</tt>,
 returns a new Array object of the given size
 whose elements are all <tt>nil</tt>:
 
@@ -160,9 +174,7 @@ a = Array.new(3)
 a # => [nil, nil, nil]
 ```
 
-With no block and two arguments,
-an [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects)  <tt>size</tt>
-and another object <tt>obj</tt>,
+With no block arguments <tt>size</tt> <tt>obj</tt>,
 returns an Array object of the given size
 eac of whose elements is that same <tt>obj</tt>:
 
@@ -173,7 +185,7 @@ a[0].object_id == a[1].object_id # => true
 a[1].object_id == a[2].object_id # => true
 ```
 
-With a block and a single [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects) argument <tt>size</tt>,
+With a block and a argument <tt>size</tt>,
 returns an Array object of the given size;
 the block is called with each successive integer <tt>n</tt>,
 and each <tt>n</tt>th element is the return value from the block:
@@ -184,7 +196,7 @@ a # => ["Element 0", "Element 1", "Element 2"]
 ```
 
 With a block and no argument,
-or a single [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects) argument that converts to <tt>0</tt>,
+or a single argument <tt>0</tt>,
 ignores the block and returns a new empty Array:
 
 ```ruby
@@ -215,6 +227,10 @@ Array.new(:foo) # Raises TypeError (no implicit conversion of Symbol into Intege
 Array.try_convert(obj) → new_array or nil
 ```
 
+Tries to convert <tt>obj</tt> to an Array.
+
+Argument <tt>obj</tt> may be any object.
+
 Returns the Array object created by calling
 <tt>obj.to_ary</tt>.
 
@@ -238,16 +254,26 @@ s.respond_to?(:to_ary) # => false
 Array.try_convert(s) # => nil
 ```
 
-Raises an exception unless <tt>obj.to_ary</tt> returns an Array object:
+Raises an exception if <tt>obj.to_ary</tt> takes an argument:
 
 ```ruby
-class BadToArySet < Set
-  def to_ary
-    1
+class ToAryTakesArgument
+  def to_ary(x)
+    []
   end
 end
-hs = BadToArySet.new([:foo, :bar, :baz])
-Array.try_convert(hs) # Raises TypeError (can't convert BadToArySet to Array (BadToArySet#to_ary gives Integer))
+Array.try_convert(ToAryTakesArgument.new) # Raises ArgumentError (wrong number of arguments (given 0, expected 1))
+```
+
+Raises an exception if <tt>obj.to_ary</tt> returns a non-Array:
+
+```ruby
+class ToAryTakesArgument
+  def to_ary
+    :foo
+  end
+end
+Array.try_convert(ToAryTakesArgument.new) # Raises TypeError (can't convert ToAryTakesArgument to Array (ToAryTakesArgument#to_ary gives Symbol))
 ```
 
 ### Public Instance Methods
@@ -259,6 +285,8 @@ ary << obj → self
 ```
 
 Appends <tt>obj</tt> to <tt>ary</tt>:
+
+Argument <tt>obj</tt> may be any object.
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -278,15 +306,21 @@ a # => [:foo, "bar", 2, :bam, :bat]
 #### [] (Element Reference)
 
 ```
-ary[n] → obj or nil
+ary[index] → obj or nil
 ary[start, length] → new_array or nil
 ary[range] → new_array or nil
 ```
 
-Returns elements from <tt>ary</tt>; does not remove the elements from <tt>ary</tt>.
+Returns elements from <tt>ary</tt>; does not modify <tt>ary</tt>.
 
-When the only argument is an Integer <tt>n</tt>,
-returns the <tt>n</tt>th element in <tt>ary</tt>:
+Argument <tt>index</tt>, <tt>start</tt>, and <tt>length</tt>, if given, must be
+[Integer-convertible objects](../../doc/convertibles.md#integer-convertible-objects),
+which will be converted to Integers.
+
+Argument <tt>range</tt>, if given, must be a Range object.
+
+When a single argument <tt>index</tt> is given,
+returns the element in <tt>ary</tt> at offset <tt>index</tt>:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -295,7 +329,7 @@ a[2] # => 2
 a # => [:foo, "bar", 2]
 ```
 
-If <tt>n</tt> is negative,
+If <tt>index</tt> is negative,
 counts relative to the end of <tt>ary</tt>:
 
 ```ruby
@@ -304,7 +338,7 @@ a[-1] # => 2
 a[-2] # => "bar"
 ```
 
-If <tt>n</tt> is out of range,
+If <tt>index</tt> is out of range,
 returns <tt>nil</tt>:
 
 ```ruby
@@ -313,9 +347,9 @@ a[50] # => nil
 a[-50] # => nil
 ```
 
-When the only arguments are Integers <tt>start</tt> and <tt>length</tt>,
+When two arguments <tt>start</tt> and <tt>length</tt> are given,
 returns a new array of size <tt>length</tt>
-containing elements of <tt>ary</tt> beginning at index <tt>start</tt>:
+containing successive elements of <tt>ary</tt> beginning at offset <tt>start</tt>:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -350,7 +384,7 @@ a[2, -1] # => nil
 a[1, -2] # => nil
 ```
 
-When the only argument is a Range object <rng>,
+When a single argument <tt>range</tt> is given,
 treats <tt>rng.min</tt> as <tt>start</tt> above
 and <tt>rng.size</tt> as <tt>length</tt> above:
 
@@ -360,7 +394,7 @@ a[0..1] # => [:foo, "bar"]
 a[1..2] # => ["bar", 2]
 ```
 
-If <tt>rng.start == a.size</tt>,
+Special case: If <tt>rng.start == a.size</tt>,
 returns a new empty Array:
 
 ```ruby
@@ -391,14 +425,17 @@ a[-2..2] # => ["bar", 2]
 a[-3..2] # => [:foo, "bar", 2]
 ```
 
-Raises an exception if given a single argument that is not an Integer:
+Raises an exception if given a single argument that is not an
+[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects)
+or a Range object:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
 a[:foo] # Raises TypeError (no implicit conversion of Symbol into Integer)
 ```
 
-Raises an exception if given two arguments that are not both Integers:
+Raises an exception if given two arguments that are not both
+[Integer-convertible objects](../../doc/convertibles.md#integer-convertible-objects)
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -413,6 +450,8 @@ ary.append(*objects) → self
 ```
 
 Appends the given <tt>*objects</tt> to <tt>ary</tt>:
+
+Arguments <tt>*objects</tt> may be any objects.
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -435,12 +474,28 @@ a # => [:foo, "bar", 2, :bam, :bat, :bad, :bah]
 ary.at(index) → obj
 ```
 
-Returns the element at <tt>index</tt>:
+Returns the element in <tt>ary</tt> at offset <tt>index</tt>; does not modify <tt>ary</tt>.
+
+Argument <tt>index</tt> must be an
+[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects),
+which will be converted to an Integer.
+
+When argument <tt>index</tt> is given,
+returns the element at offset <tt>index</tt>:
+
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
 a.at(0) # => :foo
 a.at(2) # => 2
+```
+
+Raises an exception if <tt>index</tt> is not an
+[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.at(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
 ```
 
 #### freeze
@@ -479,7 +534,12 @@ a[3] = :bat # Raises FrozenError (can't modify frozen Array: [:foo, "bar", 2])
 ary.pop → obj or nil
 ary.pop(n) → new_array
 ```
-Removes and returns trailing elements in <tt>ary</tt>.
+
+Removes and returns trailing elements from <tt>ary</tt>.
+
+Argument <tt>n</tt>, if given, must be an
+[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects),
+which will be converted to an Integer.
 
 If no argument is given and <tt>ary</tt> is empty,
 returns <tt>nil</tt>:
@@ -498,7 +558,7 @@ a.pop # => 2
 a # => [:foo, "bar"]
 ```
 
-If an Integer argument <tt>n</tt> given and <tt>ary</tt> is empty,
+If argument <tt>n</tt> is given and <tt>ary</tt> is empty,
 returns a new empty Array:
 
 ```ruby
@@ -507,7 +567,7 @@ a.pop(1) # => []
 a.pop(2) # => []
 ```
 
-If an Integer argument <tt>n</tt> is given and <tt>ary</tt> is not empty,
+If an argument <tt>n</tt> is given and <tt>ary</tt> is not empty,
 removes and returns the last <tt>n</tt> elements in <tt>ary</tt>:
 
 ```ruby
@@ -549,7 +609,8 @@ a1 = a.pop(-1) # Raises ArgumentError (negative array size)
 ary.prepend(*objects) → self
 ```
 
-Prepends the given <tt>*objects</tt> to <tt>ary</tt>:
+Prepends the given <tt>*objects</tt> to <tt>ary</tt>;
+<tt>*objects</tt> may be any objects:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -572,7 +633,8 @@ a # => [:bad, :bah, :bam, :bat, :foo, "bar", 2]
 ary.push(*objects) → self
 ```
 
-Appends the given <tt>*objects</tt> to <tt>ary</tt>:
+Appends the given <tt>*objects</tt> to <tt>ary</tt>;
+<tt>*objects</tt> may be any objects:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -598,6 +660,10 @@ ary.shift(n) → new_array
 
 Removes and returns leading elements in <tt>ary</tt>.
 
+The argument <tt>n</tt>, if given, must be an
+[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects),
+which will be converted to an Integer.
+
 If no argument is given and <tt>ary</tt> is empty
 returns <tt>nil</tt>:
 
@@ -615,7 +681,7 @@ a.shift # => :foo
 a # => ["bar", 2]
 ```
 
-If an Integer argument <tt>n</tt> given and <tt>ary</tt> is empty,
+If argument <tt>n</tt> is given and <tt>ary</tt> is empty,
 returns a new empty Array:
 
 ```ruby
@@ -624,7 +690,7 @@ a.shift(1) # => []
 a.shift(2) # => []
 ```
 
-If an Integer argument <tt>n</tt> is given and <tt>ary</tt> is not empty,
+If argument <tt></tt> is given and <tt>ary</tt> is not empty,
 removes and returns the first <tt>n</tt> elements in <tt>ary</tt>:
 
 ```ruby
@@ -644,7 +710,8 @@ a1 # => [:foo, "bar", 2]
 a # => []
 ```
 
-Returns a new empty Array if <tt>n</tt> is <tt>0</tt>:
+If <tt>n</tt> is <tt>0</tt>,
+returns an empty Array and <tt>ary</tt> is unmodified:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
