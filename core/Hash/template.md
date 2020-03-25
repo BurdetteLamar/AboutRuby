@@ -413,58 +413,6 @@ first_key.equal?(s) # => false
 I can't improve on the discussion of user-defined
 objects as keys  over at [ruby-doc.org](https://ruby-doc.org/core-2.7.0/Hash.html#class-Hash-label-Hash+Keys) (and don't want to steal from it).
 
-### Hash-Convertible Objects
-
-Some Hash methods accept one or more Hash-convertible objects as arguments.
-
-Here, "Hash-convertible object" means an object that:
-* Has an instance method <tt>to_hash</tt>.
-* The method accepts no arguments.
-* The method returns an object <tt>obj</tt> for which <tt>obj.kind_of?(Hash)</tt> returns <tt>true</tt>.
-
-This class is Hash-convertible:
-
-```ruby
-class HashConvertible
-  def to_hash
-    {foo: 0, bar: 1}
-  end
-end
-h = {}
-h.merge(HashConvertible.new) # => {:foo=>0, :bar=>1}
-```
-
-Class Integer is not Hash-convertible (no <tt>to_hash</tt> method):
-
-```ruby
-h = {}
-h.merge(1) # Raises TypeError (no implicit conversion of Integer into Hash)
-```
-
-This class is not Hash-convertible (method <tt>to_hash</tt> takes arguments):
-
-```ruby
-class NotHashConvertible
-  def to_hash(x)
-    {foo: 0, bar: 1}
-  end
-end
-h = {}
-h.merge(NotHashConvertible.new) # Raises ArgumentError (wrong number of arguments (given 0, expected 1))
-```
-
-This class is not Hash-convertible (method <tt>to_hash</tt> returns non-Hash):
-
-```ruby
-class NotHashConvertible
-  def to_hash
-    :foo
-  end
-end
-h = {}
-h.merge(NotHashConvertible.new) # Raises TypeError (can't convert NotHashConvertible to Hash (NotHashConvertible#to_hash gives Symbol))
-```
-
 ### Public Class Methods
 
 #### ::[] (Literal)
@@ -502,7 +450,7 @@ When the only argument is an array of 2-element arrays, returns a new hash where
 Hash[ [ [:foo, 0], [:bar, 1] ] ] # => {:foo=>0, :bar=>1}
 ```
 
-When the only argument is a [Hash-convertible object](#hash-convertible-objects),
+When the only argument is a [Hash-convertible object](../../doc/convertibles.md#hash-convertible-objects),
 converts the object and returns the resulting Hash:
 
 ```ruby
@@ -654,7 +602,7 @@ h1 < h1 # => false
 ```
 
 Raises an exception if <tt>other_hash</tt>
-is not a [Hash-convertible object](#hash-convertible-objects):
+is not a [Hash-convertible object](../../doc/convertibles.md#hash-convertible-objects):
 
 ```ruby
 h = {}
@@ -679,7 +627,7 @@ h1 <= h1 # => true
 ```
 
 Raises an exception if <tt>other_hash</tt>
-is not a [Hash-convertible object](#hash-convertible-objects)
+is not a [Hash-convertible object](../../doc/convertibles.md#hash-convertible-objects)
 
 ```ruby
 h = {}
@@ -752,7 +700,7 @@ h1 > h1 # => false
 ```
 
 Raises an exception if <tt>other_hash</tt>
- is not a [Hash-convertible object](#hash-convertible-objects):
+ is not a [Hash-convertible object](../../doc/convertibles.md#hash-convertible-objects):
 
 ```ruby
 h = {}
@@ -777,7 +725,7 @@ h1 >= h1 # => true
 ```
 
 Raises an exception if <tt>other_hash</tt>
-is not a [Hash-convertible object](#hash-convertible-objects):
+is not a [Hash-convertible object](../../doc/convertibles.md#hash-convertible-objects):
 
 ```ruby
 h = {}
@@ -2018,7 +1966,7 @@ h2.object_id == h.object_id # => false
 ```
 
 Raises an exception if any given argument
-is not a [Hash-convertible object](#hash-convertible-objects):
+is not a [Hash-convertible object](../../doc/convertibles.md#hash-convertible-objects):
 
 ```ruby
 h = {}
@@ -2088,7 +2036,7 @@ h1.object_id == h.object_id # => true
 ```
 
 Raises an exception if any given argument
-is not a [Hash-convertible object](#hash-convertible-objects):
+is not a [Hash-convertible object](../../doc/convertibles.md#hash-convertible-objects):
 
 ```ruby
 h = {}
@@ -2252,7 +2200,7 @@ h1.object_id == h.object_id # => true
 ```
 
 Raises an exception if <tt>other_hash</tt>
-is not a [Hash-convertible object](#hash-convertible-objects):
+is not a [Hash-convertible object](../../doc/convertibles.md#hash-convertible-objects):
 
 ```ruby
 h = {}
@@ -2769,7 +2717,7 @@ h1.object_id == h.object_id # => true
 ```
 
 Raises an exception if any given argument
-is not a [Hash-convertible object](#hash-convertible-objects):
+is not a [Hash-convertible object](../../doc/convertibles.md#hash-convertible-objects):
 
 ```ruby
 h = {}

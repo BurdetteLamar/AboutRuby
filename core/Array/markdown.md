@@ -167,14 +167,14 @@ a = Array.new
 a # => []
 ```
 
-With no block and a single [Array-convertible object](#array-convertible-objects) argument,
+With no block and a single [Array-convertible object](../../doc/convertibles.md#array-convertible-objects) argument,
 converts the object and returns the resulting Array:
 
 ```ruby
 Array.new([:foo, 'bar', baz = 2]) # => [:foo, "bar", 2]
 ```
 
-With no block and a single [Integer-convertible object](#integer-convertible-objects) argument <tt>size</tt>,
+With no block and a single [Integer-convertible object]((../../doc/convertibles.md#integer-convertible-objects) argument <tt>size</tt>,
 returns a new Array object of the given size
 whose elements are all <tt>nil</tt>:
 
@@ -186,7 +186,7 @@ a # => [nil, nil, nil]
 ```
 
 With no block and two arguments,
-an [Integer-convertible object](#integer-convertible-objects)  <tt>size</tt>
+an [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects)  <tt>size</tt>
 and another object <tt>obj</tt>,
 returns an Array object of the given size
 eac of whose elements is that same <tt>obj</tt>:
@@ -198,7 +198,7 @@ a[0].object_id == a[1].object_id # => true
 a[1].object_id == a[2].object_id # => true
 ```
 
-With a block and a single [Integer-convertible object](#integer-convertible-objects) argument <tt>size</tt>,
+With a block and a single [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects) argument <tt>size</tt>,
 returns an Array object of the given size;
 the block is called with each successive integer <tt>n</tt>,
 and each <tt>n</tt>th element is the return value from the block:
@@ -209,7 +209,7 @@ a # => ["Element 0", "Element 1", "Element 2"]
 ```
 
 With a block and no argument,
-or a single [Integer-convertible object](#integer-convertible-objects) argument that converts to <tt>0</tt>,
+or a single [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects) argument that converts to <tt>0</tt>,
 ignores the block and returns a new empty Array:
 
 ```ruby
