@@ -1,13 +1,30 @@
-## Convertibles
+## Class-Convertible Objects
+
+Some Ruby methods accept one or more objects
+that can be either:
+* _Of a given class_, and so accepted as is.
+* _Convertible to that class_, in which case
+  the called method converts the object.
+
+For the relevant classes, the conversion is done by calling
+the following
+
+| Target Class  | Conversion Method |
+| ------------- | ------------- |
+| <tt>Array</tt>  | </tt>to_ary</tt>  |
+| <tt>Hash</tt>  | </tt>to_hash</tt>  |
+| <tt>Integer</tt>  | </tt>to_int</tt>  |
+| <tt>String</tt>  | </tt>to_str</tt>  |
 
 ### Array-Convertible Objects
 
-Some methods accept one or more Array-convertible objects as arguments.
-
-Here, "Array-convertible object" means an object that:
+An _Array-convertible object_ is an object that:
 * Has an instance method <tt>to_ary</tt>.
 * The method accepts no arguments.
 * The method returns an object <tt>obj</tt> for which <tt>obj.kind_of?(Array)</tt> returns <tt>true</tt>.
+
+The examples in this section use method <tt>Array#replace</tt>,
+which accepts an Array-convertible argument.
 
 This class is Array-convertible:
 
@@ -55,12 +72,13 @@ a.replace(ToAryReturnsNonArray.new) # Raises TypeError (can't convert ToAryRetur
 
 ### Hash-Convertible Objects
 
-Some methods accept one or more Hash-convertible objects as arguments.
-
-Here, "Hash-convertible object" means an object that:
+A _Hash-convertible object_ is an object that:
 * Has an instance method <tt>to_hash</tt>.
 * The method accepts no arguments.
-* The method returns an object <tt>obj</tt> for which <tt>obj.kind_of?(Array)</tt> returns <tt>true</tt>.
+* The method returns an object <tt>obj</tt> for which <tt>obj.kind_of?(Hash)</tt> returns <tt>true</tt>.
+
+The examples in this section use method <tt>Hash#merge</tt>,
+which accepts a Hash-convertible argument.
 
 This class is Hash-convertible:
 
@@ -108,20 +126,13 @@ h.merge(ToHashReturnsNonHash.new) # Raises TypeError (can't convert ToHashReturn
 
 ### Integer-Convertible Objects
 
-Some methods accept one or more Integer-convertible objects as arguments.
-
-Here, "Integer-convertible object" means an object that:
+An _Integer-convertible object_ is an object that:
 * Has an instance method <tt>to_int</tt>.
 * The method accepts no arguments.
 * The method returns an object <tt>obj</tt> for which <tt>obj.kind_of?(Integer)</tt> returns <tt>true</tt>.
 
-Integer-convertible builtin classes include:
-* Integer
-* Bignum
-* Fixnum
-* Float
-* Complex
-* Rational
+The examples in this section use method <tt>Array.new</tt>,
+which accepts an Integer-convertible argument.
 
 This user-defined class is Integer-convertible:
 
@@ -157,3 +168,60 @@ end
 Array.new(NotIntegerConvertible.new) # Raises TypeError (can't convert NotIntegerConvertible to Integer (NotIntegerConvertible#to_int gives Symbol))
 ```
 
+Integer-convertible builtin classes include:
+* Integer
+* Bignum
+* Fixnum
+* Float
+* Complex
+* Rational
+
+### String-Convertible Objects
+
+A _String-convertible object_ is an object that:
+* Has an instance method <tt>to_str</tt>.
+* The method accepts no arguments.
+* The method returns an object <tt>obj</tt> for which <tt>obj.kind_of?(String)</tt> returns <tt>true</tt>.
+
+The examples in this section use method <tt>String::new</tt>,
+which accepts a String-convertible argument.
+
+This class is String-convertible:
+
+```ruby
+class StringConvertible
+  def to_str
+    'foo'
+  end
+end
+String.new(StringConvertible.new) # => "foo"
+```
+
+This class is not String-convertible (no <tt>to_str</tt> method):
+
+```ruby
+class NoToStr; end
+String.new(NoToStr.new) # Raises TypeError (no implicit conversion of NoToStr into String)
+```
+
+This class is not String-convertible (method <tt>to_str</tt> takes arguments):
+
+```ruby
+class ToStrTakesArguments
+  def to_str(x)
+    'foo'
+  end
+end
+String.new(ToStrTakesArguments.new) # Raises ArgumentError (wrong number of arguments (given 0, expected 1))
+```
+
+This class is not String-convertible (method <tt>to_str</tt> returns non-String):
+
+```ruby
+class ToStrReturnsNonString
+  def to_str
+    :foo
+  end
+end
+String.new(ToStrReturnsNonString.new) # Raises TypeError (can't convert ToStrReturnsNonString to String (ToStrReturnsNonString#to_str gives Symbol))
+```
