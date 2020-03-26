@@ -7,7 +7,7 @@ that can be either:
   the called method converts the object.
 
 For the relevant classes, the conversion is done by calling
-the following
+the following:
 
 | Target Class  | Conversion Method |
 | ------------- | ------------- |
@@ -19,7 +19,7 @@ the following
 ### Array-Convertible Objects
 
 An _Array-convertible object_ is an object that:
-* Has an instance method <tt>to_ary</tt>.
+* Has instance method <tt>to_ary</tt>.
 * The method accepts no arguments.
 * The method returns an object <tt>obj</tt> for which <tt>obj.kind_of?(Array)</tt> returns <tt>true</tt>.
 
@@ -73,7 +73,7 @@ a.replace(ToAryReturnsNonArray.new) # Raises TypeError (can't convert ToAryRetur
 ### Hash-Convertible Objects
 
 A _Hash-convertible object_ is an object that:
-* Has an instance method <tt>to_hash</tt>.
+* Has instance method <tt>to_hash</tt>.
 * The method accepts no arguments.
 * The method returns an object <tt>obj</tt> for which <tt>obj.kind_of?(Hash)</tt> returns <tt>true</tt>.
 
@@ -127,7 +127,7 @@ h.merge(ToHashReturnsNonHash.new) # Raises TypeError (can't convert ToHashReturn
 ### Integer-Convertible Objects
 
 An _Integer-convertible object_ is an object that:
-* Has an instance method <tt>to_int</tt>.
+* Has instance method <tt>to_int</tt>.
 * The method accepts no arguments.
 * The method returns an object <tt>obj</tt> for which <tt>obj.kind_of?(Integer)</tt> returns <tt>true</tt>.
 
@@ -168,18 +168,10 @@ end
 Array.new(NotIntegerConvertible.new) # Raises TypeError (can't convert NotIntegerConvertible to Integer (NotIntegerConvertible#to_int gives Symbol))
 ```
 
-Integer-convertible builtin classes include:
-* Integer
-* Bignum
-* Fixnum
-* Float
-* Complex
-* Rational
-
 ### String-Convertible Objects
 
 A _String-convertible object_ is an object that:
-* Has an instance method <tt>to_str</tt>.
+* Has instance method <tt>to_str</tt>.
 * The method accepts no arguments.
 * The method returns an object <tt>obj</tt> for which <tt>obj.kind_of?(String)</tt> returns <tt>true</tt>.
 
