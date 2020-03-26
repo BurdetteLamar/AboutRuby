@@ -1606,6 +1606,9 @@ h.filter! { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a ne
 hash.flatten(level = 1) → new_array
 ```
 
+Accepts optional argument <tt>level</tt>,
+which must be an [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects)
+
 Returns a new Array object wherein each key and each value of from <tt>self</tt> is an array element:
 
 ```ruby
@@ -1647,11 +1650,11 @@ h.flatten(Float(1.1)) # => [:foo, 0, :bar, [:bat, 3], :baz, 2]
 h.flatten(Complex(2, 0)) # => [:foo, 0, :bar, :bat, 3, :baz, 2]
 ```
 
-Raises an exception if <tt>level</tt> cannot be converted to an Integer:
+Raises an exception if <tt>level</tt> is not
+an [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects):
 
 ```ruby
 h = {foo: 0, bar: [:bat, 3], baz: 2}
-h.flatten(Complex(2, 1)) # Raises RangeError (can't convert 2+1i into Integer)
 h.flatten(:nosuch) # Raises TypeError (no implicit conversion of Symbol into Integer)
 ```
 
