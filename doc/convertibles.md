@@ -11,10 +11,10 @@ the following
 
 | Target Class  | Conversion Method |
 | ------------- | ------------- |
-| <tt>Array</tt>  | </tt>to_ary</tt>  |
-| <tt>Hash</tt>  | </tt>to_hash</tt>  |
-| <tt>Integer</tt>  | </tt>to_int</tt>  |
-| <tt>String</tt>  | </tt>to_str</tt>  |
+| <tt>Array</tt>  | <tt>to_ary</tt>  |
+| <tt>Hash</tt>  | <tt>to_hash</tt>  |
+| <tt>Integer</tt>  | <tt>to_int</tt>  |
+| <tt>String</tt>  | <tt>to_str</tt>  |
 
 ### Array-Convertible Objects
 
