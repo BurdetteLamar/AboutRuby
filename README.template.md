@@ -1,7 +1,7 @@
 # About Ruby
 
-Ruby topics, with emphasis on working demo code.
-
-Each topic has Ruby code snippets that demonstrate behaviors by running them in <code>irb</code>.
+Ruby topics, with emphasis on:
+* Working example code for (just about) everything.
+* Completeness, including explication of exceptions raised.
 
 @[:markdown](include_files/contents.md)
