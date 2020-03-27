@@ -1,7 +1,7 @@
 ## Hash API
 
 ### Contents
-- [Hash Syntax](#hash-syntax)
+- [Hash Data Syntax](#hash-data-syntax)
 - [Default Values](#default-values)
   - [Default Value](#default-value)
   - [Default Proc](#default-proc)
@@ -85,7 +85,7 @@
   - [values](#values)
   - [values_at](#values_at)
 
-### Hash Syntax
+### Hash Data Syntax
 
 Until its version 1.9,
 Ruby supported only the "hash rocket" syntax for Hash data:

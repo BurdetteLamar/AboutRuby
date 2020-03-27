@@ -8,7 +8,7 @@ A Hash has certain similarities to an Array, but:
 * A Hash key can be (almost) any object.
 
 ### Contents
-- [Hash Syntax](#hash-syntax)
+- [Hash Data Syntax](#hash-data-syntax)
 - [Common Uses](#common-uses)
 - [Creating a Hash](#creating-a-hash)
   - [Constructor Hash.new](#constructor-hashnew)
@@ -20,7 +20,7 @@ A Hash has certain similarities to an Array, but:
   - [Deleting a Hash Value](#deleting-a-hash-value)
 - [Chaining Method Calls](#chaining-method-calls)
 
-### Hash Syntax
+### Hash Data Syntax
 
 Until its version 1.9,
 Ruby supported only the "hash rocket" syntax for Hash data:
