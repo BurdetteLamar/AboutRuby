@@ -1463,6 +1463,14 @@ h = {foo: 0, bar: 1, baz: 2}
 h.fetch_values # => []
 ```
 
+When a block given, calls the block with each missing key,
+treating the block's return value as the value for that key:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+values = h.fetch_values(:bar, :foo, :bad, :bam) { |key| key.to_s}
+values # => [1, 0, "bad", "bam"]
+```
 Raises an exception if any given key is not found:
 
 ```ruby
@@ -2201,7 +2209,7 @@ h.select { |key, value| h[:new_key] = 3 } # Raises RuntimeError (can't add a new
 #### select!
 
 ```
-hash.select! { |key, value| ... } → self
+hash.select! { |key, value| ... } → self or nil
 hash.select! → new_enumerator
 ```
 

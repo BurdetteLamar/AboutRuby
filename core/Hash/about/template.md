@@ -151,3 +151,85 @@ For those methods, you can chain method calls:
 h = {foo: 0, bar: 1, baz: 2}
 h.keep_if { |key, value| key.start_with?('b') }.size # => 2
 ```
+
+### Method Calls with Blocks
+
+For some Hash methods, a call to the method can include a block:
+* [Hash.new](../api/markdown.md#new) with a block initializes the default proc.
+* [General iterators](#general-iterators):
+  Some Hash methods iterate over hash entries,
+  doing only what the block specifies.
+* [Specialized iterators](#specialized-iterators):
+  Some Hash methods iterate over hash entries,
+  performing more specific processing.
+* [Missing-key handlers](#missing-key-handlers):
+  Some Hash methods can handle missing keys in a block.
+* [Duplicate-key handlers](#duplicate-key-handlers):
+  Some Hash methods can handle duplicate keys in a block.
+  
+
+#### General Iterators
+
+Each of these general iterators traverses Hash entries,
+doing only what the block specifies:
+* [hash#each_pair](../api/markdown.md#each)
+  passes each key-value pair to the block.
+* [hash#each](../api/markdown.md#each) is an alias
+  for <tt>hash#each_pair</tt>.
+* [hash#each_key](../api/markdown.md#each)
+  passes each key pair to the block.
+* [hash#each_value](../api/markdown.md#each)
+  passes each value pair to the block.
+
+#### Specialized Iterators
+
+[hash#to_h](../api/markdown.md#to_h)
+passes each key-value pair to the block
+and returns a new Hash based on the block's return values.
+
+Each of these iterators returns <tt>self</tt>,
+retaining or deleting entries
+based on whether the block returns a truthy value:
+* [hash#delete_if](../api/markdown.md#delete_if)
+  passes each key-value pair to the block
+  and deletes each entry for which the block returns
+ a truthy value.
+* [hash#keep_if](../api/markdown.md#delete_if)
+  does the opposite:
+  it passes each key-value pair to the block
+  and deletes each entry for which the block returns
+  <tt>false</tt> or <tt>nil</tt>.
+hash.filter! { |key, value| ... } → self or nil
+hash.select! { |key, value| ... } → self
+hash.reject! { |key, value| ... } → self or nil
+
+Each of these iterators returns a new Hash,
+including or excludng entries
+based on whether the block returns a truthy value:
+hash.filter { |key, value| ... } → new_hash
+hash.select { |key, value| ... } → new_hash
+hash.reject { |key, value| ...} → new_hash
+
+Each of these iterators returns <tt>self</tt>,
+modifying keys or values based on the block:
+hash.transform_keys! { |key| ... } → self
+hash.transform_values! { |value| ... } → self
+
+Each of these iterators returns a new Hash
+with modified keys or values based on the block:
+hash.transform_keys { |key| ... } → new_hash
+hash.transform_values { |value| ... } → new_hash
+
+#### Missing-Key Handlers
+
+Each of these methods can handle missing keys in a block:
+hash.delete(key) { |key| ... } → value
+hash.fetch(key) { |key| ... } → value
+hash.fetch_values(*keys) { |key| ... } → new_array
+
+#### Duplicate-Key Handlers
+Each of these methods can handle duplicate keys in a block:
+hash.merge(*other_hashes) { |key, old_value, new_value| ... } → new_hash
+hash.merge!(*other_hashes) { |key, old_value, new_value| ... } → self
+hash.update(*other_hashes) { |key, old_value, new_value| ... } → self
+
