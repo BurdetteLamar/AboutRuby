@@ -13,6 +13,8 @@ A Hash has certain similarities to an Array, but:
 
 ### Common Uses
 
+#### Giving Names to Objects
+
 You can use a Hash to give names to objects:
 
 ```ruby
@@ -20,23 +22,37 @@ matz = {name: 'Matz', language: 'Ruby'}
 matz # => {:name=>"Matz", :language=>"Ruby"}
 ```
 
-You can also use a Hash to give names to method arguments:
+#### Giving Names to Arguments
+
+You can use a Hash to give names to method arguments:
 
 ```ruby
-class Dev
-  def initialize(hash)
-    @name = hash[:name]
-    @language = hash[:language]
-  end
+def some_method(hash)
+  p hash
 end
-matz = Dev.new(name: 'Matz', language: 'Ruby')
-matz # => #<Dev: @name="Matz", @language="Ruby">
+some_method({foo: 0, bar: 1, baz: 2}) # => {:foo=>0, :bar=>1, :baz=>2}
 ```
 
 Note: when the last argument in a method call is a Hash,
 the curly braces may be omitted:
 
 ```ruby
+some_method(foo: 0, bar: 1, baz: 2) # => {:foo=>0, :bar=>1, :baz=>2}
+```
+#### Initializing Objects
+
+You can use a Hash to initialize an object:
+
+```ruby
+class Dev
+  attr_accessor :name, :language
+  def initialize(hash)
+    hash.each_pair do |key, value|
+      setter_method = "#{key}=".to_sym
+      send(setter_method, value)
+    end
+  end
+end
 matz = Dev.new(name: 'Matz', language: 'Ruby')
 matz # => #<Dev: @name="Matz", @language="Ruby">
 ```
