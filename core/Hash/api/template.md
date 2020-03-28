@@ -328,9 +328,9 @@ Hash.new { |hash, key| ... } → new_hash
 
 Returns a new empty Hash object.
 
-The new hash has an initial default value and an initial default proc that depend on which form above was used.  See [Default Values](#default-values).
+The initial default value and initial default proc for the new hash depend on which form above was used.  See [Default Values](#default-values).
 
-If neither default_value nor block given, initializes both the default value and the default proc to <tt>nil</tt>:
+If neither argument nor block given, initializes both the default value and the default proc to <tt>nil</tt>:
 
 ```ruby
 h = Hash.new
@@ -338,26 +338,30 @@ h # => {}
 h.class # => Hash
 h.default # => nil
 h.default_proc # => nil
+h[:nosuch] # => nil
 ```
 
-If <tt>default_value</tt> given but no block given,
-initializes the default value to the given <tt>default_value</tt> and the default proc to <tt>nil</tt>:
+If argument <tt>default_value</tt> given but no block given,
+initializes the default value to the given <tt>default_value</tt>
+and the default proc to <tt>nil</tt>:
 
 ```ruby
 h = Hash.new(false)
 h # => {}
 h.default # => false
 h.default_proc # => nil
+h[:nosuch] # => nil
 ```
 
 If block given but no argument given, stores the block as the default proc,
-and sets the default value (which will be ignored) to <tt>nil</tt>:
+and sets the default value to <tt>nil</tt>:
 
 ```ruby
 h = Hash.new { |hash, key| "Default value for #{key}" }
 h # => {}
 h.default # => nil
 h.default_proc.class # => Proc
+h[:nosuch] # => "Default value for nosuch"
 ```
 
 Raises an exception if both default_value and a block are given:
@@ -398,13 +402,13 @@ Hash.try_convert(s) # => nil
 Raises an exception unless <tt>obj.to_hash</tt> returns a Hash object:
 
 ```ruby
-class HashableSet < Set
+class BadToHash
   def to_hash
     1
   end
 end
-hs = HashableSet.new([:foo, :bar, :baz])
-Hash.try_convert(hs) # Raises TypeError (can't convert HashableSet to Hash (HashableSet#to_hash gives Integer))
+hs = BadToHash.new
+Hash.try_convert(hs) # Raises TypeError (can't convert BadToHash to Hash (BadToHash#to_hash gives Integer))
 ```
 
 ### Public Instance Methods
