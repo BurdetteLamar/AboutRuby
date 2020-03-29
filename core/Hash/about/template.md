@@ -155,7 +155,10 @@ h.keep_if { |key, value| key.start_with?('b') }.size # => 2
 ### Method Calls with Blocks
 
 For some Hash methods, a call to the method can include a block:
-* [Hash.new](../api/markdown.md#new) with a block initializes the default proc.
+* [Hash.new { |hash, key| ... } → new_hash](../api/markdown.md#new) <br>
+  The block initializes the default proc.
+  
+There are several other families of methods that can call blocks:
 * [General iterators](#general-iterators):
   Some Hash methods iterate over hash entries,
   doing only what the block specifies.
@@ -173,14 +176,18 @@ For some Hash methods, a call to the method can include a block:
 Each of these general iterators traverses Hash entries,
 doing only what the block specifies,
 and returning <tt>self</tt>:
-* [hash#each_pair](../api/markdown.md#each)
-  passes each key-value pair to the block.
-* [hash#each](../api/markdown.md#each) is an alias
-  for <tt>hash#each_pair</tt>.
-* [hash#each_key](../api/markdown.md#each)
-  passes each key pair to the block.
-* [hash#each_value](../api/markdown.md#each)
-  passes each value pair to the block.
+* [hash.each_pair { |key, value| ... } → self
+](../api/markdown.md#each)<br>
+  Passes each key-value pair to the block.
+* [hash.each { |key, value| ... } → self
+](../api/markdown.md#each)<br>
+  Alias for <tt>hash#each_pair</tt>.
+* [hash.each_key { |key| ... } → self
+](../api/markdown.md#each)<br>
+  Passes each key pair to the block.
+* [hash.each_value { |value| ... } → self
+](../api/markdown.md#each)<br>
+  Passes each value pair to the block.
 
 #### Specialized Iterators
 
