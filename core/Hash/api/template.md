@@ -413,6 +413,8 @@ Hash.try_convert(hs) # Raises TypeError (can't convert BadToHash to Hash (BadToH
 
 ### Public Instance Methods
 
+(Class Hash includes module [Enumerable](https://ruby-doc.org/core-2.7.0/Enumerable.html); there are dozens more instance methods from that module.)
+
 #### < (Proper Subset)
 
 ```

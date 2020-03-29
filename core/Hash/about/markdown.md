@@ -239,16 +239,16 @@ Each of these general iterators traverses Hash entries,
 doing only what the block specifies,
 and returning <tt>self</tt>:
 * [hash.each_pair { |key, value| ... } → self
-](../api/markdown.md#each)<br>
+](../api/markdown.md#each_pair)<br>
   Passes each key-value pair to the block.
 * [hash.each { |key, value| ... } → self
 ](../api/markdown.md#each)<br>
-  Alias for <tt>hash.each_pair</tt>.
+  Alias for <tt>hash.each</tt>.
 * [hash.each_key { |key| ... } → self
-](../api/markdown.md#each)<br>
+](../api/markdown.md#each_key)<br>
   Passes each key pair to the block.
 * [hash.each_value { |value| ... } → self
-](../api/markdown.md#each)<br>
+](../api/markdown.md#each_value)<br>
   Passes each value pair to the block.
 
 #### Specialized Iterators
@@ -259,7 +259,7 @@ and returning <tt>self</tt>:
   returns a new Hash based on the block's return values.
 
 Each of these iterators returns a new Hash,
-including or excludng entries
+including or excluding entries
 based on whether the block returns a truthy value:
 * [hash.filter { |key, value| ... } → new_hash
 ](../api/markdown.md#filter)<br>
@@ -284,7 +284,7 @@ based on whether the block returns a truthy value:
   deletes each entry for which the block returns
   a truthy value.
 * [hash.keep_if { |key, value| ... } → self
-](../api/markdown.md#delete_if)<br>
+](../api/markdown.md#keep_if)<br>
   Passes each key-value pair to the block;
   deletes each entry for which the block returns
   <tt>false</tt> or <tt>nil</tt>.
