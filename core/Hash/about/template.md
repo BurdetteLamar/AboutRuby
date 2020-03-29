@@ -181,7 +181,7 @@ and returning <tt>self</tt>:
   Passes each key-value pair to the block.
 * [hash.each { |key, value| ... } → self
 ](../api/markdown.md#each)<br>
-  Alias for <tt>hash#each_pair</tt>.
+  Alias for <tt>hash.each_pair</tt>.
 * [hash.each_key { |key| ... } → self
 ](../api/markdown.md#each)<br>
   Passes each key pair to the block.
@@ -191,93 +191,110 @@ and returning <tt>self</tt>:
 
 #### Specialized Iterators
 
-[hash#to_h](../api/markdown.md#to_h)
-passes each key-value pair to the block
-and returns a new Hash based on the block's return values.
+* [hash.to_h { |key, value| ... } → new_hash
+](../api/markdown.md#to_h)<br>
+  Passes each key-value pair to the block;
+  returns a new Hash based on the block's return values.
 
 Each of these iterators returns a new Hash,
 including or excludng entries
 based on whether the block returns a truthy value:
-* [hash#filter](../api/markdown.md#filter)
-  passes each key-value pair to the block
-  and includes the entry if and only if
+* [hash.filter { |key, value| ... } → new_hash
+](../api/markdown.md#filter)<br>
+  Passes each key-value pair to the block;
+  includes the entry if and only if
   the block returns a truthy value.
-* [hash#select](../api/markdown.md#select)
-  is an alias for <tt>hash#filter</tt>.
-* [hash#reject](../api/markdown.md#reject)
-  passes each key-value pair to the block
-  and includes the entry if and only if
+* [hash.select { |key, value| ... } → new_hash
+](../api/markdown.md#select)<br>
+  Alias for <tt>hash.filter</tt>.
+* [hash.reject { |key, value| ...} → new_hash
+](../api/markdown.md#reject)<br>
+  Passes each key-value pair to the block;
+  includes the entry if and only if
   the block returns a <tt>false</tt> or <tt>nil</tt>.
 
 Each of these iterators returns <tt>self</tt>,
 retaining or deleting entries
 based on whether the block returns a truthy value:
-* [hash#delete_if](../api/markdown.md#delete_if)
-  passes each key-value pair to the block
-  and deletes each entry for which the block returns
- a truthy value.
-* [hash#keep_if](../api/markdown.md#delete_if)
-  does the opposite:
-  it passes each key-value pair to the block
-  and deletes each entry for which the block returns
-  <tt>false</tt> or <tt>nil</tt>.
-* [hash#filter!](../api/markdown.md#filter-1)
-  passes each key-value pair to the block
-  and deletes each entry for which the block returns
-  <tt>false</tt> or <tt>nil</tt>.
-  (Differs from <tt>hash#keep_if</tt> by returning
-  <tt>nil</tt> if no change.)
-* [hash#select!](../api/markdown.md#select-1)
-  is an alias for <tt>hash#filter!</tt>
-* [hash#reject!](../api/markdown.md#reject-1)
-  passes each key-value pair to the block
-  and deletes each entry for which the block returns
+* [hash.delete_if { |key, value| ... } → self
+](../api/markdown.md#delete_if)<br>
+  Passes each key-value pair to the block;
+  deletes each entry for which the block returns
   a truthy value.
-  (Differs from <tt>hash#delete_if</tt> by returning
+* [hash.keep_if { |key, value| ... } → self
+](../api/markdown.md#delete_if)<br>
+  Passes each key-value pair to the block;
+  deletes each entry for which the block returns
+  <tt>false</tt> or <tt>nil</tt>.
+* [ash.filter! { |key, value| ... } → self or nil
+](../api/markdown.md#filter-1)<br>
+  Passes each key-value pair to the block;
+  deletes each entry for which the block returns
+  <tt>false</tt> or <tt>nil</tt>.
+  (Differs from <tt>hash.keep_if</tt> by returning
+  <tt>nil</tt> if no change.)
+* [hash.select! { |key, value| ... } → self or nil
+](../api/markdown.md#select-1)<br>
+  Alias for <tt>hash.filter!</tt>
+* [hash.reject! { |key, value| ... } → self or nil
+](../api/markdown.md#reject-1)<br>
+  Passes each key-value pair to the block;
+  deletes each entry for which the block returns
+  a truthy value.
+  (Differs from <tt>hash.delete_if</tt> by returning
   <tt>nil</tt> if no change.)
 
 Each of these iterators returns a new Hash
 with modified keys or values based on the block:
-* [hash#transform_keys](../api/markdown.md#transform_keys)
-  passes each key to the block,
+* [hash.transform_keys { |key| ... } → new_hash
+](../api/markdown.md#transform_keys)<br>
+  Passes each key to the block,
   whose return value becomes a key in the new Hash.
-* [hash#transform_values](../api/markdown.md#transform_values)
-  passes each value to the block,
+* [hash.transform_values { |value| ... } → new_hash
+](../api/markdown.md#transform_values)<br>
+  Passes each value to the block,
   whose return value becomes a value in the new Hash.
 
 Each of these iterators returns <tt>self</tt>,
 modifying keys or values based on the block:
-* [hash#transform_keys!](../api/markdown.md#transform_keys-1)
-  passes each key to the block,
+* [hash.transform_keys! { |key| ... } → self
+](../api/markdown.md#transform_keys-1)<br>
+  Passes each key to the block,
   whose return value replaces the key.
-* [hash#transform_values!](../api/markdown.md#transform_values-1)
-  passes each value to the block,
+* [hash.transform_values! { |value| ... } → self
+](../api/markdown.md#transform_values-1)<br>
+  Passes each value to the block,
   whose return value replaces the value.
 
 #### Missing-Key Handlers
 
 Each of these methods can handle missing keys in a block:
-* [hash#delete(key)](../api/markdown.md#delete)
-  calls the block if <tt>key</tt> is not found,
+* [hash.delete(key) { |key| ... } → value
+](../api/markdown.md#delete)<br>
+  Calls the block if <tt>key</tt> is not found;
   returns the block's return value.
-* [hash#fetch(key)](../api/markdown.md#fetch)
-  calls the block if <tt>key</tt> is not found,
+* [hash.fetch(key) { |key| ... } → value
+](../api/markdown.md#fetch)<br>
+  Calls the block if <tt>key</tt> is not found;
   returns the block's return value.
-* [hash#fetch_values](*keys)(../api/markdown.md#fetch_values)
-  calls the block with each missing key,
-  treating the block's return value as the value for that key.
+* [hash.fetch_values(*keys) { |key| ... } → new_array](../api/markdown.md#fetch_values)<br>
+  Calls the block with each missing key;
+  treats the block's return value as the value for that key.
 
 #### Duplicate-Key Handlers
 Each of these methods can handle duplicate keys in a block:
-* [hash.merge(*other_hashes)](../api/markdown.md#merge)
-  returns a new Hash that is the merge of <tt>self</tt>
+* [hash.merge(*other_hashes) { |key, old_value, new_value| ... } → new_hash
+](../api/markdown.md#merge)<br>
+  Returns a new Hash that is the merge of <tt>self</tt>
   and <tt>*other_hashes</tt>.
   For each duplicate key, calls the block with the key
   and both values; the block's return value becomes the new value.
-* [hash.merge!(*other_hashes)](../api/markdown.md#merge-1)
-  returns <tt>self</tt> with <tt>*other_hashes</tt> merged.
+* [hash.merge!(*other_hashes) { |key, old_value, new_value| ... } → self
+](../api/markdown.md#merge-1)<br>
+  Returns <tt>self</tt> with <tt>*other_hashes</tt> merged.
   For each duplicate key, calls the block with the key
   and both values; the block's return value becomes the new value.
-* [hash.update(*other_hashes)](../api/markdown.md#update)
-  is an alias for <tt>hash#merge!</tt>.
+* [hash.update(*other_hashes) { |key, old_value, new_value| ... } → self
+](../api/markdown.md#update)<br>
+  Alias for <tt>hash.merge!</tt>.
 
