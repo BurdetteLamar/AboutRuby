@@ -1130,7 +1130,7 @@ Returns an <tt>Enumerator</tt> if no block given:
 
 ```ruby
 h = {foo: 0, bar: 1, baz: 2}
-e = h.each # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each_pair>
+e = h.each_pair # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each_pair>
 h1 = e.each { |key, value| puts "#{key}: #{value}"}
 h1 # => {:foo=>0, :bar=>1, :baz=>2}
 h1.object_id == h.object_id # => true

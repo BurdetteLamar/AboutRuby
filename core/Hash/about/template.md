@@ -298,3 +298,55 @@ Each of these methods can handle duplicate keys in a block:
 ](../api/markdown.md#update)<br>
   Alias for <tt>hash.merge!</tt>.
 
+### Methods Returning Enumerators
+
+Each Hash method that allows a block for iteration
+returns an Enumerator if no block is given.
+These are:
+* [hash.delete_if](../api/markdown.md#delete_if)
+* [hash.each](../api/markdown.md#each)
+* [hash.each_key](../api/markdown.md#each_key)
+* [hash.each_pair](../api/markdown.md#each_pair)
+* [hash.each_value](../api/markdown.md#each_value)
+* [hash.filter](../api/markdown.md#filter)
+* [hash.filter!](../api/markdown.md#filter-1)
+* [hash.keep_if](../api/markdown.md#keep_if)
+* [hash.reject](../api/markdown.md#reject)
+* [hash.reject!](../api/markdown.md#reject-1)
+* [hash.select](../api/markdown.md#select)
+* [hash.select!](../api/markdown.md#select-1)
+* [hash.transform_keys](../api/markdown.md#transform_keys)
+* [hash.transform_keys!](../api/markdown.md#transform_keys-1)
+* [hash.transform_values](../api/markdown.md#transform_values)
+* [hash.transform_values!](../api/markdown.md#transform_values-1)
+
+Example using method <tt>hash.each_pair</tt>:
+
+```ruby
+h = {foo: 0, bar: 1, baz: 2}
+e = h.each_pair
+e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each_pair>`
+```
+
+And perhaps later on:
+```ruby
+h1 = e.each { |key, value| puts "#{key}: #{value}"}
+h1 # => {:foo=>0, :bar=>1, :baz=>2}
+h1.object_id == h.object_id # => true
+```
+
+The enumerator has a _reference to_ the Hash, not a copy of it:
+
+```ruby
+e # => #<Enumerator: {:foo=>0, :bar=>1, :baz=>2}:each_pair>`
+h.delete(:baz) # => 2
+e # => #<Enumerator: {:foo=>0, :bar=>1}:each_pair>
+```
+
+But making the original Hash unavailable causes the enumerator to make a copy:
+
+```ruby
+h = nil
+e # => #<Enumerator: {:foo=>0, :bar=>1}:each_pair>
+```
+
