@@ -9,7 +9,11 @@
   - [[] (Element Reference)](#-element-reference)
   - [append](#append)
   - [at](#at)
+  - [fetch](#fetch)
+  - [find_index](#find_index)
+  - [first](#first)
   - [freeze](#freeze)
+  - [last](#last)
   - [pop](#pop)
   - [prepend](#prepend)
   - [push](#push)
@@ -392,6 +396,202 @@ a = [:foo, 'bar', baz = 2]
 a.at(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
 ```
 
+#### fetch
+
+```
+ary.fetch(index) -> obj
+ary.fetch(index, default_value) -> obj
+ary.fetch(index) { |index| ... } -> obj
+```
+
+Returns the element at index <tt>index</tt>.
+The given <tt>index</tt> must be an
+[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects).
+
+---
+
+With the single argument <tt>index</tt>,
+returns <tt>ary[index]</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.fetch(1) # => "bar"
+```
+
+If <tt>index < 0</tt>, counts from the end of <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.fetch(-1) # => 2
+```
+
+---
+
+With arguments <tt>index</tt> and <tt>default_value</tt>,
+returns <tt>ary[index]</tt> if <tt>index</tt> is in range,
+otherwise <tt>default_value</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.fetch(1, nil) # => "bar"
+a.fetch(50, nil) # => nil
+```
+
+---
+
+With argument <tt>index</tt> and a block,
+returns <tt>ary[index]</tt> if <tt>index</tt> is in range
+(and the block is not called),
+otherwise calls the block with <tt>index</tt> and returns its return value:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.fetch(1) { |index| fail 'Cannot happen' } # => "bar"
+a.fetch(50) { |index| "Value for #{index}" } # => "Value for 50"
+```
+
+---
+
+Raises an exception if <tt>index</tt> is not an
+[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects).
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.fetch('x') # Raises TypeError (no implicit conversion of String into Integer)
+```
+
+Raises an exception if <tt>index</tt> is out of range
+and neither <tt>default_value</tt> nor a block given:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.fetch(50) # Raises IndexError (index 50 outside of array bounds: -3...3)
+```
+
+#### find_index
+
+```
+ary.find_index(obj) -> int or nil
+ary.find_index { |element| ... } -> int or nil
+ary.find_index -> Enumerator
+```
+
+---
+
+When argument <tt>obj</tt> is given,
+returns the index of the first element <tt>element</tt>
+for which <tt>obj == element</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bar']
+a.find_index('bar') # => 1
+```
+
+Returns <tt>nil</tt> if no such object found:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bar']
+a.find_index(:nosuch) # => nil
+```
+
+---
+
+When a block is given,
+calls the block with each successive element <tt>element</tt>,
+returning the index of the first <tt>element</tt>
+for which the block returns a truthy value:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bar']
+a.find_index { |element| element == 'bar' } # => 1
+```
+
+Returns <tt>nil</tt> if the block never returns a truthy value:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bar']
+a.find_index { |element| element == 'x' } # => nil
+```
+
+---
+
+When neither an argument nor a block is given,
+returns a new Enumerator:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bar']
+e = a.find_index
+e # => #<Enumerator: [:foo, "bar", 2]:find_index>
+e.each { |element| element == 'bar' } # => 1
+```
+
+#### first
+
+```
+ary.first → obj or nil
+ary.first(n) → new_array
+```
+
+Returns elements from <self>; does not modify <tt>self</tt>.
+Argument <tt>n</tt>, if given, must be an
+[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects),
+which will be converted to an Integer.
+
+---
+
+When no argument is given, returns the first element:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.first # => :foo
+a # => [:foo, "bar", 2]
+```
+
+If <self> is empty, returns <tt>nil</tt>:
+
+```ruby
+[].first # => nil
+```
+
+---
+
+When argument <tt>n</tt> is given,
+returns the first <tt>n</tt> elements in a new Array:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.first(2) # => [:foo, "bar"]
+```
+
+When <tt>n >= ary.size</tt>, returns all elements:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.first(50) # => [:foo, "bar", 2]
+```
+
+When <tt>n == 0</tt>, returns an empty Array:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.first(0) # []
+```
+
+Raises an exception if <tt>n < 0</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.first(-1) # Raises ArgumentError (negative array size)
+```
+
+Raises an exception if <tt>n</tt> is not
+an [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.first('x') # Raises TypeError (no implicit conversion of String into Integer)
+```
+
 #### freeze
 
 ```
@@ -420,6 +620,73 @@ Raises an exception for an attempt to modify a frozen Array:
 a = [:foo, 'bar', baz = 2]
 a.freeze
 a[3] = :bat # Raises FrozenError (can't modify frozen Array: [:foo, "bar", 2])
+```
+
+#### last
+
+```
+ary.last → obj or nil
+ary.last(n) → new_array
+```
+
+Returns elements from <self>; does not modify <tt>self</tt>.
+Argument <tt>n</tt>, if given, must be an
+[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects),
+which will be converted to an Integer.
+
+---
+
+When no argument is given, returns the last element:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.last # => 2
+a # => [:foo, "bar", 2]
+```
+
+If <self> is empty, returns <tt>nil</tt>:
+
+```ruby
+[].last # => nil
+```
+
+---
+
+When argument <tt>n</tt> is given,
+returns the last <tt>n</tt> elements in a new Array:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.last(2) # => ["bar", 2]
+```
+
+When <tt>n >= ary.size</tt>, returns all elements:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.last(50) # => [:foo, "bar", 2]
+```
+
+When <tt>n == 0</tt>, returns an empty Array:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.last(0) # []
+```
+
+Raises an exception if <tt>n < 0</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.last(-1) # Raises ArgumentError (negative array size)
+```
+
+Raises an exception if <tt>n</tt> is not
+an [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.last('x') # Raises TypeError (no implicit conversion of String into Integer)
 ```
 
 #### pop
