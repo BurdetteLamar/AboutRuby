@@ -99,7 +99,7 @@ the block is called with each successive integer <tt>index</tt>;
 the element for that <tt>index</tt> is the return value from the block:
 
 ```ruby
-a = Array.new(3) { |n| "Element #{n}" }
+a = Array.new(3) { |index| "Element #{index}" }
 a # => ["Element 0", "Element 1", "Element 2"]
 ```
 
