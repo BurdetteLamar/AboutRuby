@@ -119,8 +119,9 @@ a # => []
 ---
 
 With a block and both <tt>size</tt> and <tt>default_value</tt>,
-gives a warning message:
-(<tt>warning: block supersedes default value argument</tt>):
+gives a warning message
+(<tt>warning: block supersedes default value argument</tt>),
+and assigns elements from the block's return values:
 
 ```ruby
 Array.new(4, :default) {} # => [nil, nil, nil, nil]
