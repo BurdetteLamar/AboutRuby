@@ -153,22 +153,23 @@ Array.try_convert(obj) → new_array or nil
 
 Tries to convert <tt>obj</tt> to an Array.
 
-Argument <tt>obj</tt> may be any object.
+---
 
-Returns the Array object created by calling
-<tt>obj.to_ary</tt>.
+When <tt>obj</tt> is
+an [Array-convertible object](../../../doc/convertibles.md#array-convertible-objects),
+returns the Array object created by converting it:
 
 ```ruby
-class ArrayableSet < Set
+class ToAryReturnsArray < Set
   def to_ary
-    a = []
-    self.map { |item| a.push(item) }
-    a
+    self.to_a
   end
 end
-as = ArrayableSet.new([:foo, :bar, :baz])
+as = ToAryReturnsArray.new([:foo, :bar, :baz])
 Array.try_convert(as) # => [:foo, :bar, :baz]
 ```
+
+---
 
 Returns <tt>nil</tt> unless <tt>obj.respond_to?(:to_ary)</tt>:
 
@@ -177,6 +178,8 @@ s = 'foo'
 s.respond_to?(:to_ary) # => false
 Array.try_convert(s) # => nil
 ```
+
+---
 
 Raises an exception if <tt>obj.to_ary</tt> takes an argument:
 
