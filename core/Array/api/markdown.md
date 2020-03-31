@@ -94,7 +94,7 @@ a[1].object_id == a[2].object_id # => true
 ---
 
 With a block and a argument <tt>size</tt>,
-returns an Array object of the given size;
+returns an Array of the given size;
 the block is called with each successive integer <tt>n</tt>,
 and each <tt>n</tt>th element is the return value from the block:
 
