@@ -192,9 +192,7 @@ Array.try_convert(ToAryTakesArgument.new) # Raises TypeError (can't convert ToAr
 ary << obj → self
 ```
 
-Appends <tt>obj</tt> to <tt>ary</tt>:
-
-Argument <tt>obj</tt> may be any object.
+Appends <tt>obj</tt> to <tt>ary</tt>; returns <tt>self</tt>:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -203,11 +201,11 @@ a1 # => [:foo, "bar", 2, :bam]
 a1.object_id == a.object_id # => true
 ```
 
-Chained:
+May be chained:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
-a << :bam << :bat
+(a << :bam << :bat).size # => 5
 a # => [:foo, "bar", 2, :bam, :bat]
 ```
 
