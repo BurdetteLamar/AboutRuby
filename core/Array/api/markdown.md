@@ -36,11 +36,11 @@ Array.new(size) { |index| ... } → new_array
 Returns a new Array.
 
 Argument <tt>array</tt>, if given, must be an
-[Array-convertible object](../../doc/convertibles.md#array-convertible-objects),
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects),
 which will be converted to an Array.
 
 Argument <tt>size</tt>, if given must be an
-[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects),
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects),
 which will be converted to an Integer.
 
 Argument <tt>default_value</tt> may be any object.
@@ -138,8 +138,8 @@ Array.new(-1) { |n| } # Raises ArgumentError (negative array size)
 ```
 
 Raises an exception if the single argument is neither
-an [Array-convertible object](../../doc/convertibles.md#array-convertible-objects) nor
-an [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects):
+an [Array-convertible object](../../../doc/convertibles.md#array-convertible-objects) nor
+an [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
 
 ```ruby
 Array.new(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
@@ -238,7 +238,7 @@ ary[range] → new_array or nil
 Returns elements from <tt>ary</tt>; does not modify <tt>ary</tt>.
 
 Argument <tt>index</tt>, <tt>start</tt>, and <tt>length</tt>, if given, must be
-[Integer-convertible objects](../../doc/convertibles.md#integer-convertible-objects),
+[Integer-convertible objects](../../../doc/convertibles.md#integer-convertible-objects),
 which will be converted to Integers.
 
 Argument <tt>range</tt>, if given, must be a Range object.
@@ -350,7 +350,7 @@ a[-3..2] # => [:foo, "bar", 2]
 ```
 
 Raises an exception if given a single argument that is not an
-[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects)
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects)
 or a Range object:
 
 ```ruby
@@ -359,7 +359,7 @@ a[:foo] # Raises TypeError (no implicit conversion of Symbol into Integer)
 ```
 
 Raises an exception if given two arguments that are not both
-[Integer-convertible objects](../../doc/convertibles.md#integer-convertible-objects)
+[Integer-convertible objects](../../../doc/convertibles.md#integer-convertible-objects)
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -401,7 +401,7 @@ ary.at(index) → obj
 Returns the element in <tt>ary</tt> at offset <tt>index</tt>; does not modify <tt>ary</tt>.
 
 Argument <tt>index</tt> must be an
-[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects),
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects),
 which will be converted to an Integer.
 
 When argument <tt>index</tt> is given,
@@ -415,7 +415,7 @@ a.at(2) # => 2
 ```
 
 Raises an exception if <tt>index</tt> is not an
-[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects):
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -432,7 +432,7 @@ ary.fetch(index) { |index| ... } -> obj
 
 Returns the element at index <tt>index</tt>.
 The given <tt>index</tt> must be an
-[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects).
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
 
 ---
 
@@ -479,7 +479,7 @@ a.fetch(50) { |index| "Value for #{index}" } # => "Value for 50"
 ---
 
 Raises an exception if <tt>index</tt> is not an
-[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects).
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -560,7 +560,7 @@ ary.first(n) → new_array
 
 Returns elements from <self>; does not modify <tt>self</tt>.
 Argument <tt>n</tt>, if given, must be an
-[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects),
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects),
 which will be converted to an Integer.
 
 ---
@@ -611,7 +611,7 @@ a.first(-1) # Raises ArgumentError (negative array size)
 ```
 
 Raises an exception if <tt>n</tt> is not
-an [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects):
+an [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -657,7 +657,7 @@ ary.last(n) → new_array
 
 Returns elements from <self>; does not modify <tt>self</tt>.
 Argument <tt>n</tt>, if given, must be an
-[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects),
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects),
 which will be converted to an Integer.
 
 ---
@@ -708,7 +708,7 @@ a.last(-1) # Raises ArgumentError (negative array size)
 ```
 
 Raises an exception if <tt>n</tt> is not
-an [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects):
+an [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -725,7 +725,7 @@ ary.pop(n) → new_array
 Removes and returns trailing elements from <tt>ary</tt>.
 
 Argument <tt>n</tt>, if given, must be an
-[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects),
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects),
 which will be converted to an Integer.
 
 If no argument is given and <tt>ary</tt> is empty,
@@ -848,7 +848,7 @@ ary.shift(n) → new_array
 Removes and returns leading elements in <tt>ary</tt>.
 
 The argument <tt>n</tt>, if given, must be an
-[Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects),
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects),
 which will be converted to an Integer.
 
 If no argument is given and <tt>ary</tt> is empty
