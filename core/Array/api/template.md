@@ -192,7 +192,8 @@ Array.try_convert(ToAryTakesArgument.new) # Raises TypeError (can't convert ToAr
 ary << obj → self
 ```
 
-Appends <tt>obj</tt> to <tt>ary</tt>; returns <tt>self</tt>:
+Appends <tt>obj</tt> to <tt>ary</tt>;
+returns <tt>ary</tt> (<tt>self</tt>):
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -217,13 +218,15 @@ ary[start, length] → new_array or nil
 ary[range] → new_array or nil
 ```
 
-Returns elements from <tt>ary</tt>; does not modify <tt>ary</tt>.
+Returns elements from <tt>self</tt>; does not modify <tt>self</tt>.
 
-Argument <tt>index</tt>, <tt>start</tt>, and <tt>length</tt>, if given, must be
+Arguments <tt>index</tt>, <tt>start</tt>, and <tt>length</tt>, if given, must be
 [Integer-convertible objects](../../../doc/convertibles.md#integer-convertible-objects),
 which will be converted to Integers.
 
 Argument <tt>range</tt>, if given, must be a Range object.
+
+---
 
 When a single argument <tt>index</tt> is given,
 returns the element in <tt>ary</tt> at offset <tt>index</tt>:
@@ -252,6 +255,8 @@ a = [:foo, 'bar', baz = 2]
 a[50] # => nil
 a[-50] # => nil
 ```
+
+---
 
 When two arguments <tt>start</tt> and <tt>length</tt> are given,
 returns a new array of size <tt>length</tt>
