@@ -225,7 +225,7 @@ May be chained:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
-(a << :bam << :bat).size # => 5
+a << :bam << :bat
 a # => [:foo, "bar", 2, :bam, :bat]
 ```
 
@@ -384,9 +384,7 @@ a[1, :bar] # Raises TypeError (no implicit conversion of Symbol into Integer)
 ary.append(*objects) → self
 ```
 
-Appends the given <tt>*objects</tt> to <tt>ary</tt>:
-
-Arguments <tt>*objects</tt> may be any objects.
+Appends the given <tt>*objects</tt> to <tt>ary</tt>; returns <tt>self</tt>:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -395,7 +393,7 @@ a1 # => [:foo, "bar", 2, :bam, :bat]
 a1.object_id == a.object_id # => true
 ```
 
-Chained:
+May be chained:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -409,21 +407,23 @@ a # => [:foo, "bar", 2, :bam, :bat, :bad, :bah]
 ary.at(index) → obj
 ```
 
-Returns the element in <tt>ary</tt> at offset <tt>index</tt>; does not modify <tt>ary</tt>.
+Returns the element in <tt>ary</tt> at offset <tt>index</tt>.
 
 Argument <tt>index</tt> must be an
 [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects),
 which will be converted to an Integer.
 
-When argument <tt>index</tt> is given,
-returns the element at offset <tt>index</tt>:
+---
 
+Returns the element at offset <tt>index</tt>:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
 a.at(0) # => :foo
 a.at(2) # => 2
 ```
+
+---
 
 Raises an exception if <tt>index</tt> is not an
 [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
@@ -442,6 +442,7 @@ ary.fetch(index) { |index| ... } -> obj
 ```
 
 Returns the element at index <tt>index</tt>.
+
 The given <tt>index</tt> must be an
 [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
 
@@ -562,6 +563,17 @@ e # => #<Enumerator: [:foo, "bar", 2]:find_index>
 e.each { |element| element == 'bar' } # => 1
 ```
 
+---
+
+When both an argument and a block given,
+gives a warning (<tt>warning: given block not used</tt>)
+and ignores the block:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bar']
+index = a.find_index('bar') { fail 'Cannot happen' }
+index # => 1
+```
 #### first
 
 ```
@@ -569,7 +581,8 @@ ary.first → obj or nil
 ary.first(n) → new_array
 ```
 
-Returns elements from <self>; does not modify <tt>self</tt>.
+Returns elements from <tt>ary</tt>.
+
 Argument <tt>n</tt>, if given, must be an
 [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects),
 which will be converted to an Integer.
@@ -584,7 +597,7 @@ a.first # => :foo
 a # => [:foo, "bar", 2]
 ```
 
-If <self> is empty, returns <tt>nil</tt>:
+If <tt>ary</tt>> is empty, returns <tt>nil</tt>:
 
 ```ruby
 [].first # => nil
@@ -614,6 +627,8 @@ a = [:foo, 'bar', baz = 2]
 a.first(0) # []
 ```
 
+---
+
 Raises an exception if <tt>n < 0</tt>:
 
 ```ruby
@@ -635,7 +650,7 @@ a.first('x') # Raises TypeError (no implicit conversion of String into Integer)
 ary.freeze → self
 ```
 
-Freezes <tt>self</tt>, returns <tt>self</tt>:
+Freezes <tt>ary</tt>, returns <tt>self</tt>:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -644,12 +659,14 @@ a1 = a.freeze
 a1.object_id == a.object_id # => true
 ```
 
-Chained:
+May be chained:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
 a.freeze.frozen? # => true
 ```
+
+---
 
 Raises an exception for an attempt to modify a frozen Array:
 
@@ -666,7 +683,8 @@ ary.last → obj or nil
 ary.last(n) → new_array
 ```
 
-Returns elements from <self>; does not modify <tt>self</tt>.
+Returns elements from <tt>ary</tt>.
+
 Argument <tt>n</tt>, if given, must be an
 [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects),
 which will be converted to an Integer.
@@ -681,7 +699,7 @@ a.last # => 2
 a # => [:foo, "bar", 2]
 ```
 
-If <self> is empty, returns <tt>nil</tt>:
+If <tt>ary</tt> is empty, returns <tt>nil</tt>:
 
 ```ruby
 [].last # => nil
@@ -711,6 +729,8 @@ a = [:foo, 'bar', baz = 2]
 a.last(0) # []
 ```
 
+---
+
 Raises an exception if <tt>n < 0</tt>:
 
 ```ruby
@@ -739,6 +759,8 @@ Argument <tt>n</tt>, if given, must be an
 [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects),
 which will be converted to an Integer.
 
+---
+
 If no argument is given and <tt>ary</tt> is empty,
 returns <tt>nil</tt>:
 
@@ -756,6 +778,8 @@ a.pop # => 2
 a # => [:foo, "bar"]
 ```
 
+---
+
 If argument <tt>n</tt> is given and <tt>ary</tt> is empty,
 returns a new empty Array:
 
@@ -765,7 +789,7 @@ a.pop(1) # => []
 a.pop(2) # => []
 ```
 
-If an argument <tt>n</tt> is given and <tt>ary</tt> is not empty,
+If argument <tt>n</tt> is given and <tt>ary</tt> is not empty,
 removes and returns the last <tt>n</tt> elements in <tt>ary</tt>:
 
 ```ruby
@@ -794,6 +818,8 @@ a1 # => []
 a # => [:foo, "bar", 2]
 ```
 
+---
+
 Raises an exception if <tt>n</tt> is negative:
 
 ```ruby
@@ -807,8 +833,7 @@ a1 = a.pop(-1) # Raises ArgumentError (negative array size)
 ary.prepend(*objects) → self
 ```
 
-Prepends the given <tt>*objects</tt> to <tt>ary</tt>;
-<tt>*objects</tt> may be any objects:
+Prepends the given <tt>*objects</tt> to <tt>ary</tt>, returns <tt>self</tt>:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -817,7 +842,7 @@ a1 # => [:bam, :bat, :foo, "bar", 2]
 a1.object_id == a.object_id # => true
 ```
 
-Chained:
+May be chained:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -831,8 +856,7 @@ a # => [:bad, :bah, :bam, :bat, :foo, "bar", 2]
 ary.push(*objects) → self
 ```
 
-Appends the given <tt>*objects</tt> to <tt>ary</tt>;
-<tt>*objects</tt> may be any objects:
+Appends the given <tt>*objects</tt> to <tt>ary</tt>; returns <tt>self</tt>:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -841,7 +865,7 @@ a1 # => [:foo, "bar", 2, :bam, :bat]
 a1.object_id == a.object_id # => true
 ```
 
-Chained:
+May be chained:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -862,6 +886,8 @@ The argument <tt>n</tt>, if given, must be an
 [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects),
 which will be converted to an Integer.
 
+---
+
 If no argument is given and <tt>ary</tt> is empty
 returns <tt>nil</tt>:
 
@@ -878,6 +904,8 @@ a = [:foo, 'bar', baz = 2]
 a.shift # => :foo
 a # => ["bar", 2]
 ```
+
+---
 
 If argument <tt>n</tt> is given and <tt>ary</tt> is empty,
 returns a new empty Array:
@@ -918,6 +946,8 @@ a1 # => []
 a # => [:foo, "bar", 2]
 ```
 
+---
+
 Raises an exception if <tt>n</tt> is negative:
 
 ```ruby
@@ -933,7 +963,9 @@ ary.slice(start, length) → new_array or nil
 ary.slice(range) → new_array or nil
 ```
 
-Returns elements from <tt>ary</tt>; does not remove the elements from <tt>ary</tt>.
+Returns elements from <tt>ary</tt>.
+
+---
 
 When the only argument is an Integer <tt>n</tt>,
 returns the <tt>n</tt>th element in <tt>ary</tt>:
@@ -963,6 +995,8 @@ a.slice(50) # => nil
 a.slice(-50) # => nil
 ```
 
+---
+
 When the only arguments are Integers <tt>start</tt> and <tt>length</tt>,
 returns a new array of size <tt>length</tt>
 containing elements of <tt>ary</tt> beginning at index <tt>start</tt>:
@@ -973,7 +1007,7 @@ a.slice(0, 2) # => [:foo, "bar"]
 a.slice(1, 2) # => ["bar", 2]
 ```
 
-If <tt>start + length</tt> is greater than <tt>ary.length</tt>,
+If <tt>start + length > ary.length</tt>,
 returns <tt>ary.size - start</tt> elements:
 
 ```ruby
@@ -999,6 +1033,8 @@ a = [:foo, 'bar', baz = 2]
 a.slice(2, -1) # => nil
 a.slice(1, -2) # => nil
 ```
+
+---
 
 When the only argument is a Range object <rng>,
 treats <tt>rng.min</tt> as <tt>start</tt> above
@@ -1041,6 +1077,8 @@ a.slice(-2..2) # => ["bar", 2]
 a.slice(-3..2) # => [:foo, "bar", 2]
 ```
 
+---
+
 Raises an exception if given a single argument that is not an Integer:
 
 ```ruby
@@ -1071,11 +1109,10 @@ a1 # => [:bam, :bat, :foo, "bar", 2]
 a1.object_id == a.object_id # => true
 ```
 
-Chained:
+May be chained:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
 a.unshift(:bam, :bat).unshift(:bad, :bah)
 a # => [:bad, :bah, :bam, :bat, :foo, "bar", 2]
 ```
-
