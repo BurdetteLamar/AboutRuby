@@ -38,7 +38,7 @@ a # => []
 ---
 
 With no block and a single argument <tt>array</tt>,
-returns a new Array:
+returns a new Array formed from <tt>array</tt>:
 
 ```ruby
 a = Array.new([:foo, 'bar', baz = 2])
@@ -49,7 +49,7 @@ a # => [:foo, "bar", 2]
 ---
 
 With no block and a single argument <tt>size</tt>,
-returns a new Array object of the given size
+returns a new Array of the given size
 whose elements are all <tt>nil</tt>:
 
 ```ruby
@@ -61,8 +61,8 @@ a # => [nil, nil, nil]
 
 ---
 
-With no block and arguments <tt>size</tt> <tt>default_value</tt>,
-returns an Array object of the given size
+With no block and arguments <tt>size</tt> and  <tt>default_value</tt>,
+returns an Array of the given size
 each of whose elements is that same <tt>default_value</tt>:
 
 ```ruby
