@@ -287,7 +287,7 @@ a[0, 2] # => [:foo, "bar"]
 a[1, 2] # => ["bar", 2]
 ```
 
-If <tt>start + length >= ary.length</tt>,
+If <tt>start + length > ary.length</tt>,
 returns <tt>ary.size - start</tt> elements:
 
 ```ruby
