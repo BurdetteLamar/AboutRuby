@@ -218,7 +218,7 @@ ary[start, length] → new_array or nil
 ary[range] → new_array or nil
 ```
 
-Returns elements from <tt>self</tt>; does not modify <tt>self</tt>.
+Returns elements from <tt>ary</tt>.
 
 Arguments <tt>index</tt>, <tt>start</tt>, and <tt>length</tt>, if given, must be
 [Integer-convertible objects](../../../doc/convertibles.md#integer-convertible-objects),
