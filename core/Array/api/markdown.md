@@ -81,8 +81,8 @@ a # => [nil, nil, nil]
 ---
 
 With no block and arguments <tt>size</tt> and  <tt>default_value</tt>,
-returns an Array of the given size
-each of whose elements is that same <tt>default_value</tt>:
+returns an Array of the given size;
+each element is that same <tt>default_value</tt>:
 
 ```ruby
 a = Array.new(3, 'x') 
