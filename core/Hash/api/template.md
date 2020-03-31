@@ -350,7 +350,7 @@ h = Hash.new(false)
 h # => {}
 h.default # => false
 h.default_proc # => nil
-h[:nosuch] # => nil
+h[:nosuch] # => false
 ```
 
 If block given but no argument given, stores the block as the default proc,
