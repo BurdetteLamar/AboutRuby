@@ -447,9 +447,9 @@ Hash[Foo.new] # Raises TypeError (can't convert Foo to Hash (Foo#to_hash gives S
 #### ::new
 
 ```
-Hash.new → new_hash
-Hash.new(default_value) → new_hash
-Hash.new { |hash, key| ... } → new_hash
+Hash.new → new_empty_hash
+Hash.new(default_value) → new_empty_hash
+Hash.new { |hash, key| ... } → new_empty_hash
 ```
 
 Returns a new empty Hash object.
@@ -476,7 +476,7 @@ h = Hash.new(false)
 h # => {}
 h.default # => false
 h.default_proc # => nil
-h[:nosuch] # => nil
+h[:nosuch] # => false
 ```
 
 If block given but no argument given, stores the block as the default proc,
