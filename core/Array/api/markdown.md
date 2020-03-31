@@ -287,13 +287,14 @@ a[0, 2] # => [:foo, "bar"]
 a[1, 2] # => ["bar", 2]
 ```
 
-If <tt>start + length</tt> is greater than <tt>ary.length</tt>,
+If <tt>start + length >= ary.length</tt>,
 returns <tt>ary.size - start</tt> elements:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
-a[0, 50] # => [:foo, "bar", 2]
-a[1, 50] # => ["bar", 2]
+a[0, 4] # => [:foo, "bar", 2]
+a[1, 3] # => ["bar", 2]
+a[2, 2] # => [2]
 ```
 
 If <tt>start == a.size</tt> and <tt>length >= 0</tt>,
@@ -313,6 +314,8 @@ a = [:foo, 'bar', baz = 2]
 a[2, -1] # => nil
 a[1, -2] # => nil
 ```
+
+---
 
 When a single argument <tt>range</tt> is given,
 treats <tt>rng.min</tt> as <tt>start</tt> above
@@ -354,6 +357,8 @@ a[-1..2] # => [2]
 a[-2..2] # => ["bar", 2]
 a[-3..2] # => [:foo, "bar", 2]
 ```
+
+---
 
 Raises an exception if given a single argument that is not an
 [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects)
