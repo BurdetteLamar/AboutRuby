@@ -26,10 +26,10 @@
 #### ::new
 
 ```
-Array.new → new_array
+Array.new → new_empty_array
 Array.new(array) → new_array
 Array.new(size) → new_array
-Array.new(size, default) → new_array
+Array.new(size, default_value) → new_array
 Array.new(size) { |index| ... } → new_array
 ```
 
@@ -43,14 +43,9 @@ Argument <tt>size</tt>, if given must be an
 [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects),
 which will be converted to an Integer.
 
-Argument <tt>default</tt> may be any object.
+Argument <tt>default_value</tt> may be any object.
 
-With no block and no arguments, returns a new empty Array object:
-
-```ruby
-a = Array.new
-a # => []
-```
+---
 
 With no block and a single argument <tt>array</tt>,
 returns a new Array:
@@ -60,6 +55,17 @@ a = Array.new([:foo, 'bar', baz = 2])
 a.class # => Array
 a # => [:foo, "bar", 2]
 ```
+
+---
+
+With no block and no arguments, returns a new empty Array object:
+
+```ruby
+a = Array.new
+a # => []
+```
+
+---
 
 With no block and a single argument <tt>size</tt>,
 returns a new Array object of the given size
@@ -72,9 +78,11 @@ a = Array.new(3)
 a # => [nil, nil, nil]
 ```
 
-With no block arguments <tt>size</tt> <tt>obj</tt>,
+---
+
+With no block and arguments <tt>size</tt> <tt>default_value</tt>,
 returns an Array object of the given size
-eac of whose elements is that same <tt>obj</tt>:
+each of whose elements is that same <tt>default_value</tt>:
 
 ```ruby
 a = Array.new(3, 'x') 
@@ -82,6 +90,8 @@ a # => ["x", "x", "x"]
 a[0].object_id == a[1].object_id # => true
 a[1].object_id == a[2].object_id # => true
 ```
+
+---
 
 With a block and a argument <tt>size</tt>,
 returns an Array object of the given size;
@@ -92,6 +102,8 @@ and each <tt>n</tt>th element is the return value from the block:
 a = Array.new(3) { |n| "Element #{n}" }
 a # => ["Element 0", "Element 1", "Element 2"]
 ```
+
+---
 
 With a block and no argument,
 or a single argument <tt>0</tt>,
@@ -104,6 +116,19 @@ a = Array.new { |n| fail 'Cannot happen' }
 a # => []
 ```
 
+---
+
+Gives a warning message
+('warning: block supersedes default value argument')
+if a block and both <tt>size</tt>
+and <tt>default_value</tt> are given:
+
+```ruby
+Array.new(4,:default) {} # => [nil, nil, nil, nil]
+```
+
+---
+
 Raises an exception if <tt>size</tt> is a negative integer:
 
 ```ruby
@@ -112,8 +137,9 @@ Array.new(-1, :default) # Raises ArgumentError (negative array size)
 Array.new(-1) { |n| } # Raises ArgumentError (negative array size)
 ```
 
-Raises an exception if the single argument
-is neither an Array nor an Integer:
+Raises an exception if the single argument is neither
+an [Array-convertible object](../../doc/convertibles.md#array-convertible-objects) nor
+an [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects):
 
 ```ruby
 Array.new(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
