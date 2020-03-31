@@ -47,6 +47,15 @@ Argument <tt>default_value</tt> may be any object.
 
 ---
 
+With no block and no arguments, returns a new empty Array object:
+
+```ruby
+a = Array.new
+a # => []
+```
+
+---
+
 With no block and a single argument <tt>array</tt>,
 returns a new Array:
 
@@ -54,15 +63,6 @@ returns a new Array:
 a = Array.new([:foo, 'bar', baz = 2])
 a.class # => Array
 a # => [:foo, "bar", 2]
-```
-
----
-
-With no block and no arguments, returns a new empty Array object:
-
-```ruby
-a = Array.new
-a # => []
 ```
 
 ---
