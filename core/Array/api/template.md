@@ -99,13 +99,12 @@ a # => []
 
 ---
 
-Gives a warning message
-('warning: block supersedes default value argument')
-if a block and both <tt>size</tt>
-and <tt>default_value</tt> are given:
+With a block and both <tt>size</tt> and <tt>default_value</tt>,
+gives a warning message:
+(<tt>warning: block supersedes default value argument</tt>):
 
 ```ruby
-Array.new(4,:default) {} # => [nil, nil, nil, nil]
+Array.new(4, :default) {} # => [nil, nil, nil, nil]
 ```
 
 ---
