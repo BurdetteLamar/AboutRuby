@@ -509,7 +509,7 @@ a.find_index('bar') # => 1
 Returns <tt>nil</tt> if no such object found:
 
 ```ruby
-a = [:foo, 'bar', baz = 2, 'bar']
+a = [:foo, 'bar', baz = 2]
 a.find_index(:nosuch) # => nil
 ```
 
