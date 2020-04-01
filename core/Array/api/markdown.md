@@ -509,9 +509,9 @@ a.fetch(50) # Raises IndexError (index 50 outside of array bounds: -3...3)
 #### find_index
 
 ```
-ary.find_index(obj) -> int or nil
-ary.find_index { |element| ... } -> int or nil
-ary.find_index -> Enumerator
+ary.find_index(obj) -> Integer or nil
+ary.find_index { |element| ... } -> Integer or nil
+ary.find_index -> new_enumerator
 ```
 
 ---
@@ -547,7 +547,7 @@ a.find_index { |element| element == 'bar' } # => 1
 Returns <tt>nil</tt> if the block never returns a truthy value:
 
 ```ruby
-a = [:foo, 'bar', baz = 2, 'bar']
+a = [:foo, 'bar', baz = 2]
 a.find_index { |element| element == 'x' } # => nil
 ```
 
@@ -557,7 +557,7 @@ When neither an argument nor a block is given,
 returns a new Enumerator:
 
 ```ruby
-a = [:foo, 'bar', baz = 2, 'bar']
+a = [:foo, 'bar', baz = 2]
 e = a.find_index
 e # => #<Enumerator: [:foo, "bar", 2]:find_index>
 e.each { |element| element == 'bar' } # => 1
