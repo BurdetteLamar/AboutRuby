@@ -537,16 +537,14 @@ a = [:foo, 'bar', baz = 2]
 a[1..-3] = 'foo' # => "foo"
 a # => [:foo, "foo", "bar", 2]
 a = [:foo, 'bar', baz = 2]
-a[1..-4] = 'foo' # => "foo"
-a # => [:foo, "foo", "bar", 2]
 ```
 
-If <tt>length</tt> is too large for the existing <tt>ary</tt>,
+If <tt>range.end</tt> is too large for the existing <tt>ary</tt>,
 does not extend <tt>ary</tt>:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
-a[1, 5] = 'foo' # => "foo"
+a[1..5] = 'foo' # => "foo"
 a # => [:foo, "foo"]
 ```
 
