@@ -13,10 +13,12 @@
   - [find_index](#find_index)
   - [first](#first)
   - [freeze](#freeze)
+  - [index](#index)
   - [last](#last)
   - [pop](#pop)
   - [prepend](#prepend)
   - [push](#push)
+  - [rindex](#rindex)
   - [shift](#shift)
   - [slice](#slice)
   - [unshift](#unshift)
@@ -676,6 +678,74 @@ a.freeze
 a[3] = :bat # Raises FrozenError (can't modify frozen Array: [:foo, "bar", 2])
 ```
 
+#### index
+
+```
+ary.index(obj) -> Integer or nil
+ary.index { |element| ... } -> Integer or nil
+ary.index -> new_enumerator
+```
+
+---
+
+When argument <tt>obj</tt> is given,
+returns the index of the first element <tt>element</tt>
+for which <tt>obj == element</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bar']
+a.index('bar') # => 1
+```
+
+Returns <tt>nil</tt> if no such object found:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.index(:nosuch) # => nil
+```
+
+---
+
+When a block is given,
+calls the block with each successive element <tt>element</tt>,
+returning the index of the first <tt>element</tt>
+for which the block returns a truthy value:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bar']
+a.index { |element| element == 'bar' } # => 1
+```
+
+Returns <tt>nil</tt> if the block never returns a truthy value:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.index { |element| element == 'x' } # => nil
+```
+
+---
+
+When neither an argument nor a block is given,
+returns a new Enumerator:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+e = a.index
+e # => #<Enumerator: [:foo, "bar", 2]:index>
+e.each { |element| element == 'bar' } # => 1
+```
+
+---
+
+When both an argument and a block given,
+gives a warning (<tt>warning: given block not used</tt>)
+and ignores the block:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bar']
+index = a.index('bar') { fail 'Cannot happen' }
+index # => 1
+```
 #### last
 
 ```
@@ -873,6 +943,74 @@ a.push(:bam, :bat).push(:bad, :bah)
 a # => [:foo, "bar", 2, :bam, :bat, :bad, :bah]
 ```
 
+#### rindex
+
+```
+ary.rindex(obj) -> Integer or nil
+ary.rindex { |element| ... } -> Integer or nil
+ary.rindex -> new_enumerator
+```
+
+---
+
+When argument <tt>obj</tt> is given,
+returns the index of the last element <tt>element</tt>
+for which <tt>obj == element</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bar']
+a.rindex('bar') # => 3
+```
+
+Returns <tt>nil</tt> if no such object found:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.rindex(:nosuch) # => nil
+```
+
+---
+
+When a block is given,
+calls the block with each successive element <tt>element</tt>,
+returning the index of the last <tt>element</tt>
+for which the block returns a truthy value:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bar']
+a.rindex { |element| element == 'bar' } # => 3
+```
+
+Returns <tt>nil</tt> if the block never returns a truthy value:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.rindex { |element| element == 'x' } # => nil
+```
+
+---
+
+When neither an argument nor a block is given,
+returns a new Enumerator:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bar']
+e = a.rindex
+e # => #<Enumerator: [:foo, "bar", 2, "bar"]:rindex>
+e.each { |element| element == 'bar' } # => 3
+```
+
+---
+
+When both an argument and a block given,
+gives a warning (<tt>warning: given block not used</tt>)
+and ignores the block:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bar']
+index = a.rindex('bar') { fail 'Cannot happen' }
+index # => 3
+```
 #### shift
 
 ```
