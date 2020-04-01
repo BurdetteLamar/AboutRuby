@@ -7,6 +7,7 @@
 - [Public Instance Methods](#public-instance-methods)
   - [<< (Append)](#-append)
   - [[] (Element Reference)](#-element-reference)
+  - [[]= (Element Assignment)](#-element-assignment)
   - [append](#append)
   - [at](#at)
   - [fetch](#fetch)
@@ -378,6 +379,139 @@ Raises an exception if given two arguments that are not both
 a = [:foo, 'bar', baz = 2]
 a[:foo, 3] # Raises TypeError (no implicit conversion of Symbol into Integer)
 a[1, :bar] # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+#### []= (Element Assignment)
+
+```
+ary[index] = obj -> obj
+ary[start, length] = obj ->  obj
+ary[range] = obj ->  obj
+```
+
+Assigns elements in <tt>ary</tt>; returns the given <tt>obj</tt>.
+
+Arguments <tt>index</tt>, <tt>start</tt>, and <tt>length</tt>, if given, must be
+[Integer-convertible objects](../../../doc/convertibles.md#integer-convertible-objects),
+which will be converted to Integers.
+
+Argument <tt>range</tt>, if given, must be a Range object.
+
+If <tt>obj</tt> is an
+[Array-convertible object](../../../doc/convertibles.md#integer-convertible-objects),
+it will be converted to an Array.
+
+---
+
+When <tt>index</tt> is given, assigns <tt>obj</tt>
+to an element in <tt>ary</tt>.
+
+If <tt>index</tt> is non-negative,
+assigns <tt>obj</tt> the element at offset <tt>index</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[0] = 'foo' # => "foo"
+a # => ["foo", "bar", 2]
+```
+
+If <tt>index >= ary.length</tt>, extends <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[7] = 'foo' # => "foo"
+a # => [:foo, "bar", 2, nil, nil, nil, nil, "foo"]
+```
+
+If <tt>index</tt> is negative, counts backward from the end of <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[-1] = 'two' # => "two"
+a # => [:foo, "bar", "two"]
+```
+
+---
+
+When <tt>start</tt> and <tt>length</tt> are given
+and <tt>obj</tt> is not an
+[Array-convertible object](../../../doc/convertibles.md#integer-convertible-objects),
+removes <tt>length - 1</tt> elements beginning at offset <tt>start</tt>,
+and assigns <tt>obj</tt> at offset <tt>start</tt>:
+
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[0, 2] = 'foo' # => "foo"
+a # => ["foo", 2]
+```
+
+if <tt>start</tt> is negative, counts backward from the end of <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[-2, 2] = 'foo' # => "foo"
+a # => [:foo, "foo"]
+```
+
+If <tt>length</tt> is too large for the existing <tt>ary</tt>,
+does not extend <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[1, 5] = 'foo' # => "foo"
+a # => [:foo, "foo"]
+```
+
+If <tt>length == 0</tt>, up-shifts elements at and following offset <tt>start</tt>
+and assigns <tt>obj</tt> at offset <tt>start</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[1, 0] = 'foo' # => "foo"
+a # => [:foo, "foo", "bar", 2]
+```
+
+
+---
+
+Raises an exception if given a single argument that is not
+an [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects)
+or a Range:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[:nosuch] = 'two' # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+Raises an exception if given two arguments that are not both
+[Integer-convertible objects](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[:nosuch, 2] = 'two' # Raises TypeError (no implicit conversion of Symbol into Integer)
+a[0, :nosuch] = 'two' # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+Raises an exception if a negative <tt>index</tt> is out of range:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[-4] = 'two' # Raises IndexError (index -4 too small for array; minimum: -3)
+```
+
+Raises an exception if <tt>start</tt> is too small for <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[-5, 2] = 'foo' # Raises IndexError (index -5 too small for array; minimum: -3)
+```
+
+Raises an exception if <tt>length</tt> is negative:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[1, -1] = 'foo' # Raises IndexError (negative length (-1))
 ```
 
 #### append
