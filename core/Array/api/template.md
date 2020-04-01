@@ -214,8 +214,8 @@ a # => [:foo, "bar", 2, :bam, :bat]
 
 ```
 ary[index] → obj or nil
-ary[start, length] → new_array or nil
-ary[range] → new_array or nil
+ary[start, length] → obj or nil
+ary[range] → obj or nil
 ```
 
 Returns elements from <tt>ary</tt>.
@@ -417,7 +417,6 @@ and <tt>obj</tt> is not an
 removes <tt>length - 1</tt> elements beginning at offset <tt>start</tt>,
 and assigns <tt>obj</tt> at offset <tt>start</tt>:
 
-
 ```ruby
 a = [:foo, 'bar', baz = 2]
 a[0, 2] = 'foo' # => "foo"
@@ -432,6 +431,25 @@ a[-2, 2] = 'foo' # => "foo"
 a # => [:foo, "foo"]
 ```
 
+If <tt>start >= ary.size</tt>,
+extends <tt>ary</tt> with <tt>nil</tt>, assigns <tt>ary[start] = obj</tt>,
+and ignores <tt>length</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[6, 50] = 'foo' # => "foo"
+a # => [:foo, "bar", 2, nil, nil, nil, "foo"]
+```
+
+If <tt>length == 0</tt>, shifts elements at and following offset <tt>start</tt>
+and assigns <tt>obj</tt> at offset <tt>start</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[1, 0] = 'foo' # => "foo"
+a # => [:foo, "foo", "bar", 2]
+```
+
 If <tt>length</tt> is too large for the existing <tt>ary</tt>,
 does not extend <tt>ary</tt>:
 
@@ -441,15 +459,74 @@ a[1, 5] = 'foo' # => "foo"
 a # => [:foo, "foo"]
 ```
 
-If <tt>length == 0</tt>, up-shifts elements at and following offset <tt>start</tt>
+---
+
+When <tt>range</tt> is given and <tt>obj</tt> is an
+[Array-convertible object](../../../doc/convertibles.md#integer-convertible-objects),
+removes <tt>length - 1</tt> elements beginning at offset <tt>start</tt>,
 and assigns <tt>obj</tt> at offset <tt>start</tt>:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
-a[1, 0] = 'foo' # => "foo"
+a[0..1] = 'foo' # => "foo"
+a # => ["foo", 2]
+```
+
+if <tt>range.begin</tt> is negative, counts backward from the end of <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[-2..2] = 'foo' # => "foo"
+a # => [:foo, "foo"]
+```
+
+If <tt>range.begin >= ary.size</tt>,
+extends <tt>ary</tt> with <tt>nil</tt>, assigns <tt>ary[range.begin] = obj</tt>,
+and ignores <tt>length</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[6..50] = 'foo' # => "foo"
+a # => [:foo, "bar", 2, nil, nil, nil, "foo"]
+```
+
+If <tt>range.end == 0</tt>, shifts elements at and following offset <tt>start</tt>
+and assigns <tt>obj</tt> at offset <tt>start</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[1..0] = 'foo' # => "foo"
 a # => [:foo, "foo", "bar", 2]
 ```
 
+If <tt>range.end</tt> is negative,
+assigns <tt>obj</tt> at offset <tt>start</tt>,
+retains <tt>range.end.abs -1</tt> elements past that,
+and removes those beyond:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[1..-1] = 'foo' # => "foo"
+a # => [:foo, "foo"]
+a = [:foo, 'bar', baz = 2]
+a[1..-2] = 'foo' # => "foo"
+a # => [:foo, "foo", 2]
+a = [:foo, 'bar', baz = 2]
+a[1..-3] = 'foo' # => "foo"
+a # => [:foo, "foo", "bar", 2]
+a = [:foo, 'bar', baz = 2]
+a[1..-4] = 'foo' # => "foo"
+a # => [:foo, "foo", "bar", 2]
+```
+
+If <tt>length</tt> is too large for the existing <tt>ary</tt>,
+does not extend <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a[1, 5] = 'foo' # => "foo"
+a # => [:foo, "foo"]
+```
 
 ---
 
