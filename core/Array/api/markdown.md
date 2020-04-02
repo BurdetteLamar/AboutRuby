@@ -19,9 +19,11 @@
   - [index](#index)
   - [insert](#insert)
   - [last](#last)
+  - [length](#length)
   - [pop](#pop)
   - [prepend](#prepend)
   - [push](#push)
+  - [reverse_each](#reverse_each)
   - [rindex](#rindex)
   - [shift](#shift)
   - [slice](#slice)
@@ -656,7 +658,7 @@ ary.each -> Enumerator
 
 When a block given,
 passes each successive <tt>element</tt> in <tt>ary</tt>
-to the block, returns <tt>self</tt>:
+to the block; returns <tt>self</tt>:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -676,7 +678,7 @@ Allows <tt>ary</tt> to be modified during the iteration:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
-a.each { puts element; a.clear if element.to_s.start_with?('b') }
+a.each { |element| puts element; a.clear if element.to_s.start_with?('b') }
 a # => []
 ```
 
@@ -1219,6 +1221,20 @@ a = [:foo, 'bar', baz = 2]
 a.last('x') # Raises TypeError (no implicit conversion of String into Integer)
 ```
 
+#### length
+
+```
+ary.length -> int
+```
+
+Returns the count of elements in <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.length # => 3
+[].length # => 0
+```
+
 #### pop
 
 ```
@@ -1344,6 +1360,66 @@ May be chained:
 a = [:foo, 'bar', baz = 2]
 a.push(:bam, :bat).push(:bad, :bah)
 a # => [:foo, "bar", 2, :bam, :bat, :bad, :bah]
+```
+
+#### reverse_each
+
+```
+ary.reverse_each { |element| ... } -> self
+ary.reverse_each -> Enumerator
+```
+
+When a block given,
+passes reverse_each successive <tt>element</tt> in <tt>ary</tt>
+to the block in reverse order;  returns <tt>self</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.reverse_each { |element|  puts "#{element.class} #{element}" }
+a1.object_id == a.object_id # => true
+```
+
+Output:
+
+```
+Integer 2
+String bar
+Symbol foo
+```
+
+Allows <tt>ary</tt> to be modified during the iteration:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.reverse_each { |element| puts element; a.clear if element.to_s.start_with?('b') }
+a # => []
+```
+
+Output:
+
+```
+2
+bar
+```
+
+---
+
+When no block given, returns a new Enumerator:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+e = a.reverse_each
+e # => #<Enumerator: [:foo, "bar", 2]:reverse_each>
+a1 = e.each { |element|  puts "#{element.class} #{element}" }
+a1.object_id == a.object_id # => true
+```
+
+Output:
+
+```
+Integer 2
+String bar
+Symbol foo
 ```
 
 #### rindex

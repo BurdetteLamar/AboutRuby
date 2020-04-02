@@ -122,3 +122,72 @@ For those methods, you can chain method calls:
 a = [:foo, 'bar', baz = 2]
 a.freeze.frozen? # => true
 ```
+
+### Methods Returning Enumerators
+
+Each Array method that allows a block for iteration
+returns an Enumerator if no block is given.
+
+These are:
+* [a.each](../api/markdown.md#each)
+* [a.each_index](../api/markdown.md#each_index)
+* [a.reverse_each](../api/markdown.md#reverse_each)
+* [a.find_index](../api/markdown.md#find_index)
+* [a.index](../api/markdown.md#index)
+* [a.rindex](../api/markdown.md#rindex)
+* [a.](../api/markdown.md#)
+* [a.](../api/markdown.md#)
+* [a.](../api/markdown.md#)
+* [a.](../api/markdown.md#)
+* [a.](../api/markdown.md#)
+* [a.](../api/markdown.md#)
+* [a.](../api/markdown.md#)
+* [a.](../api/markdown.md#)
+* [a.](../api/markdown.md#)
+* [a.](../api/markdown.md#)
+* [a.](../api/markdown.md#)
+* [a.](../api/markdown.md#)
+* [a.](../api/markdown.md#)
+* [a.](../api/markdown.md#)
+* [a.](../api/markdown.md#)
+* [a.](../api/markdown.md#)
+
+
+Example using method <tt>ary.each_index</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+e = a.each_index
+e # => #<Enumerator: [:foo, "bar", 2]:each_index>
+```
+
+And perhaps later on:
+
+a1 = e.each { |index|  puts "#{index} #{a[index]}"}
+a1.object_id == a.object_id # => true
+```
+
+Output:
+
+```
+0 foo
+1 bar
+2 2
+```
+
+The enumerator has a _reference to_ the Array, not a copy of it:
+
+```ruby
+e # => #<Enumerator: [:foo, "bar", 2]:each_index>
+a[0] = 'foo'
+e # => #<Enumerator: ["foo", "bar", 2]:each_index>
+```
+
+But making the original Hash unavailable causes the enumerator to make a copy:
+
+```ruby
+a = nil
+e # => #<Enumerator: ["foo", "bar", 2]:each_index>
+a = []
+e # => #<Enumerator: ["foo", "bar", 2]:each_index>
+```
