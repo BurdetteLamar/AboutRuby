@@ -19,6 +19,7 @@
   - [freeze](#freeze)
   - [index](#index)
   - [insert](#insert)
+  - [inspect](#inspect)
   - [join](#join)
   - [last](#last)
   - [length](#length)
@@ -29,6 +30,9 @@
   - [rindex](#rindex)
   - [shift](#shift)
   - [slice](#slice)
+  - [to_a](#to_a)
+  - [to_h](#to_h)
+  - [to_s](#to_s)
   - [unshift](#unshift)
 
 ### Public Class Methods
@@ -1167,6 +1171,27 @@ a = [:foo, 'bar', baz = 2]
 a.insert(-5, :bat, :bam) # Raises IndexError (index -5 too small for array; minimum: -4) 
 ```
 
+#### inspect
+
+```
+ary.inspect -> new_string
+```
+
+Returns a new String formed by calling method <tt>inspect</tt>
+on each element in <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.inspect  # => "[:foo, \"bar\", 2]"
+```
+
+Raises an exception if any element lacks instance method <tt>inspect</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2, BasicObject.new]
+a.inspect  # Raises NoMethodError (undefined method `inspect' for #<BasicObject:0x0000000006b69d28>)
+```
+
 #### join
 
 ```
@@ -1775,6 +1800,95 @@ Raises an exception if given two arguments that are not both Integers:
 a = [:foo, 'bar', baz = 2]
 a.slice(:foo, 3) # Raises TypeError (no implicit conversion of Symbol into Integer)
 a.slice(1, :bar) # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+#### to_a
+
+```
+ary.to_a -> self or new_array
+```
+
+When <tt>ary</tt> is an Array, returns <tt>self</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.to_a
+a1.object_id == a.object_id # => true
+```
+
+When <tt>ary<tt> is a subclass of Array,
+returns a new Array containing the elements of <tt>ary</tt>:
+
+```ruby
+class SubArray < Array; end
+a = SubArray.new([:foo, 'bar', baz = 2])
+a1 = a.to_a
+a1.class # => Array
+a1 == a # => true
+```
+
+#### to_h
+
+```
+ary.to_h -> new_hash
+ary.to_h {|element| ... }  -> new_hash
+```
+
+Returns a new Hash formed from <tt>ary</tt>.
+
+---
+
+When no block given,
+returns a new Hash wherein each 2-element Array object in <tt>ary</tt>
+becomes a key-value pair in the returned Hash:
+
+```ruby
+[].to_h # => {}
+a = [[:foo, 0], [:bar, 1], [:baz, 2]]
+h = a.to_h
+h # => {:foo=>0, :bar=>1, :baz=>2}
+```
+
+---
+
+Raises an exception if any element is not an Array:
+
+```ruby
+[:foo].to_h # Raises TypeError (wrong element type Symbol at 0 (expected array))
+```
+
+Raises an exception if any element is an Array not of size 2:
+
+```ruby
+[[:foo]].to_h # Raises ArgumentError (wrong array length at 0 (expected 2, was 1))
+```
+
+Raises an exception if any <tt>ary[n].first</tt> would be an
+[invalid hash key](../../Hash/api/markdown.md#invalid-hash-keys):
+
+```ruby
+[[BasicObject.new, 0]].to_h # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+```
+
+#### to_s
+
+```
+ary.to_s -> new_string
+```
+
+Returns a new String formed by calling method <tt>inspect</tt>
+on each element in <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.to_s  # => "[:foo, \"bar\", 2]"
+```
+
+Raises an exception if any element lacks instance method <tt>inspect</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2, BasicObject.new]
+a.to_s  # Raises NoMethodError (undefined method `inspect' for #<BasicObject:0x0000000006b69d28>)
 ```
 
 #### unshift

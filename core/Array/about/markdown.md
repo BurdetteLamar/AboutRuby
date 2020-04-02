@@ -146,7 +146,7 @@ These are:
 * [a.find_index](../api/markdown.md#find_index)
 * [a.index](../api/markdown.md#index)
 * [a.rindex](../api/markdown.md#rindex)
-* [a.](../api/markdown.md#)
+* [a.to_h](../api/markdown.md#to_h)
 * [a.](../api/markdown.md#)
 * [a.](../api/markdown.md#)
 * [a.](../api/markdown.md#)
