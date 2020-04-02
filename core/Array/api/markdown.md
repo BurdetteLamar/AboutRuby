@@ -12,12 +12,14 @@
   - [at](#at)
   - [each](#each)
   - [each_index](#each_index)
+  - [empty?](#empty)
   - [fetch](#fetch)
   - [find_index](#find_index)
   - [first](#first)
   - [freeze](#freeze)
   - [index](#index)
   - [insert](#insert)
+  - [join](#join)
   - [last](#last)
   - [length](#length)
   - [pop](#pop)
@@ -769,6 +771,20 @@ Output:
 2 2
 ```
 
+#### empty?
+
+```
+ary.empty? -> true or false
+```
+
+Returns <tt>true</tt> if the count of elements in <tt>ary</tt> is <tt>0</tt>;
+<tt>false</tt> otherwise:
+
+```ruby
+[].empty? # => true
+[:foo, 'bar', baz = 2].empty? # => false
+```
+
 #### fetch
 
 ```
@@ -1149,6 +1165,56 @@ Raises an exception if <tt>index</tt> is too small:
 ```ruby
 a = [:foo, 'bar', baz = 2]
 a.insert(-5, :bat, :bam) # Raises IndexError (index -5 too small for array; minimum: -4) 
+```
+
+#### join
+
+```
+ary.join -> new_string
+ary.join(separator) -> new_string
+```
+
+Returns a new String formed by joining the elements of <tt>ary</tt>.
+
+Argument <tt>separator</tt>, if given, must be a
+[String-convertible object](../../../doc/convertibles.md#string-convertible-objects):
+
+
+---
+
+With no argument, joins using the output field separator, <tt>$,</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+$, # => nil
+a.join # => "foobar2"
+```
+
+---
+
+With argument <tt>separator</tt>, joins using that separator:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.join("\n") # => "foo\nbar\n2"
+```
+
+---
+
+Raises an exception if <tt>separator</tt> is not a
+[Sring-convertible object](../../../doc/convertibles.md#string-convertible-objects):
+
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.join(:foo) # Raises TypeError (no implicit conversion of Symbol into String)
+```
+
+Raises an exception if any element lacks instance method <tt>to_s</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2, BasicObject.new]
+a.join # Raises NoMethodError (undefined method `to_s' for #<BasicObject:>)
 ```
 
 #### last
