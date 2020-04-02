@@ -11,6 +11,7 @@
   - [append](#append)
   - [at](#at)
   - [each](#each)
+  - [each_index](#each_index)
   - [fetch](#fetch)
   - [find_index](#find_index)
   - [first](#first)
@@ -692,7 +693,9 @@ When no block given, returns a new Enumerator:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
-a1 = a.each { |element|  puts "#{element.class} #{element}" }
+e = a.each
+e # => #<Enumerator: [:foo, "bar", 2]:each>
+a1 = e.each { |element|  puts "#{element.class} #{element}" }
 a1.object_id == a.object_id # => true
 ```
 
@@ -702,6 +705,66 @@ Output:
 Symbol foo
 String bar
 Integer 2
+```
+
+#### each_index
+
+```
+ary.each_index { |index| ... } -> self
+ary.each_index -> Enumerator
+```
+
+When a block given,
+passes each successive <tt>index</tt> in <tt>ary</tt>
+to the block, returns <tt>self</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.each_index { |index|  puts "#{index} #{a[index]}" }
+a1.object_id == a.object_id # => true
+```
+
+Output:
+
+```
+0 foo
+1 bar
+2 2
+```
+
+Allows <tt>ary</tt> to be modified during the iteration:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.each_index { |index| puts index; a.clear if index > 0 }
+a # => []
+```
+
+Output:
+
+```
+0
+1
+```
+
+---
+
+When no block given, returns a new Enumerator:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+e = a.each_index
+e # => #<Enumerator: [:foo, "bar", 2]:each_index>
+a1 = e.each { |index|  puts "#{index} #{a[index]}"}
+a1.object_id == a.object_id # => true
+```
+
+Output:
+
+```
+0 foo
+1 bar
+2 2
 ```
 
 #### fetch
