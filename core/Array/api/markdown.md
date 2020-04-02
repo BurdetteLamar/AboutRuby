@@ -15,6 +15,7 @@
   - [first](#first)
   - [freeze](#freeze)
   - [index](#index)
+  - [insert](#insert)
   - [last](#last)
   - [pop](#pop)
   - [prepend](#prepend)
@@ -955,6 +956,77 @@ a = [:foo, 'bar', baz = 2, 'bar']
 index = a.index('bar') { fail 'Cannot happen' }
 index # => 1
 ```
+
+#### insert
+
+```
+ary.insert(index, *objects) -> self
+```
+
+Inserts <tt>*objects</tt> before or after the element at offset <tt>index</tt>;
+returns <tt>self</tt>.
+
+Argument <tt>index</tt> must be an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects),
+which will be converted to an Integer.
+
+---
+
+When <tt>index</tt> is non-negative, inserts <tt>*objects</tt>
+before the element at offset <tt>index</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.insert(1, :bat, :bam)
+a # => [:foo, :bat, :bam, "bar", 2]
+a1.object_id == a.object_id # => true
+```
+
+If <tt>index >= ary.length</tt>, extends <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.insert(5, :bat, :bam)
+a # => [:foo, "bar", 2, nil, nil, :bat, :bam]
+```
+
+Does nothing if no <tt>*objects</tt> given:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.insert(1)
+a.insert(50)
+a.insert(-50)
+a # => [:foo, "bar", 2]
+```
+
+When <tt>index</tt> is negative,
+inserts <tt>*objects</tt> after the element
+at offset <tt>index + ary.length</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.insert(-2, :bat, :bam)
+a # => [:foo, "bar", :bat, :bam, 2]
+```
+
+---
+
+Raises an exception if <tt>index</tt> is not an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bar']
+a.insert(:foo, :bat) # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+Raises an exception if <tt>index</tt> is too small:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.insert(-5, :bat, :bam) # Raises IndexError (index -5 too small for array; minimum: -4) 
+```
+
 #### last
 
 ```
