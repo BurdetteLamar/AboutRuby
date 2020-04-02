@@ -622,6 +622,64 @@ a = [:foo, 'bar', baz = 2]
 a.at(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
 ```
 
+#### each
+
+```
+ary.each { |element| ... } -> self
+ary.each -> Enumerator
+```
+
+When a block given,
+passes each successive <tt>element</tt> in <tt>ary</tt>
+to the block, returns <tt>self</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.each { |element|  puts "#{element.class} #{element}" }
+a1.object_id == a.object_id # => true
+```
+
+Output:
+
+```
+Symbol foo
+String bar
+Integer 2
+```
+
+Allows <tt>ary</tt> to be modified during the iteration:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.each { puts element; a.clear if element.to_s.start_with?('b') }
+a # => []
+```
+
+Output:
+
+```
+foo
+bar
+```
+
+---
+
+When no block given, returns a new Enumerator:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.each { |element|  puts "#{element.class} #{element}" }
+a1.object_id == a.object_id # => true
+```
+
+Output:
+
+```
+Symbol foo
+String bar
+Integer 2
+```
+
 #### fetch
 
 ```
@@ -994,7 +1052,7 @@ Raises an exception if <tt>index</tt> is not an
 
 ```ruby
 a = [:foo, 'bar', baz = 2, 'bar']
-a.insert(:foo, :bat) # Raises TypeError (no implicit conversion of Symbol into Integer)
+a.insert(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
 ```
 
 Raises an exception if <tt>index</tt> is too small:
