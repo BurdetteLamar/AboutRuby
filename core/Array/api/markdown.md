@@ -11,6 +11,7 @@
   - [append](#append)
   - [at](#at)
   - [bsearch](#bsearch)
+  - [bsearch_index](#bsearch_index)
   - [each](#each)
   - [each_index](#each_index)
   - [empty?](#empty)
@@ -667,6 +668,7 @@ a.at(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
 
 ```
 ary.bsearch { |element| ... } → obj
+ary.bsearch → new_enumerator
 ```
 
 Returns an element from <tt>ary</tt> selected by a binary search.
@@ -787,6 +789,17 @@ Raises an exception if the block returns an invalid value:
 a = 'abcde'.split('').shuffle
 a.bsearch { |element| :foo } # Raises TypeError (wrong argument type Symbol (must be numeric, true, false or nil))
 ```
+
+#### bsearch_index
+
+```
+ary.bsearch_index { |element| ... } → integer or nil
+ary.bsearch → new_enumerator
+```
+
+Searches <tt>ary</tt> as described at method [bsearch](#bsearch),
+but returns the index of the found element
+instead of the element itself.
 
 #### each
 
