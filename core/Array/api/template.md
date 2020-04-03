@@ -1955,6 +1955,122 @@ a.slice(:foo, 3) # Raises TypeError (no implicit conversion of Symbol into Integ
 a.slice(1, :bar) # Raises TypeError (no implicit conversion of Symbol into Integer)
 ```
 
+#### sort
+
+```
+ary.sort → new_array
+ary.sort { |a, b| ... } → new_array
+```
+
+Returns a new Array whose elements are those from <tt>ary</tt>, sorted.
+
+---
+
+With no block, compares elements using operator <tt><=></tt>:
+
+```ruby
+a = 'abcde'.split('').shuffle
+a # => ["e", "b", "d", "a", "c"]
+a1 = a.sort
+a1 # => ["a", "b", "c", "d", "e"]
+```
+
+---
+
+With a block, compares elements using the block's return value.
+
+For each element pair <tt>a</tt> and <tt>b</tt>, the block should return an integer:
+* Negative when <tt>b</tt> is to follow <tt>a</tt>.
+* Zero when <tt>a</tt> and <tt>b</tt> are equivalent.
+* Positive when <tt>a</tt> is to follow <tt>b</tt>.
+
+```ruby
+a = 'abcde'.split('').shuffle
+a # => ["e", "b", "d", "a", "c"]
+a1 = a.sort { |a, b| a <=> b }
+a1 # => ["a", "b", "c", "d", "e"]
+a2 = a.sort { |a, b| b <=> a }
+a2 # => ["e", "d", "c", "b", "a"]
+```
+
+When the block returns <tt>0</tt>, the order for <tt>a</tt> and <tt>b</tt>
+is unpredictable, and may be unstable:
+
+```ruby
+a = 'abcde'.split('').shuffle
+a # => ["e", "b", "d", "a", "c"]
+a1 = a.sort { |a, b| 0 }
+a1 # => ["c", "e", "b", "d", "a"]
+```
+
+---
+
+Raises an exception if the block returns a non-Integer:
+
+```ruby
+a = 'abcde'.split('').shuffle
+a # => ["e", "b", "d", "a", "c"]
+a1 = a.sort { |a, b| :foo } # Raises ArgumentError (comparison of Symbol with 0 failed)
+```
+
+#### sort!
+
+```
+ary.sort! → self
+ary.sort! { |a, b| ... } → self
+```
+
+Returns <tt>self</tt> with its elements sorted.
+
+---
+
+With no block, compares elements using operator <tt><=></tt>:
+
+```ruby
+a = 'abcde'.split('').shuffle
+a # => ["e", "b", "d", "a", "c"]
+a.sort!
+a # => ["a", "b", "c", "d", "e"]
+```
+
+---
+
+With a block, compares elements using the block's return value.
+
+For each element pair <tt>a</tt> and <tt>b</tt>, the block should return an integer:
+* Negative when <tt>b</tt> is to follow <tt>a</tt>.
+* Zero when <tt>a</tt> and <tt>b</tt> are equivalent.
+* Positive when <tt>a</tt> is to follow <tt>b</tt>.
+
+```ruby
+a = 'abcde'.split('').shuffle
+a # => ["e", "b", "d", "a", "c"]
+a.sort! { |a, b| a <=> b }
+a # => ["a", "b", "c", "d", "e"]
+a.sort! { |a, b| b <=> a }
+a # => ["e", "d", "c", "b", "a"]
+```
+
+When the block returns <tt>0</tt>, the order for <tt>a</tt> and <tt>b</tt>
+is unpredictable, and may be unstable:
+
+```ruby
+a = 'abcde'.split('').shuffle
+a # => ["e", "b", "d", "a", "c"]
+a.sort! { |a, b| 0 }
+a # => ["d", "e", "c", "a", "b"]
+```
+
+---
+
+Raises an exception if the block returns a non-Integer:
+
+```ruby
+a = 'abcde'.split('').shuffle
+a # => ["e", "b", "d", "a", "c"]
+a1 = a.sort! { |a, b| :foo } # Raises ArgumentError (comparison of Symbol with 0 failed)
+```
+
 #### to_a
 
 ```

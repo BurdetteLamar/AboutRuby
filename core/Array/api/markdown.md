@@ -26,10 +26,16 @@
   - [pop](#pop)
   - [prepend](#prepend)
   - [push](#push)
+  - [reverse](#reverse)
+  - [reverse!](#reverse-1)
   - [reverse_each](#reverse_each)
   - [rindex](#rindex)
+  - [rotate](#rotate)
+  - [rotate!](#rotate-1)
   - [shift](#shift)
   - [slice](#slice)
+  - [sort](#sort)
+  - [sort!](#sort-1)
   - [to_a](#to_a)
   - [to_ary](#to_ary)
   - [to_h](#to_h)
@@ -396,9 +402,9 @@ a[1, :bar] # Raises TypeError (no implicit conversion of Symbol into Integer)
 #### []= (Element Assignment)
 
 ```
-ary[index] = obj -> obj
-ary[start, length] = obj ->  obj
-ary[range] = obj ->  obj
+ary[index] = obj → obj
+ary[start, length] = obj →  obj
+ary[range] = obj →  obj
 ```
 
 Assigns elements in <tt>ary</tt>; returns the given <tt>obj</tt>.
@@ -659,8 +665,8 @@ a.at(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
 #### each
 
 ```
-ary.each { |element| ... } -> self
-ary.each -> Enumerator
+ary.each { |element| ... } → self
+ary.each → Enumerator
 ```
 
 When a block given,
@@ -719,8 +725,8 @@ Integer 2
 #### each_index
 
 ```
-ary.each_index { |index| ... } -> self
-ary.each_index -> Enumerator
+ary.each_index { |index| ... } → self
+ary.each_index → Enumerator
 ```
 
 When a block given,
@@ -779,7 +785,7 @@ Output:
 #### empty?
 
 ```
-ary.empty? -> true or false
+ary.empty? → true or false
 ```
 
 Returns <tt>true</tt> if the count of elements in <tt>ary</tt> is <tt>0</tt>;
@@ -793,9 +799,9 @@ Returns <tt>true</tt> if the count of elements in <tt>ary</tt> is <tt>0</tt>;
 #### fetch
 
 ```
-ary.fetch(index) -> obj
-ary.fetch(index, default_value) -> obj
-ary.fetch(index) { |index| ... } -> obj
+ary.fetch(index) → obj
+ary.fetch(index, default_value) → obj
+ary.fetch(index) { |index| ... } → obj
 ```
 
 Returns the element at index <tt>index</tt>.
@@ -866,9 +872,9 @@ a.fetch(50) # Raises IndexError (index 50 outside of array bounds: -3...3)
 #### find_index
 
 ```
-ary.find_index(obj) -> Integer or nil
-ary.find_index { |element| ... } -> Integer or nil
-ary.find_index -> new_enumerator
+ary.find_index(obj) → Integer or nil
+ary.find_index { |element| ... } → Integer or nil
+ary.find_index → new_enumerator
 ```
 
 ---
@@ -1036,9 +1042,9 @@ a[3] = :bat # Raises FrozenError (can't modify frozen Array: [:foo, "bar", 2])
 #### index
 
 ```
-ary.index(obj) -> Integer or nil
-ary.index { |element| ... } -> Integer or nil
-ary.index -> new_enumerator
+ary.index(obj) → Integer or nil
+ary.index { |element| ... } → Integer or nil
+ary.index → new_enumerator
 ```
 
 ---
@@ -1105,7 +1111,7 @@ index # => 1
 #### insert
 
 ```
-ary.insert(index, *objects) -> self
+ary.insert(index, *objects) → self
 ```
 
 Inserts <tt>*objects</tt> before or after the element at offset <tt>index</tt>;
@@ -1175,7 +1181,7 @@ a.insert(-5, :bat, :bam) # Raises IndexError (index -5 too small for array; mini
 #### inspect
 
 ```
-ary.inspect -> new_string
+ary.inspect → new_string
 ```
 
 Returns a new String formed by calling method <tt>inspect</tt>
@@ -1196,8 +1202,8 @@ a.inspect  # Raises NoMethodError (undefined method `inspect' for #<BasicObject:
 #### join
 
 ```
-ary.join -> new_string
-ary.join(separator) -> new_string
+ary.join → new_string
+ary.join(separator) → new_string
 ```
 
 Returns a new String formed by joining the elements of <tt>ary</tt>.
@@ -1316,7 +1322,7 @@ a.last('x') # Raises TypeError (no implicit conversion of String into Integer)
 #### length
 
 ```
-ary.length -> int
+ary.length → int
 ```
 
 Returns the count of elements in <tt>ary</tt>:
@@ -1454,11 +1460,40 @@ a.push(:bam, :bat).push(:bad, :bah)
 a # => [:foo, "bar", 2, :bam, :bat, :bad, :bah]
 ```
 
+#### reverse
+
+```
+ary.reverse → new_array
+```
+
+Returns a new Array whose elements are in reverse order from <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.reverse
+a1 # => [2, "bar", :foo]
+```
+
+#### reverse!
+
+```
+ary.reverse → self
+```
+
+Returns <tt>self</tt> with elements in reverse order:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.reverse!
+a1 # => [2, "bar", :foo]
+a1.object_id == a.object_id # => true
+```
+
 #### reverse_each
 
 ```
-ary.reverse_each { |element| ... } -> self
-ary.reverse_each -> Enumerator
+ary.reverse_each { |element| ... } → self
+ary.reverse_each → Enumerator
 ```
 
 When a block given,
@@ -1517,9 +1552,9 @@ Symbol foo
 #### rindex
 
 ```
-ary.rindex(obj) -> Integer or nil
-ary.rindex { |element| ... } -> Integer or nil
-ary.rindex -> new_enumerator
+ary.rindex(obj) → Integer or nil
+ary.rindex { |element| ... } → Integer or nil
+ary.rindex → new_enumerator
 ```
 
 ---
@@ -1582,6 +1617,163 @@ a = [:foo, 'bar', baz = 2, 'bar']
 index = a.rindex('bar') { fail 'Cannot happen' }
 index # => 3
 ```
+
+#### rotate
+
+```
+ary.rotate → new_ary
+ary.rotate(count) → new_ary
+```
+
+Returns a new Array formed from <tt>ary</tt> by rotating elements from one end to the other.
+
+Argument <tt>count</tt>, if given, must be an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
+
+---
+
+When no argument given, returns a new Array that is like <tt>ary</tt>,
+except that the first element has been rotated to the last position:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bar']
+a1 = a.rotate
+a1 # => ["bar", 2, "bar", :foo]
+```
+
+---
+
+When given a non-negative argument <tt>count</tt>,
+returns a new Array with <tt>count</tt> elements rotated from the beginning to the end:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.rotate(2)
+a1 # => [2, :foo, "bar"]
+```
+
+If <tt>count</tt> is large, uses <tt>count % ary.size</tt> as the count:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.rotate(20)
+a1 # => [2, :foo, "bar"]
+```
+
+If <tt>count</tt> is <tt>0</tt>, returns an unmodified copy of <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.rotate(0)
+a1 # => [:foo, "bar", 2]
+```
+
+---
+
+When given a negative argument <tt>count</tt>, rotates in the opposite direction, from end to beginning:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.rotate(-2)
+a1 # => ["bar", 2, :foo]
+```
+
+If <tt>count</tt> is small, uses <tt>count % ary.size<</tt> as the count:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.rotate(-5)
+a1 # => ["bar", 2, :foo]
+```
+
+---
+
+Raises an exception if <tt>count</tt> is no an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.rotate(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer) 
+```
+
+#### rotate!
+
+```
+ary.rotate! → self
+ary.rotate(count) → self
+```
+
+Rotates <tt>ary</tt> by moving elements from one end to the other; returns <tt>self</tt>.
+
+Argument <tt>count</tt>, if given, must be an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
+
+---
+
+When no argument given, rotates the first element to the last position:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bar']
+a1 = a.rotate!
+a1 # => ["bar", 2, "bar", :foo]
+a1.object_id == a.object_id # => true
+```
+
+---
+
+When given a non-negative argument <tt>count</tt>,
+rotates <tt>count</tt> elements from the beginning to the end:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.rotate!(2)
+a # => [2, :foo, "bar"]
+```
+
+If <tt>count</tt> is large, uses <tt>count % ary.size</tt> as the count:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.rotate!(20)
+a # => [2, :foo, "bar"]
+```
+
+If <tt>count</tt> is <tt>0</tt>, returns <tt>self</tt> unmodified:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.rotate!(0)
+a # => [:foo, "bar", 2]
+```
+
+---
+
+When given a negative argument <tt>count</tt>, rotates in the opposite direction, from end to beginning:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.rotate!(-2)
+a # => ["bar", 2, :foo]
+```
+
+If <tt>count</tt> is small, uses <tt>count % ary.size<</tt> as the count:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.rotate!(-5)
+a # => ["bar", 2, :foo]
+```
+
+---
+
+Raises an exception if <tt>count</tt> is not an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.rotate!(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer) 
+```
+
 #### shift
 
 ```
@@ -1803,10 +1995,126 @@ a.slice(:foo, 3) # Raises TypeError (no implicit conversion of Symbol into Integ
 a.slice(1, :bar) # Raises TypeError (no implicit conversion of Symbol into Integer)
 ```
 
+#### sort
+
+```
+ary.sort → new_array
+ary.sort { |a, b| ... } → new_array
+```
+
+Returns a new Array whose elements are those from <tt>ary</tt>, sorted.
+
+---
+
+With no block, compares elements using operator <tt><=></tt>:
+
+```ruby
+a = 'abcde'.split('').shuffle
+a # => ["e", "b", "d", "a", "c"]
+a1 = a.sort
+a1 # => ["a", "b", "c", "d", "e"]
+```
+
+---
+
+With a block, compares elements using the block's return value.
+
+For each element pair <tt>a</tt> and <tt>b</tt>, the block should return an integer:
+* Negative when <tt>b</tt> is to follow <tt>a</tt>.
+* Zero when <tt>a</tt> and <tt>b</tt> are equivalent.
+* Positive when <tt>a</tt> is to follow <tt>b</tt>.
+
+```ruby
+a = 'abcde'.split('').shuffle
+a # => ["e", "b", "d", "a", "c"]
+a1 = a.sort { |a, b| a <=> b }
+a1 # => ["a", "b", "c", "d", "e"]
+a2 = a.sort { |a, b| b <=> a }
+a2 # => ["e", "d", "c", "b", "a"]
+```
+
+When the block returns <tt>0</tt>, the order for <tt>a</tt> and <tt>b</tt>
+is unpredictable, and may be unstable:
+
+```ruby
+a = 'abcde'.split('').shuffle
+a # => ["e", "b", "d", "a", "c"]
+a1 = a.sort { |a, b| 0 }
+a1 # => ["c", "e", "b", "d", "a"]
+```
+
+---
+
+Raises an exception if the block returns a non-Integer:
+
+```ruby
+a = 'abcde'.split('').shuffle
+a # => ["e", "b", "d", "a", "c"]
+a1 = a.sort { |a, b| :foo } # Raises ArgumentError (comparison of Symbol with 0 failed)
+```
+
+#### sort!
+
+```
+ary.sort! → self
+ary.sort! { |a, b| ... } → self
+```
+
+Returns <tt>self</tt> with its elements sorted.
+
+---
+
+With no block, compares elements using operator <tt><=></tt>:
+
+```ruby
+a = 'abcde'.split('').shuffle
+a # => ["e", "b", "d", "a", "c"]
+a.sort!
+a # => ["a", "b", "c", "d", "e"]
+```
+
+---
+
+With a block, compares elements using the block's return value.
+
+For each element pair <tt>a</tt> and <tt>b</tt>, the block should return an integer:
+* Negative when <tt>b</tt> is to follow <tt>a</tt>.
+* Zero when <tt>a</tt> and <tt>b</tt> are equivalent.
+* Positive when <tt>a</tt> is to follow <tt>b</tt>.
+
+```ruby
+a = 'abcde'.split('').shuffle
+a # => ["e", "b", "d", "a", "c"]
+a.sort! { |a, b| a <=> b }
+a # => ["a", "b", "c", "d", "e"]
+a.sort! { |a, b| b <=> a }
+a # => ["e", "d", "c", "b", "a"]
+```
+
+When the block returns <tt>0</tt>, the order for <tt>a</tt> and <tt>b</tt>
+is unpredictable, and may be unstable:
+
+```ruby
+a = 'abcde'.split('').shuffle
+a # => ["e", "b", "d", "a", "c"]
+a.sort! { |a, b| 0 }
+a # => ["d", "e", "c", "a", "b"]
+```
+
+---
+
+Raises an exception if the block returns a non-Integer:
+
+```ruby
+a = 'abcde'.split('').shuffle
+a # => ["e", "b", "d", "a", "c"]
+a1 = a.sort! { |a, b| :foo } # Raises ArgumentError (comparison of Symbol with 0 failed)
+```
+
 #### to_a
 
 ```
-ary.to_a -> self or new_array
+ary.to_a → self or new_array
 ```
 
 When <tt>ary</tt> is an Array, returns <tt>self</tt>:
@@ -1831,7 +2139,7 @@ a1 == a # => true
 #### to_ary
 
 ```
-ary.to_ary -> self or new_array
+ary.to_ary → self or new_array
 ```
 
 When <tt>ary</tt> is an Array, returns <tt>self</tt>:
@@ -1856,8 +2164,8 @@ a1 == a # => true
 #### to_h
 
 ```
-ary.to_h -> new_hash
-ary.to_h {|element| ... }  -> new_hash
+ary.to_h → new_hash
+ary.to_h {|element| ... }  → new_hash
 ```
 
 Returns a new Hash formed from <tt>ary</tt>.
@@ -1899,7 +2207,7 @@ Raises an exception if any <tt>ary[n].first</tt> would be an
 #### to_s
 
 ```
-ary.to_s -> new_string
+ary.to_s → new_string
 ```
 
 Returns a new String formed by calling method <tt>inspect</tt>
