@@ -1794,6 +1794,31 @@ a1.class # => Array
 a1 == a # => true
 ```
 
+#### to_ary
+
+```
+ary.to_ary -> self or new_array
+```
+
+When <tt>ary</tt> is an Array, returns <tt>self</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.to_ary
+a1.object_id == a.object_id # => true
+```
+
+When <tt>ary<tt> is a subclass of Array,
+returns a new Array containing the elements of <tt>ary</tt>:
+
+```ruby
+class SubArray < Array; end
+a = SubArray.new([:foo, 'bar', baz = 2])
+a1 = a.to_ary
+a1.class # => Array
+a1 == a # => true
+```
+
 #### to_h
 
 ```
