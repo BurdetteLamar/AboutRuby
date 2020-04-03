@@ -10,6 +10,7 @@
   - [[]= (Element Assignment)](#-element-assignment)
   - [append](#append)
   - [at](#at)
+  - [bsearch](#bsearch)
   - [each](#each)
   - [each_index](#each_index)
   - [empty?](#empty)
@@ -660,6 +661,131 @@ Raises an exception if <tt>index</tt> is not an
 ```ruby
 a = [:foo, 'bar', baz = 2]
 a.at(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+#### bsearch
+
+```
+ary.bsearch { |element| ... } → obj
+```
+
+Returns an element from <tt>ary</tt> selected by a binary search.
+
+<tt>ary</tt> should be sorted, but this is not checked.
+
+There are two search modes:
+* Find-minimum mode:  the block should return <tt>true</tt> or <tt>false</tt>.
+* Find-any mode:  the block should return a numeric value.
+
+The block should not mix the modes by sometimes returning a numeric value
+and sometimes returning <tt>true</tt> or <tt>false</tt>,
+but this is not checked.
+
+---
+
+In find-minimum mode,
+the block always returns <tt>true</tt> or <tt>false</tt>.
+The further requirement (though not checked) is that
+there are _no indexes_ <tt>i</tt> and <tt>j</tt> such that:
+* <tt>0 <= i < j <= ary.size</tt>.
+* The block returns <tt>true</tt> for <tt>ary[i]</tt> and <tt>false</tt> for <tt>ary[j]</tt>.
+
+In find-minimum mode,
+method <tt>bsearch</tt> returns the first element for which
+the block returns <tt>true</tt>.
+
+Examples:
+
+```ruby
+a = [0, 4, 7, 10, 12]
+a.bsearch { |x| x >= 4 } # => 4
+a.bsearch { |x| x >= 6 } # => 7
+a.bsearch { |x| x >= -1 } # => 0
+a.bsearch { |x| x >= 100 } # => nil
+```
+
+Less formally: the block is such that all <tt>false</tt>-evaluating elements
+precede all <tt>true</tt>-evaluating elements.
+
+These make sense as blocks for <tt>bsearch</tt>:
+
+```ruby
+a = [0, 4, 7, 10, 12]
+a.map { |x| x >= 4 } # => [false, true, true, true, true]
+a.map { |x| x >= 6 } # => [false, false, true, true, true]
+a.map { |x| x >= -1 } # => [true, true, true, true, true]
+a.map { |x| x >= 100 } # => [false, false, false, false, false]
+```
+
+This would not make sense:
+
+```ruby
+a = [0, 4, 7, 10, 12]
+a.map {|x| x == 7 } # => [false, false, true, false, false]
+```
+
+---
+
+In find-any mode, the block always returns a numeric value.
+The further requirement (though not checked) is that
+there are _no indexes_ <tt>i</tt> and <tt>j</tt> such that:
+* <tt>0 <= i < j <= ary.size</tt>.
+* The block returns a negative value for <tt>ary[i]</tt> and a positive value for <tt>ary[j]</tt>.
+* The block returns a negative value for <tt>ary[i]</tt> and zero <tt>ary[j]</tt>.
+* The block returns zero for <tt>ary[i]</tt> and a positive value for <tt>ary[j]</tt>.
+
+In find-any mode,
+method <tt>bsearch</tt> returns some element
+for which the block returns <tt>0</tt>,
+or <tt>nil></tt> if none.
+
+Examples:
+
+```ruby
+a = [0, 4, 7, 10, 12]
+a.bsearch { |element| 7 <=> element } # => 7
+a.bsearch { |element| -1 <=> element } # => nil
+a.bsearch { |element| 5 <=> element } # => nil
+a.bsearch { |element| 15 <=> element } # => nil
+```
+
+Less formally: the block is such that:
+* All positive-evaluating elements precede all zero-evaluating elements.
+* All positive-evaluating elements precede all negative-evaluating elements.
+* All zero-evaluating elements precede all negative-evaluating elements.
+
+These make sense as blocks for <tt>bsearch</tt>:
+
+```ruby
+a = [0, 4, 7, 10, 12]
+a.map { |element| 7 <=> element } # => [1, 1, 0, -1, -1]
+a.map { |element| -1 <=> element } # => [-1, -1, -1, -1, -1]
+a.map { |element| 5 <=> element } # => [1, 1, -1, -1, -1]
+a.map { |element| 15 <=> element } # => [1, 1, 1, 1, 1]
+```
+
+This would not make sense:
+
+```ruby
+a = [0, 4, 7, 10, 12]
+a.map { |element| element <=> 7 } # => [-1, -1, 0, 1, 1]
+```
+
+---
+
+Returns an enumerator if no block given:
+
+```
+a = [0, 4, 7, 10, 12]
+a.bsearch # => #<Enumerator: [0, 4, 7, 10, 12]:bsearch>
+```
+---
+
+Raises an exception if the block returns an invalid value:
+
+```ruby
+a = 'abcde'.split('').shuffle
+a.bsearch { |element| :foo } # Raises TypeError (wrong argument type Symbol (must be numeric, true, false or nil))
 ```
 
 #### each
