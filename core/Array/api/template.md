@@ -1585,7 +1585,7 @@ ary.rotate → new_ary
 ary.rotate(count) → new_ary
 ```
 
-Rotates <tt>ary</tt> by moving elements from one end to the other.
+Returns a new Array formed from <tt>ary</tt> by rotating elements from one end to the other.
 
 Argument <tt>count</tt>, if given, must be an
 [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
@@ -1656,6 +1656,83 @@ a = [:foo, 'bar', baz = 2]
 a1 = a.rotate(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer) 
 ```
 
+#### rotate!
+
+```
+ary.rotate! → self
+ary.rotate(count) → self
+```
+
+Rotates <tt>ary</tt> by moving elements from one end to the other; returns <tt>self</tt>.
+
+Argument <tt>count</tt>, if given, must be an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
+
+---
+
+When no argument given, rotates the first element to the last position:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bar']
+a1 = a.rotate!
+a1 # => ["bar", 2, "bar", :foo]
+a1.object_id == a.object_id # => true
+```
+
+---
+
+When given a non-negative argument <tt>count</tt>,
+rotates <tt>count</tt> elements from the beginning to the end:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.rotate!(2)
+a # => [2, :foo, "bar"]
+```
+
+If <tt>count</tt> is large, uses <tt>count % ary.size</tt> as the count:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.rotate!(20)
+a # => [2, :foo, "bar"]
+```
+
+If <tt>count</tt> is <tt>0</tt>, returns <tt>self</tt> unmodified:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.rotate!(0)
+a # => [:foo, "bar", 2]
+```
+
+---
+
+When given a negative argument <tt>count</tt>, rotates in the opposite direction, from end to beginning:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.rotate!(-2)
+a # => ["bar", 2, :foo]
+```
+
+If <tt>count</tt> is small, uses <tt>count % ary.size<</tt> as the count:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.rotate!(-5)
+a # => ["bar", 2, :foo]
+```
+
+---
+
+Raises an exception if <tt>count</tt> is not an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.rotate!(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer) 
+```
 
 #### shift
 
