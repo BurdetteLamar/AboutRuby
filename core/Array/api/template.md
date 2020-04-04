@@ -2481,3 +2481,70 @@ a = [:foo, 'bar', baz = 2]
 a.unshift(:bam, :bat).unshift(:bad, :bah)
 a # => [:bad, :bah, :bam, :bat, :foo, "bar", 2]
 ```
+
+#### values_at
+
+```
+ary.values_at(*indexes) → new_array
+```
+
+Returns a new Array whose elements are the <tt>ary</tt> elements
+at the given <tt>indexes</tt>.
+
+Each index given in <tt>*indexes</tt> must be an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
+
+---
+
+For each positive index <tt>index</tt>,
+returns the element at offset <tt>index</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.values_at(0, 2) # => [:foo, 2]
+```
+
+The given <tt>*indexes</tt> may be in any order, and may repeat:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.values_at(2, 0, 1, 0, 2) # => [2, :foo, "bar", :foo, 2]
+```
+
+Assigns <tt>nil></tt> for an index that is too large:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.values_at(0, 3, 1, 3) # => [:foo, nil, "bar", nil]
+```
+
+---
+
+For each negative index, counts backward from the end of <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.values_at(-1, -3) # => [:foo, 2] # => [2, :foo]
+```
+
+The given <tt>*indexes</tt> may have a mixture of signs:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.values_at(0, -2, 1, -1) # => [:foo, "bar", "bar", 2]
+```
+
+Assigns <tt>nil</tt> for an index that is too small:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.values_at(0, -5, 1, -6, 2) # => [:foo, nil, "bar", nil, 2]
+```
+
+Raises an exception if any index is not an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.values_at(0, :foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
