@@ -785,6 +785,32 @@ a1 = a.collect
 a1 # => #<Enumerator: [:foo, "bar", 2]:collect>
 ```
 
+#### collect!
+
+```
+ary.collect! { |elemeent| ... } → self
+ary.collect → new_enumerator
+```
+
+Replaces each element the return value from the block:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.collect! { |element| element.class }
+a1 # => [Symbol, String, Integer]
+a1.object_id == a.object_id # => true
+```
+
+---
+
+Returns a new Enumerator if no block given:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.collect!
+a1 # => #<Enumerator: [:foo, "bar", 2]:collect!>
+```
+
 #### each
 
 ```
@@ -1480,6 +1506,32 @@ Returns a new Enumerator if no block given:
 a = [:foo, 'bar', baz = 2]
 a1 = a.map
 a1 # => #<Enumerator: [:foo, "bar", 2]:map>
+```
+
+#### map!
+
+```
+ary.map! { |elemeent| ... } → self
+ary.map → new_enumerator
+```
+
+Replaces each element the return value from the block:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.map! { |element| element.class }
+a1 # => [Symbol, String, Integer]
+a1.object_id == a.object_id # => true
+```
+
+---
+
+Returns a new Enumerator if no block given:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.map!
+a1 # => #<Enumerator: [:foo, "bar", 2]:map!>
 ```
 
 #### pop
