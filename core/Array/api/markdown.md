@@ -14,6 +14,7 @@
   - [bsearch_index](#bsearch_index)
   - [collect](#collect)
   - [collect!](#collect-1)
+  - [delete](#delete)
   - [each](#each)
   - [each_index](#each_index)
   - [empty?](#empty)
@@ -27,6 +28,7 @@
   - [insert](#insert)
   - [inspect](#inspect)
   - [join](#join)
+  - [keep_if](#keep_if)
   - [last](#last)
   - [length](#length)
   - [map](#map)
@@ -863,6 +865,57 @@ a1 = a.collect!
 a1 # => #<Enumerator: [:foo, "bar", 2]:collect!>
 ```
 
+#### delete
+
+```
+ary.delete(obj) → deleted_obj
+ary.delete { |obj| ... } → deleted_obj or block_return
+```
+
+Removes zero or more elements from <tt>ary</tt>; returns <tt>self</tt>.
+
+---
+
+When no block given,
+removes from <tt>ary</tt> each element <tt>ele</tt>
+such that <tt>ele == obj</tt>; returns the last deleted element:
+
+```ruby
+s1 = 'bar'; s2 = 'bar'
+a = [:foo, s1, baz = 2, s2]
+deleted_obj = a.delete('bar')
+a # => [:foo, 2]
+deleted_obj.object_id == s2.object_id # => true
+```
+
+Returns <tt>nil</tt> if nothing removed:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.delete(:nosuch) # => nil
+```
+
+---
+
+When block given,
+removes from <tt>ary</tt> each element <tt>ele</tt>
+such that <tt>ele == obj</tt>; returns the last deleted element:
+
+```ruby
+s1 = 'bar'; s2 = 'bar'
+a = [:foo, s1, baz = 2, s2]
+deleted_obj = a.delete('bar') { fail 'Cannot happen' }
+a # => [:foo, 2]
+deleted_obj.object_id == s2.object_id # => true
+```
+
+Returns block return value if nothing removed:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.delete(:nosuch) { |obj| "#{obj} not found" } # => "nosuch not found"
+```
+
 #### each
 
 ```
@@ -1103,7 +1156,7 @@ ary.filter! → new_enumeration
 ```
 
 Removes from <tt>ary</tt> those elements for which the block
-returns <tt>false</tt> or <tt>nil</tt>:
+returns <tt>false</tt> or <tt>nil</tt>; returns <tt>self</tt>:
 
 ```ruby
 a = [:foo, 'bar', baz = 2, :bam]
@@ -1499,6 +1552,32 @@ Raises an exception if any element lacks instance method <tt>to_s</tt>:
 ```ruby
 a = [:foo, 'bar', baz = 2, BasicObject.new]
 a.join # Raises NoMethodError (undefined method `to_s' for #<BasicObject:>)
+```
+
+#### keep_if
+
+```
+ary.keep_if { |element| ... } → new_array
+ary.keep_if → new_enumeration
+```
+
+Removes from <tt>ary</tt> those elements for which the block
+returns <tt>false</tt> or <tt>nil</tt>; returns <tt>self</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2, :bam]
+a1 = a.keep_if { |element| element.to_s.start_with?('b') }
+a1 # => ["bar", :bam]
+a1.object_id == a.object_id 
+```
+
+---
+
+Returns a new Enumerator if no block given:
+
+```ruby
+a = [:foo, 'bar', baz = 2, :bam]
+a.keep_if # => #<Enumerator: [:foo, "bar", 2, :bam]:keep_if>
 ```
 
 #### last
@@ -2111,7 +2190,7 @@ ary.select! → new_enumeration
 ```
 
 Removes from <tt>ary</tt> those elements for which the block
-returns <tt>false</tt> or <tt>nil</tt>:
+returns <tt>false</tt> or <tt>nil</tt>; returns <tt>self</tt>:
 
 ```ruby
 a = [:foo, 'bar', baz = 2, :bam]
