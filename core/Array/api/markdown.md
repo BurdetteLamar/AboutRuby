@@ -18,6 +18,7 @@
   - [each_index](#each_index)
   - [empty?](#empty)
   - [fetch](#fetch)
+  - [filter](#filter)
   - [find_index](#find_index)
   - [first](#first)
   - [freeze](#freeze)
@@ -38,6 +39,7 @@
   - [rindex](#rindex)
   - [rotate](#rotate)
   - [rotate!](#rotate-1)
+  - [select](#select)
   - [shift](#shift)
   - [slice](#slice)
   - [sort](#sort)
@@ -1066,6 +1068,31 @@ a = [:foo, 'bar', baz = 2]
 a.fetch(50) # Raises IndexError (index 50 outside of array bounds: -3...3)
 ```
 
+#### filter
+
+```
+ary.filter { |element| ... } → new_array
+ary.filter → new_enumeration
+```
+
+Returns a new Array containing those elements of <tt>ary</tt>
+for which the block returns a truthy value:
+
+```ruby
+a = [:foo, 'bar', baz = 2, :bam]
+a1 = a.filter { |element| element.to_s.start_with?('b') }
+a1 # => ["bar", :bam]
+```
+
+---
+
+Returns a new Enumerator if no block given:
+
+```ruby
+a = [:foo, 'bar', baz = 2, :bam]
+a.filter # => #<Enumerator: [:foo, "bar", 2, :bam]:filter>
+```
+
 #### find_index
 
 ```
@@ -2021,6 +2048,31 @@ Raises an exception if <tt>count</tt> is not an
 ```ruby
 a = [:foo, 'bar', baz = 2]
 a1 = a.rotate!(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer) 
+```
+
+#### select
+
+```
+ary.select { |element| ... } → new_array
+ary.select → new_enumeration
+```
+
+Returns a new Array containing those elements of <tt>ary</tt>
+for which the block returns a truthy value:
+
+```ruby
+a = [:foo, 'bar', baz = 2, :bam]
+a1 = a.select { |element| element.to_s.start_with?('b') }
+a1 # => ["bar", :bam]
+```
+
+---
+
+Returns a new Enumerator if no block given:
+
+```ruby
+a = [:foo, 'bar', baz = 2, :bam]
+a.select # => #<Enumerator: [:foo, "bar", 2, :bam]:select>
 ```
 
 #### shift
