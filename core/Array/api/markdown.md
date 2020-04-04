@@ -38,6 +38,7 @@
   - [slice](#slice)
   - [sort](#sort)
   - [sort!](#sort-1)
+  - [sort_by!](#sort_by)
   - [to_a](#to_a)
   - [to_ary](#to_ary)
   - [to_h](#to_h)
@@ -2173,7 +2174,7 @@ a2 # => ["e", "d", "c", "b", "a"]
 ```
 
 When the block returns <tt>0</tt>, the order for <tt>a</tt> and <tt>b</tt>
-is unpredictable, and may be unstable:
+is indeterminate, and may be unstable:
 
 ```ruby
 a = 'abcde'.split('').shuffle
@@ -2231,7 +2232,7 @@ a # => ["e", "d", "c", "b", "a"]
 ```
 
 When the block returns <tt>0</tt>, the order for <tt>a</tt> and <tt>b</tt>
-is unpredictable, and may be unstable:
+is indeterminate, and may be unstable:
 
 ```ruby
 a = 'abcde'.split('').shuffle
@@ -2248,6 +2249,39 @@ Raises an exception if the block returns a non-Integer:
 a = 'abcde'.split('').shuffle
 a # => ["e", "b", "d", "a", "c"]
 a1 = a.sort! { |a, b| :foo } # Raises ArgumentError (comparison of Symbol with 0 failed)
+```
+
+#### sort_by!
+
+```
+ary.sort_by! { |element| ... } → self
+ary.sort_by! → new_enumerator
+```
+
+Sorts <tt>ary</tt> using an ordering determined by the block;
+returns <tt>self</tt>.
+
+Calls the block with each successive element;
+sorts elements based on the collection of values
+returned from the block.
+
+For duplicates returned by the block,
+the ordering is indeterminate, and may be unstable.
+
+This example sorts strings based on their sizes:
+
+```ruby
+a = ['aaaa', 'bbb', 'cc', 'd']
+a.sort_by! { |element| element.size }
+a # => ["d", "cc", "bbb", "aaaa"]
+````
+---
+
+Returns a new Enumerator if no block given:
+
+```ruby
+a = ['aaaa', 'bbb', 'cc', 'd']
+a.sort_by! # => #<Enumerator: ["aaaa", "bbb", "cc", "d"]:sort_by!>
 ```
 
 #### to_a
