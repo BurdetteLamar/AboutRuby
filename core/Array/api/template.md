@@ -1043,6 +1043,32 @@ a = [:foo, 'bar', baz = 2, :bam]
 a.filter # => #<Enumerator: [:foo, "bar", 2, :bam]:filter>
 ```
 
+#### filter!
+
+```
+ary.filter! { |element| ... } → new_array
+ary.filter! → new_enumeration
+```
+
+Removes from <tt>ary</tt> those elements for which the block
+returns <tt>false</tt> or <tt>nil</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2, :bam]
+a1 = a.filter! { |element| element.to_s.start_with?('b') }
+a1 # => ["bar", :bam]
+a1.object_id == a.object_id 
+```
+
+---
+
+Returns a new Enumerator if no block given:
+
+```ruby
+a = [:foo, 'bar', baz = 2, :bam]
+a.filter! # => #<Enumerator: [:foo, "bar", 2, :bam]:filter!>
+```
+
 #### find_index
 
 ```
@@ -2023,6 +2049,32 @@ Returns a new Enumerator if no block given:
 ```ruby
 a = [:foo, 'bar', baz = 2, :bam]
 a.select # => #<Enumerator: [:foo, "bar", 2, :bam]:select>
+```
+
+#### select!
+
+```
+ary.select! { |element| ... } → new_array
+ary.select! → new_enumeration
+```
+
+Removes from <tt>ary</tt> those elements for which the block
+returns <tt>false</tt> or <tt>nil</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2, :bam]
+a1 = a.select! { |element| element.to_s.start_with?('b') }
+a1 # => ["bar", :bam]
+a1.object_id == a.object_id 
+```
+
+---
+
+Returns a new Enumerator if no block given:
+
+```ruby
+a = [:foo, 'bar', baz = 2, :bam]
+a.select! # => #<Enumerator: [:foo, "bar", 2, :bam]:select!>
 ```
 
 #### shift
