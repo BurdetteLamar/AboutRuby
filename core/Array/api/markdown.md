@@ -12,6 +12,7 @@
   - [at](#at)
   - [bsearch](#bsearch)
   - [bsearch_index](#bsearch_index)
+  - [collect](#collect)
   - [each](#each)
   - [each_index](#each_index)
   - [empty?](#empty)
@@ -25,6 +26,7 @@
   - [join](#join)
   - [last](#last)
   - [length](#length)
+  - [map](#map)
   - [pop](#pop)
   - [prepend](#prepend)
   - [push](#push)
@@ -802,6 +804,32 @@ Searches <tt>ary</tt> as described at method [bsearch](#bsearch),
 but returns the index of the found element
 instead of the element itself.
 
+#### collect
+
+```
+ary.collect { |elemeent| ... } → new_array
+ary.collect → new_enumerator
+```
+
+Returns a new Array whose elements are the return values
+from the block:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.collect { |element| element.class }
+a1 # => [Symbol, String, Integer]
+```
+
+---
+
+Returns a new Enumerator if no block given:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.collect
+a1 # => #<Enumerator: [:foo, "bar", 2]:collect>
+```
+
 #### each
 
 ```
@@ -1471,6 +1499,32 @@ Returns the count of elements in <tt>ary</tt>:
 a = [:foo, 'bar', baz = 2]
 a.length # => 3
 [].length # => 0
+```
+
+#### map
+
+```
+ary.map { |elemeent| ... } → new_array
+ary.map → new_enumerator
+```
+
+Returns a new Array whose elements are the return values
+from the block:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.map { |element| element.class }
+a1 # => [Symbol, String, Integer]
+```
+
+---
+
+Returns a new Enumerator if no block given:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.map
+a1 # => #<Enumerator: [:foo, "bar", 2]:map>
 ```
 
 #### pop
