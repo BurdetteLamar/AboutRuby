@@ -37,6 +37,7 @@
   - [pop](#pop)
   - [prepend](#prepend)
   - [push](#push)
+  - [reject!](#reject)
   - [reverse](#reverse)
   - [reverse!](#reverse-1)
   - [reverse_each](#reverse_each)
@@ -1861,6 +1862,40 @@ a = [:foo, 'bar', baz = 2]
 a1 = a.push(:bam, :bat)
 a1 # => [:foo, "bar", 2, :bam, :bat]
 a1.object_id == a.object_id # => true
+```
+
+#### reject!
+
+```
+ary.reject! { |element| ... } → self or nil
+ary.reject! → new_enumerator
+```
+
+Removes each element for which the block returns a truthy value.
+
+Returns <tt>self</tt> if any elements removed:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bat']
+a1 = a.reject! { |element| element.to_s.start_with?('b') }
+a1 # => [:foo, 2]
+a1.object_id == a.object_id # => true
+```
+
+Returns <tt>nil</tt> if no elements removed:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.reject! { |element| false } # => nil
+```
+
+---
+
+Returns a new Enumerator if no block given:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.reject! # => #<Enumerator: [:foo, "bar", 2, "bat"]:reject!>
 ```
 
 #### reverse
