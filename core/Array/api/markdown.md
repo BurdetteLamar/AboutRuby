@@ -47,6 +47,7 @@
   - [select!](#select-1)
   - [shift](#shift)
   - [slice](#slice)
+  - [slice!](#slice-1)
   - [sort](#sort)
   - [sort!](#sort-1)
   - [sort_by!](#sort_by)
@@ -2433,7 +2434,8 @@ a.slice(-3..2) # => [:foo, "bar", 2]
 
 ---
 
-Raises an exception if given a single argument that is not an Integer:
+Raises an exception if given a single argument that is not an Integer
+or a Range:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
@@ -2446,6 +2448,145 @@ Raises an exception if given two arguments that are not both Integers:
 a = [:foo, 'bar', baz = 2]
 a.slice(:foo, 3) # Raises TypeError (no implicit conversion of Symbol into Integer)
 a.slice(1, :bar) # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+#### slice!
+
+```
+ary.slice!(n) → obj or nil
+ary.slice!(start, length) → new_array or nil
+ary.slice!(range) → new_array or nil
+```
+
+Removes and returns elements from <tt>ary</tt>.
+
+---
+
+When the only argument is an Integer <tt>n</tt>,
+removes and returns the <tt>n</tt>th element in <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.slice!(1) # => "bar"
+a # => [:foo, 2]
+```
+
+If <tt>n</tt> is negative,
+counts relative to the end of <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.slice!(-1) # => 2
+a # => [:foo, "bar"]
+```
+
+If <tt>n</tt> is out of range,
+returns <tt>nil</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.slice!(50) # => nil
+a.slice!(-50) # => nil
+a # => [:foo, "bar", 2]
+```
+
+---
+
+When the only arguments are Integers <tt>start</tt> and <tt>length</tt>,
+removes <tt>length</tt> elements from <tt>ary</tt> beginning at index <tt>start</tt>; returns the deleted objects in a new array:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.slice!(0, 2) # => [:foo, "bar"]
+a # => [2]
+```
+
+If <tt>start + length > ary.length</tt>,
+removes and returns <tt>ary.size - start</tt> elements:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.slice!(1, 50) # => ["bar", 2]
+a # => [:foo]
+```
+
+If <tt>start == a.size</tt> and <tt>length >= 0</tt>,
+returns a new empty Array:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.slice!(a.size, 0) # => []
+a.slice!(a.size, 50) # => []
+a # => [:foo, "bar", 2]
+```
+
+If <tt>length</tt> is negative,
+returns <tt>nil</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.slice!(2, -1) # => nil
+a.slice!(1, -2) # => nil
+a # => [:foo, "bar", 2]
+```
+
+---
+
+When the only argument is a Range object <rng>,
+treats <tt>rng.min</tt> as <tt>start</tt> above
+and <tt>rng.size</tt> as <tt>length</tt> above:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.slice!(1..2) # => ["bar", 2]
+a # => [:foo]
+```
+
+If <tt>rng.start == a.size</tt>,
+returns a new empty Array:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.slice!(a.size..0) # => []
+a.slice!(a.size..50) # => []
+a.slice!(a.size..-1) # => []
+a.slice!(a.size..-50) # => []
+a # => [:foo, "bar", 2]
+```
+
+If <tt>rng.end</tt> is negative,
+calculates the end index from the end of <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.slice!(0..-2) # => [:foo, "bar"]
+a # => [2]
+```
+
+If <tt>rng.start</tt> is negative,
+calculates the start index from the end of <tt>ary</tt>:
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.slice!(-2..2) # => ["bar", 2]
+a # => [:foo]
+```
+
+---
+
+Raises an exception if given a single argument that is not an Integer
+or a Range:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.slice!(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+Raises an exception if given two arguments that are not both Integers:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.slice!(:foo, 3) # Raises TypeError (no implicit conversion of Symbol into Integer)
+a.slice!(1, :bar) # Raises TypeError (no implicit conversion of Symbol into Integer)
 ```
 
 #### sort
