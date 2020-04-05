@@ -846,6 +846,63 @@ a = [:foo, 'bar', baz = 2]
 a.delete(:nosuch) { |obj| "#{obj} not found" } # => "nosuch not found"
 ```
 
+#### delete_at
+
+```
+ary.delete_at(index) → deleted_object or nil
+```
+
+Deletes an element from <tt>ary</tt>, per the given <tt>index</tt>.
+
+The given <tt>index</tt> must be an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
+
+---
+
+When <tt>index</tt> is non-negative,
+deletes the element at offset <tt>index</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.delete_at(1) # => "bar"
+a # => [:foo, 2]
+```
+
+If index is too large, returns <tt>nil</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.delete_at(5) # => nil
+```
+
+---
+
+When <tt>index</tt> is negative,
+counts backward from the end of the array:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.delete_at(-2) # => "bar"
+a # => [:foo, 2]
+```
+
+If index is too small, returns <tt>nil</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.delete_at(-5) # => nil
+```
+
+---
+
+Raises an exception if <tt>index</tt> is not an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.delete_at(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
 #### each
 
 ```
