@@ -16,6 +16,7 @@
   - [collect!](#collect-1)
   - [delete](#delete)
   - [delete_at](#delete_at)
+  - [delete_if](#delete_if)
   - [each](#each)
   - [each_index](#each_index)
   - [empty?](#empty)
@@ -59,6 +60,7 @@
   - [to_s](#to_s)
   - [unshift](#unshift)
   - [values_at](#values_at)
+  - [zip](#zip)
 
 ### Public Class Methods
 
@@ -959,6 +961,32 @@ Raises an exception if <tt>index</tt> is not an
 ```ruby
 a = [:foo, 'bar', baz = 2]
 a.delete_at(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+#### delete_if
+
+```
+ary.delete_if { |element| ... } → self
+ary.delete_if → Enumerator
+```
+
+Removes each element in <tt>ary</tt> for which the block
+returns a truthy value; returns <tt>self</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bat']
+a1 = a.delete_if { |element| element.to_s.start_with?('b') }
+a1 # => [:foo, 2]
+a1.object_id == a.object_id # => true
+```
+
+---
+
+Returns a new Enumerator if no block given:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.delete_if # => #<Enumerator: [:foo, "bar", 2]:delete_if>
 ```
 
 #### each
@@ -2813,7 +2841,7 @@ a1 = a.to_a
 a1.object_id == a.object_id # => true
 ```
 
-When <tt>ary<tt> is a subclass of Array,
+When <tt>ary</tt> is a subclass of Array,
 returns a new Array containing the elements of <tt>ary</tt>:
 
 ```ruby
@@ -2827,6 +2855,7 @@ a1 == a # => true
 #### to_ary
 
 ```
+
 ary.to_ary → self or new_array
 ```
 
@@ -2838,7 +2867,7 @@ a1 = a.to_ary
 a1.object_id == a.object_id # => true
 ```
 
-When <tt>ary<tt> is a subclass of Array,
+When <tt>ary</tt> is a subclass of Array,
 returns a new Array containing the elements of <tt>ary</tt>:
 
 ```ruby
@@ -2993,4 +3022,91 @@ Raises an exception if any index is not an
 ```ruby
 a = [:foo, 'bar', baz = 2]
 a.values_at(0, :foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+#### zip
+
+```
+ary.zip(*other_arrays) → new_array
+ary.zip(*other_arrays) { |other_array| ... } → nil
+```
+
+Each object in <tt>*other_arrays</tt> must be an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects),
+which will be converted to an Array.
+
+---
+
+With no block, returns a new Array of size <tt>ary.size</tt>
+whose elements are Arrays.
+
+Each nested array <tt>new_array[n]</tt>
+is of size <tt>other_arrays.size+1</tt>, and contains:
+* The <tt>n</tt>th element of <tt>ary</tt>.
+* The <tt>n</tt>th element of each of the <tt>*other_arrays</tt>.
+
+If all the arrays are the same size:
+
+```ruby
+a = [:a0, :a1, :a2, :a3]
+b = [:b0, :b1, :b2, :b3]
+c = [:c0, :c1, :c2, :c3]
+d = a.zip(b, c)
+d # => [[:a0, :b0, :c0], [:a1, :b1, :c1], [:a2, :b2, :c2], [:a3, :b3, :c3]]
+```
+
+If any array in <tt>other_arrays</tt> is smaller than <tt>ary</tt>,
+fills to <tt>ary.size</tt> with <tt>nil</tt>:
+
+```ruby
+a = [:a0, :a1, :a2, :a3]
+b = [:b0, :b1, :b2]
+c = [:c0, :c1]
+d = a.zip(b, c)
+d # => [[:a0, :b0, :c0], [:a1, :b1, :c1], [:a2, :b2, nil], [:a3, nil, nil]]
+```
+
+If any array in <tt>other_arrays</tt> is larger than <tt>ary</tt>,
+its trailing elements are ignored:
+
+```ruby
+a = [:a0, :a1, :a2, :a3]
+b = [:b0, :b1, :b2, :b3, :b4]
+c = [:c0, :c1, :c2, :c3, :c4, :c5]
+d = a.zip(b, c)
+d 
+```
+
+---
+
+When a block given, calls the block
+with each of the sub-arrays (formed as above);
+returns <tt>nil</tt>
+
+```ruby
+a = [:a0, :a1, :a2, :a3]
+b = [:b0, :b1, :b2, :b3]
+c = [:c0, :c1, :c2, :c3]
+a.zip(b, c) { |sub_array| p sub_array} # => nil
+```
+
+Output:
+
+```
+[:a0, :b0, :c0]
+[:a1, :b1, :c1]
+[:a2, :b2, :c2]
+[:a3, :b3, :c3]
+```
+
+---
+
+Raises an exception if any of the given <tt>*other_arrays</tt> is not an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects):
+
+```ruby
+a = [:a0, :a1, :a2, :a3]
+b = [:b0, :b1, :b2, :b3]
+c = [:c0, :c1, :c2, :c3]
+d = a.zip(b, c, :foo) # Raises TypeError (wrong argument type Symbol (must respond to :each))
 ```
