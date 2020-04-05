@@ -202,14 +202,6 @@ a1 # => [:foo, "bar", 2, :bam]
 a1.object_id == a.object_id # => true
 ```
 
-May be chained:
-
-```ruby
-a = [:foo, 'bar', baz = 2]
-a << :bam << :bat
-a # => [:foo, "bar", 2, :bam, :bat]
-```
-
 #### [] (Element Reference)
 
 ```
@@ -580,14 +572,6 @@ a = [:foo, 'bar', baz = 2]
 a1 = a.append(:bam, :bat)
 a1 # => [:foo, "bar", 2, :bam, :bat]
 a1.object_id == a.object_id # => true
-```
-
-May be chained:
-
-```ruby
-a = [:foo, 'bar', baz = 2]
-a.append(:bam, :bat).append(:bad, :bah)
-a # => [:foo, "bar", 2, :bam, :bat, :bad, :bah]
 ```
 
 #### at
@@ -1273,13 +1257,6 @@ a1 = a.freeze
 a1.object_id == a.object_id # => true
 ```
 
-May be chained:
-
-```ruby
-a = [:foo, 'bar', baz = 2]
-a.freeze.frozen? # => true
-```
-
 ---
 
 Raises an exception for an attempt to modify a frozen Array:
@@ -1758,14 +1735,6 @@ a1 # => [:bam, :bat, :foo, "bar", 2]
 a1.object_id == a.object_id # => true
 ```
 
-May be chained:
-
-```ruby
-a = [:foo, 'bar', baz = 2]
-a.prepend(:bam, :bat).prepend(:bad, :bah)
-a # => [:bad, :bah, :bam, :bat, :foo, "bar", 2]
-```
-
 #### push
 
 ```
@@ -1779,14 +1748,6 @@ a = [:foo, 'bar', baz = 2]
 a1 = a.push(:bam, :bat)
 a1 # => [:foo, "bar", 2, :bam, :bat]
 a1.object_id == a.object_id # => true
-```
-
-May be chained:
-
-```ruby
-a = [:foo, 'bar', baz = 2]
-a.push(:bam, :bat).push(:bad, :bah)
-a # => [:foo, "bar", 2, :bam, :bat, :bad, :bah]
 ```
 
 #### reverse
@@ -2651,14 +2612,6 @@ a = [:foo, 'bar', baz = 2]
 a1 = a.unshift(:bam, :bat)
 a1 # => [:bam, :bat, :foo, "bar", 2]
 a1.object_id == a.object_id # => true
-```
-
-May be chained:
-
-```ruby
-a = [:foo, 'bar', baz = 2]
-a.unshift(:bam, :bat).unshift(:bad, :bah)
-a # => [:bad, :bah, :bam, :bat, :foo, "bar", 2]
 ```
 
 #### values_at

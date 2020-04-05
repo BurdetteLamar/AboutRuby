@@ -131,7 +131,8 @@ For those methods, you can chain method calls:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
-a.freeze.frozen? # => true
+a.append(:bam, :bat).prepend(:bad, :bah)
+a # => [:bad, :bah, :foo, "bar", 2, :bam, :bat]
 ```
 
 ### Methods Returning Enumerators
