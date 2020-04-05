@@ -1807,6 +1807,31 @@ a1 # => [:foo, "bar", 2, :bam, :bat]
 a1.object_id == a.object_id # => true
 ```
 
+#### reject
+
+```
+ary.reject { |element| ... } → new_array
+ary.reject → new_enumerator
+```
+
+Returns a new Array whose elements are all those from <tt>ary</tt>
+for which the block returns <tt>false</tt> or <tt>nil</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2, 'bat']
+a1 = a.reject { |element| element.to_s.start_with?('b') }
+a1 # => [:foo, 2]
+```
+
+---
+
+Returns a new Enumerator if no block given:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.reject # => #<Enumerator: [:foo, "bar", 2]:reject>
+```
+
 #### reject!
 
 ```
@@ -1838,7 +1863,7 @@ Returns a new Enumerator if no block given:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
-a.reject! # => #<Enumerator: [:foo, "bar", 2, "bat"]:reject!>
+a.reject! # => #<Enumerator: [:foo, "bar", 2]:reject!>
 ```
 
 #### reverse
