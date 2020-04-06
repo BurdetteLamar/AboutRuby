@@ -40,6 +40,7 @@
   - [push](#push)
   - [reject](#reject)
   - [reject!](#reject-1)
+  - [replace](#replace)
   - [reverse](#reverse)
   - [reverse!](#reverse-1)
   - [reverse_each](#reverse_each)
@@ -58,6 +59,7 @@
   - [to_ary](#to_ary)
   - [to_h](#to_h)
   - [to_s](#to_s)
+  - [transpose](#transpose)
   - [unshift](#unshift)
   - [values_at](#values_at)
   - [zip](#zip)
@@ -1952,6 +1954,48 @@ a = [:foo, 'bar', baz = 2]
 a.reject! # => #<Enumerator: [:foo, "bar", 2]:reject!>
 ```
 
+#### replace
+
+```
+ary.replace(other_array) → self
+```
+
+Replaces the content of <tt>ary</tt> with the content
+of <tt>other_array</tt>; returns <tt>self</tt>.
+
+Argument <tt>other_array</tt> must be an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects),
+which will be converted to an Array.
+
+---
+
+Replaces the content of <tt>ary</tt> with the content of <tt>other_array</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a1 = a.replace(['foo', :bar, 3])
+a1 # => ["foo", :bar, 3]
+a1.object_id == a.object_id # => true
+```
+
+Ignores the size of <tt>ary</tt>:
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.replace([]) # => []
+a.replace([:foo, 'bar', baz = 2]) # => [:foo, "bar", 2]
+```
+
+---
+
+Raises an exception if <tt>other_array</tt> is not an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects):
+
+```ruby
+a = [:foo, 'bar', baz = 2]
+a.replace(:foo) # Raises TypeError (no implicit conversion of Symbol into Array)
+```
+
 #### reverse
 
 ```
@@ -2940,6 +2984,40 @@ Raises an exception if any element lacks instance method <tt>inspect</tt>:
 ```ruby
 a = [:foo, 'bar', baz = 2, BasicObject.new]
 a.to_s  # Raises NoMethodError (undefined method `inspect' for #<BasicObject:0x0000000006b69d28>)
+```
+
+#### transpose
+
+```
+ary.transpose → new_array
+```
+
+Transposes the rows and columns in an array of arrays.
+
+Each element in <tt>ary</tt> must be an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects),
+which will be converted to an Array.
+
+```ruby
+a = [[:a0, :a1], [:b0, :b1], [:c0, :c1]]
+a.transpose # => [[:a0, :b0, :c0], [:a1, :b1, :c1]]
+```
+
+---
+
+Raises an exception if an element in <tt>ary</tt> is not an
+ [Array-convertible object](../../../doc/convertibles.md#array-convertible-objects):
+
+```ruby
+a = [[:a0, :a1], [:b0, :b1], :foo]
+a.transpose # Raises TypeError (no implicit conversion of Symbol into Array)
+```
+
+Raises an exception if the sizes of the sub-arrays differ:
+
+```ruby
+a = [[:a0, :a1], [:b0, :b1], [:c0, :c1, :c2]]
+a.transpose # Raises IndexError (element size differs (3 should be 2))
 ```
 
 #### unshift
