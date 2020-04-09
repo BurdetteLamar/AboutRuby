@@ -186,6 +186,35 @@ Array.try_convert(ToAryTakesArgument.new) # Raises TypeError (can't convert ToAr
 
 ### Public Instance Methods
 
+#### + (Concatenation)
+
+```
+ary + other_array → new_array
+```
+
+Argument <tt>other_array</tt> must be an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects),
+which will be converted to an Array.
+
+---
+
+Returns a new Array containing all elements of <tt>ary</tt>
+followed by all elements of <tt>other_array</tt>:
+
+```ruby
+a = [0, 1] + [2, 3]
+a # => [0, 1, 2, 3]
+```
+
+---
+
+Raises an exception if <tt>other_array</tt> is not an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects):
+
+```ruby
+[] + :foo # Raises TypeError (no implicit conversion of Symbol into Array)
+```
+
 #### << (Append)
 
 ```
