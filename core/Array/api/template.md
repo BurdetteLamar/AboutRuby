@@ -824,6 +824,45 @@ a1 = a.collect!
 a1 # => #<Enumerator: [:foo, "bar", 2]:collect!>
 ```
 
+#### concat
+
+```
+ary.concat(*other_arrays) → self
+```
+
+The given <tt>*other_arrays</tt> must be
+[Array-convertible objects](../../../doc/convertibles.md#array-convertible-objects),
+which will be converted to Array objects.
+
+---
+
+Adds to <tt>ary</tt> all elements from each array in <tt>other_arrays</tt>;
+returns <tt>self</tt>:
+
+```ruby
+a = [0, 1]
+a1 = a.concat([2, 3], [4, 5])
+a1 # => [0, 1, 2, 3, 4, 5]
+a1.object_id == a.object_id # => true 
+```
+
+Does nothing if no arguments given:
+
+```ruby
+a = [0, 1]
+a.concat
+a # => [0, 1]
+```
+
+---
+
+Raises an exception if any argument is not an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects):
+
+```ruby
+[].concat([], :foo) # Raises TypeError (no implicit conversion of Symbol into Array)
+```
+
 #### delete
 
 ```

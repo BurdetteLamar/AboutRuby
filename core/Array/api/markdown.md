@@ -5,6 +5,7 @@
   - [::new](#new)
   - [::try_convert](#try_convert)
 - [Public Instance Methods](#public-instance-methods)
+  - [+ (Concatenation)](#-concatenation)
   - [<< (Append)](#-append)
   - [[] (Element Reference)](#-element-reference)
   - [[]= (Element Assignment)](#-element-assignment)
@@ -14,6 +15,7 @@
   - [bsearch_index](#bsearch_index)
   - [collect](#collect)
   - [collect!](#collect-1)
+  - [concat](#concat)
   - [delete](#delete)
   - [delete_at](#delete_at)
   - [delete_if](#delete_if)
@@ -248,6 +250,35 @@ Array.try_convert(ToAryTakesArgument.new) # Raises TypeError (can't convert ToAr
 ```
 
 ### Public Instance Methods
+
+#### + (Concatenation)
+
+```
+ary + other_array → new_array
+```
+
+Argument <tt>other_array</tt> must be an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects),
+which will be converted to an Array.
+
+---
+
+Returns a new Array containing all elements of <tt>ary</tt>
+followed by all elements of <tt>other_array</tt>:
+
+```ruby
+a = [0, 1] + [2, 3]
+a # => [0, 1, 2, 3]
+```
+
+---
+
+Raises an exception if <tt>other_array</tt> is not an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects):
+
+```ruby
+[] + :foo # Raises TypeError (no implicit conversion of Symbol into Array)
+```
 
 #### << (Append)
 
@@ -856,6 +887,45 @@ Returns a new Enumerator if no block given:
 a = [:foo, 'bar', baz = 2]
 a1 = a.collect!
 a1 # => #<Enumerator: [:foo, "bar", 2]:collect!>
+```
+
+#### concat
+
+```
+ary.concat(*other_arrays) → self
+```
+
+The given <tt>*other_arrays</tt> must be
+[Array-convertible objects](../../../doc/convertibles.md#array-convertible-objects),
+which will be converted to Array objects.
+
+---
+
+Adds to <tt>ary</tt> all elements from each array in <tt>other_arrays</tt>;
+returns <tt>self</tt>:
+
+```ruby
+a = [0, 1]
+a1 = a.concat([2, 3], [4, 5])
+a1 # => [0, 1, 2, 3, 4, 5]
+a1.object_id == a.object_id # => true 
+```
+
+Does nothing if no arguments given:
+
+```ruby
+a = [0, 1]
+a.concat
+a # => [0, 1]
+```
+
+---
+
+Raises an exception if any argument is not an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects):
+
+```ruby
+[].concat([], :foo) # Raises TypeError (no implicit conversion of Symbol into Array)
 ```
 
 #### delete
