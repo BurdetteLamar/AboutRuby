@@ -5,6 +5,7 @@
   - [::new](#new)
   - [::try_convert](#try_convert)
 - [Public Instance Methods](#public-instance-methods)
+  - [* (Repetition)](#-repetition)
   - [+ (Concatenation)](#-concatenation)
   - [<< (Append)](#-append)
   - [[] (Element Reference)](#-element-reference)
@@ -250,6 +251,76 @@ Array.try_convert(ToAryTakesArgument.new) # Raises TypeError (can't convert ToAr
 ```
 
 ### Public Instance Methods
+
+#### * (Repetition)
+
+```
+ary * an_integer → new_array
+ary * a_string → new_string
+```
+
+The argument must be an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects),
+which will be converted to an Integer, or a
+[String-convertible object](../../../doc/convertibles.md#string-convertible-objects),
+which will be converted to a String.
+
+---
+
+When the argument is an integer <tt>n</tt>,
+returns a new Array.
+
+If <tt>n</tt> is positive, returns the concatenation of <tt>n</tt>
+repetitions of <tt>ary</tt>:
+
+```ruby
+a = ['x', 'y']
+a1 = a * 3 # => ["x", "y", "x", "y", "x", "y"]
+a1[0].object_id == a1[2].object_id # => true
+```
+
+If <tt>n</tt> is zero, returns an empty Array:
+
+```ruby
+a = [0, 1]
+a * 0 # => []
+```
+
+---
+
+When the argument is a string <tt>separator</tt>,
+returns a new String equivalent to the result of
+<tt>array.join(separator)</tt>.
+
+If <tt>ary</tt> is non-empty, returns the join of each element's <tt>to_s</tt> value:
+
+```ruby
+[0, [0, 1], {foo: 0}] * ', ' # => "0, 0, 1, {:foo=>0}"
+```
+
+---
+
+Raises an exception if the argument is not an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects)
+or a
+[String-convertible object](../../../doc/convertibles.md#string-convertible-objects):
+
+```ruby
+[] * :foo # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+Raises an exception if the argument is negative:
+
+```ruby
+[] * -1 # Raises ArgumentError (negative argument)
+```
+
+Raises an exception if the argument is a string
+and any array element lacks instance method <tt>to_s</tt>:
+
+```ruby
+[BasicObject.new] * ',' # Raises NoMethodError (undefined method `to_s' for #<BasicObject:>)
+```
 
 #### + (Concatenation)
 
