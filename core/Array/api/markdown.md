@@ -1486,6 +1486,42 @@ a = ['a', 'b', 'c', 'd']
 a.fill(-2..-2) { |index| "new_#{index}" } # => ["a", "b", "new_2", "d"]
 ```
 
+---
+
+Raises an exception if no block given, two arguments given,
+second argument is not a Range or an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+[].fill(:X, :x) # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+Raises an exception if no block given, three arguments given,
+second or third argument not an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+[].fill(:X, :x, 1) # Raises TypeError (no implicit conversion of Symbol into Integer)
+[].fill(:X, 1, :x) # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+Raises an exception if block given, one argument given,
+argument is not a Range or an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+[].fill(:x) { } # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+Raises an exception if block given, two arguments given,
+either argument is not an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+[].fill(:x, 1) { } # Raises TypeError (no implicit conversion of Symbol into Integer)
+[].fill(1, :x) { } # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+
 #### filter
 
 ```
