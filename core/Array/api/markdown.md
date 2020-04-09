@@ -8,9 +8,11 @@
   - [* (Repetition)](#-repetition)
   - [+ (Concatenation)](#-concatenation)
   - [<< (Append)](#-append)
+  - [== (Equality)](#-equality)
   - [[] (Element Reference)](#-element-reference)
   - [[]= (Element Assignment)](#-element-assignment)
   - [append](#append)
+  - [assoc](#assoc)
   - [at](#at)
   - [bsearch](#bsearch)
   - [bsearch_index](#bsearch_index)
@@ -23,6 +25,7 @@
   - [each](#each)
   - [each_index](#each_index)
   - [empty?](#empty)
+  - [eql?](#eql)
   - [fetch](#fetch)
   - [fill](#fill)
   - [filter](#filter)
@@ -42,6 +45,7 @@
   - [pop](#pop)
   - [prepend](#prepend)
   - [push](#push)
+  - [rassoc](#rassoc)
   - [reject](#reject)
   - [reject!](#reject-1)
   - [replace](#replace)
@@ -365,6 +369,30 @@ a = [:foo, 'bar', baz = 2]
 a1 = a << :bam
 a1 # => [:foo, "bar", 2, :bam]
 a1.object_id == a.object_id # => true
+```
+
+#### == (Equality)
+
+```
+ary == other_array → true or false
+```
+
+Returns <tt>true</tt> if <tt>ary.size == other_array.size</tt>,
+and for each index <tt>i</tt> in <tt>ary</tt>, <tt>ary[i] == other_array[i]</tt>:
+
+```ruby
+a = [0, 1, 2]
+a == [0, 1, 2] # => true
+[] == [] # => true
+```
+
+Otherwise, returns <tt>false</tt>:
+
+```ruby
+a = [0, 1, 2]
+a == [0, 1] # => false
+a == [0, 1, 3] # => false
+[] == BasicObject.new # => false
 ```
 
 #### [] (Element Reference)
@@ -737,6 +765,27 @@ a = [:foo, 'bar', baz = 2]
 a1 = a.append(:bam, :bat)
 a1 # => [:foo, "bar", 2, :bam, :bat]
 a1.object_id == a.object_id # => true
+```
+
+#### assoc
+
+```
+ary.assoc(obj) → new_array or nil
+```
+
+Returns the the first element in <tt>ary</tt> that is an Array
+whose first element <tt>==</tt> <tt>>ary</tt>:
+
+```ruby
+a = [[0, 1], [2, 4], [4, 5, 6], [4, 5]]
+a.assoc(4) # => [4, 5, 6]
+```
+
+Returns <tt>nil</tt> if no such element is found:
+
+```ruby
+a = [[0, 1], 7, {foo: 0}, [4, 5], [3, 4, 5]]
+a.assoc(:nosuch) # => nil
 ```
 
 #### at
@@ -1265,6 +1314,31 @@ Returns <tt>true</tt> if the count of elements in <tt>ary</tt> is <tt>0</tt>;
 ```ruby
 [].empty? # => true
 [:foo, 'bar', baz = 2].empty? # => false
+```
+
+#### eql?
+
+```
+ary.eql other_array → true or false
+```
+
+Returns <tt>true</tt> if <tt>ary.size == other_array.size</tt>,
+and for each index <tt>i</tt> in <tt>ary</tt>, <tt>ary[i].eql? other_array[i]</tt>:
+
+```ruby
+a = [0, 1, 2]
+a.eql? [0, 1, 2] # => true
+[].eql? [] # => true
+```
+
+Otherwise, returns <tt>false</tt>:
+
+```ruby
+a = [0, 1, 2]
+a.eql? [0, 1] # => false
+a.eql? [0, 1, 3] # => false
+a.eql? [0, 1, 3] # => false
+[].eql? BasicObject.new # => false
 ```
 
 #### fetch
@@ -2358,6 +2432,27 @@ a = [:foo, 'bar', baz = 2]
 a1 = a.push(:bam, :bat)
 a1 # => [:foo, "bar", 2, :bam, :bat]
 a1.object_id == a.object_id # => true
+```
+
+#### rassoc
+
+```
+ary.assoc(obj) → new_array or nil
+```
+
+Returns the the first element in <tt>ary</tt> that is an Array
+whose second element <tt>==</tt> <tt>>ary</tt>:
+
+```ruby
+a = [[0, 1], [2, 4], [4, 5]]
+a.rassoc(4) # => [2, 4]
+```
+
+Returns <tt>nil</tt> if no such element is found:
+
+```ruby
+a = [[0, 1], 7, {foo: 0}, [4, 5]]
+a.rassoc(:nosuch) # => nil
 ```
 
 #### reject
