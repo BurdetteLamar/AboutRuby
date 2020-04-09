@@ -1380,6 +1380,49 @@ a.fill(1, 0) { |index| "new_#{index}" } # => ["a", "b", "c", "d"]
 a.fill(1, -1) { |index| "new_#{index}" } # => ["a", "b", "c", "d"]
 ```
 
+---
+
+With arguments <tt>obj</tt> and <tt>range</tt> and block given
+calls the block with each <tt>index</tt> in the given <tt>range</tt>,
+replaces the element at offset <tt>index</tt> with the block's return value.
+
+If the range is positive and ascending
+(<tt> 0 <= range.begin <= range.end</tt>,
+replaces elements from (tt>range.begin</tt> to <tt>range.end</tt>:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(1..1) { |index| "new_#{index}" } # => ["a", "new_1", "c", "d"]
+```
+
+If <tt>range.first</tt> is negative, does not call the block,
+replaces no elements:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(-1..1) { |index| fail 'Cannot happen' } # => ["a", "b", "c", "d"]
+```
+
+If <tt>range.last</tt> is negative,
+counts from the end of the array:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(0..-2) { |index| "new_#{index}" } # => ["new_0", "new_1", "new_2", "d"] 
+a = ['a', 'b', 'c', 'd']
+a.fill(1..-2) { |index| "new_#{index}" } # => ["a", "new_1", "new_2", "d"]
+```
+
+If <tt>range.last</tt> and <tt>range.last</tt> are both negative,
+both count from the end of the array:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(-1..-1) { |index| "new_#{index}" } # => ["a", "b", "c", "new_3"]
+a = ['a', 'b', 'c', 'd']
+a.fill(-2..-2) { |index| "new_#{index}" } # => ["a", "b", "new_2", "d"]
+```
+
 #### filter
 
 ```
