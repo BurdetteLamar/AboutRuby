@@ -66,8 +66,8 @@ returns an Array of the given size;
 each element is that same <tt>default_value</tt>:
 
 ```ruby
-a = Array.new(3, 'x') 
-a # => ["x", "x", "x"]
+a = Array.new(3, :X)
+a # => [:X, :X, :X]
 a[0].object_id == a[1].object_id # => true
 a[1].object_id == a[2].object_id # => true
 ```
@@ -1125,7 +1125,7 @@ Raises an exception if <tt>index</tt> is not an
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
-a.fetch('x') # Raises TypeError (no implicit conversion of String into Integer)
+a.fetch(:X) # Raises TypeError (no implicit conversion of String into Integer)
 ```
 
 Raises an exception if <tt>index</tt> is out of range
@@ -1134,6 +1134,214 @@ and neither <tt>default_value</tt> nor a block given:
 ```ruby
 a = [:foo, 'bar', baz = 2]
 a.fetch(50) # Raises IndexError (index 50 outside of array bounds: -3...3)
+```
+
+#### fill
+
+```
+ary.fill(obj) → self
+ary.fill(obj, start) → self
+ary.fill(obj, start , length) → self
+ary.fill(obj, range) → self
+ary.fill { |index| ... } → self
+ary.fill(start) { |index| ... } → self
+ary.fill(start , length) { |index| ... } → self
+ary.fill(range) { |index| ... } → self
+```
+
+Replaces specified elements in <tt>ary</tt> with specified objects;
+returns <tt>self</tt>.
+
+Arguments <tt>start</tt> and <tt>length</tt>, if given, must be
+[Integer-convertible objects](../../../doc/convertibles.md#integer-convertible-objects).
+
+Argument <tt>range</tt>, if given, must be a Range object.
+
+---
+
+With argument <tt>obj</tt> and no block given,
+replaces all elements with that one <tt>obj</tt>:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a # => ["a", "b", "c", "d"]
+a1 = a.fill(:X)
+a1 # => [:X, :X, :X, :X]
+a.first.object_id == a.last.object_id # => true
+```
+
+---
+
+With arguments <tt>obj</tt> and <tt>start</tt> and no block given,
+replaces elements based on the given <tt>start</tt>.
+
+If <tt>start</tt> is in range
+(<tt>0 <= start < ary.size</tt>),
+replaces all elements from offset <tt>start</tt> through the end:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(:X, 2) # => ["a", "b", :X, :X]
+```
+
+If <tt>start >= ary.size</tt>, does nothing:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(:X, 4) # => ["a", "b", "c", "d"]
+a = ['a', 'b', 'c', 'd']
+a.fill(:X, 5) # => ["a", "b", "c", "d"]
+```
+
+If <tt>start</tt> is negative, counts from the end
+(starting index is <tt>start + ary.size</tt>):
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(:X, -2) # => ["a", "b", :X, :X]
+```
+
+If <tt>start <= -ary.size</tt>, replaces all elements:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(:X, -6) # => [:X, :X, :X, :X]
+a = ['a', 'b', 'c', 'd']
+a.fill(:X, -50) # => [:X, :X, :X, :X]
+```
+
+---
+
+With arguments <tt>obj</tt>, <tt>start</tt>, and <tt>length</tt>,
+and no block given,
+replaces elements based on the given <tt>start</tt> and <tt>length</tt>.
+
+If <tt>start</tt> is in range,
+replaces <tt>length</tt> elements beginning at offset <tt>start</tt>:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(:X, 1, 1) # => ["a", :X, "c", "d"]
+```
+
+If <tt>start</tt> is negative, counts from the end:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(:X, -2, 1) # => ["a", "b", :X, "d"]
+```
+
+If <tt>start >= ary.size</tt>, extends <tt>self</tt> with <tt>nil</tt>:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(:X, 5, 0) # => ["a", "b", "c", "d", nil]
+a = ['a', 'b', 'c', 'd']
+a.fill(:X, 5, 2) # => ["a", "b", "c", "d", nil, :X, :X]
+```
+
+If <tt>length <= 0</tt> replaces no elements:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(:X, 1, 0) # => ["a", "b", "c", "d"]
+a.fill(:X, 1, -1) # => ["a", "b", "c", "d"]
+```
+
+---
+
+With arguments <tt>obj</tt> and <tt>range</tt> and no block given
+replaces elements based on the given <tt>range</tt>.
+
+If the range is positive and ascending
+(<tt> 0 <= range.begin <= range.end</tt>,
+replaces elements from (tt>range.begin</tt> to <tt>range.end</tt>:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(:X, (1..1)) # => ["a", :X, "c", "d"]
+```
+
+If <tt>range.first</tt> is negative,
+replaces no elements:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(:X, (-1..1)) # => ["a", "b", "c", "d"]
+```
+
+If <tt>range.last</tt> is negative,
+counts from the end of the array:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(:X, (0..-2)) # => [:X, :X, :X, "d"]
+a = ['a', 'b', 'c', 'd']
+a.fill(:X, (1..-2)) # => ["a", :X, :X, "d"]
+```
+
+If <tt>range.last</tt> and <tt>range.last</tt> are both negative,
+both count from the end of the array:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(:X, (-1..-1)) # => ["a", "b", "c", :X]
+a = ['a', 'b', 'c', 'd']
+a.fill(:X, (-2..-2)) # => ["a", "b", :X, "d"]
+```
+
+---
+
+With no argument and block given,
+calls the block with each <tt>index</tt>
+and replaces <tt>self[index]</tt> with the block's return value:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill { |index| "new_#{index}" } # => ["new_0", "new_1", "new_2", "new_3"]
+```
+
+---
+
+With argument <tt>start</tt> and no block given,
+replaces elements based onthe block's return value.
+
+calls the block with each <tt>index</tt> from <tt>start</tt> to the end,
+replacing the corresponding element with the block's return value:
+
+If <tt>start</tt> is in range
+(<tt>0 <= start < ary.size</tt>),
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(1) { |index| "new_#{index}" } # => ["a", "new_1", "new_2", "new_3"]
+```
+
+
+If <tt>start >= ary.size</tt>, does nothing:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(4) { |index| fail 'Cannot happen' } # => ["a", "b", "c", "d"]
+a = ['a', 'b', 'c', 'd']
+a.fill(4) { |index| fail 'Cannot happen' } # => ["a", "b", "c", "d"]
+```
+
+If <tt>start</tt> is negative, counts from the end
+(starting index is <tt>start + ary.size</tt>):
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(-2) { |index| "new_#{index}" } # => ["a", "b", "new_2", "new_3"]
+```
+
+If <tt>start <= -ary.size</tt>, replaces all elements:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(-6) { |index| "new_#{index}" } # => ["new_0", "new_1", "new_2", "new_3"]
+a = ['a', 'b', 'c', 'd']
+a.fill(-50) { |index| "new_#{index}" } # => ["new_0", "new_1", "new_2", "new_3"]
 ```
 
 #### filter
@@ -1229,7 +1437,7 @@ Returns <tt>nil</tt> if the block never returns a truthy value:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
-a.find_index { |element| element == 'x' } # => nil
+a.find_index { |element| element == :X } # => nil
 ```
 
 ---
@@ -1322,7 +1530,7 @@ an [Integer-convertible object](../../../doc/convertibles.md#integer-convertible
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
-a.first('x') # Raises TypeError (no implicit conversion of String into Integer)
+a.first(:X) # Raises TypeError (no implicit conversion of String into Integer)
 ```
 
 #### freeze
@@ -1392,7 +1600,7 @@ Returns <tt>nil</tt> if the block never returns a truthy value:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
-a.index { |element| element == 'x' } # => nil
+a.index { |element| element == :X } # => nil
 ```
 
 ---
@@ -1653,7 +1861,7 @@ an [Integer-convertible object](../../../doc/convertibles.md#integer-convertible
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
-a.last('x') # Raises TypeError (no implicit conversion of String into Integer)
+a.last(:X) # Raises TypeError (no implicit conversion of String into Integer)
 ```
 
 #### length
@@ -2065,7 +2273,7 @@ Returns <tt>nil</tt> if the block never returns a truthy value:
 
 ```ruby
 a = [:foo, 'bar', baz = 2]
-a.rindex { |element| element == 'x' } # => nil
+a.rindex { |element| element == :X } # => nil
 ```
 
 ---
