@@ -1303,9 +1303,7 @@ a.fill { |index| "new_#{index}" } # => ["new_0", "new_1", "new_2", "new_3"]
 
 ---
 
-With argument <tt>start</tt> and no block given,
-replaces elements based onthe block's return value.
-
+With argument <tt>start</tt> and block given,
 calls the block with each <tt>index</tt> from <tt>start</tt> to the end,
 replacing the corresponding element with the block's return value:
 
@@ -1316,7 +1314,6 @@ If <tt>start</tt> is in range
 a = ['a', 'b', 'c', 'd']
 a.fill(1) { |index| "new_#{index}" } # => ["a", "new_1", "new_2", "new_3"]
 ```
-
 
 If <tt>start >= ary.size</tt>, does nothing:
 
@@ -1342,6 +1339,45 @@ a = ['a', 'b', 'c', 'd']
 a.fill(-6) { |index| "new_#{index}" } # => ["new_0", "new_1", "new_2", "new_3"]
 a = ['a', 'b', 'c', 'd']
 a.fill(-50) { |index| "new_#{index}" } # => ["new_0", "new_1", "new_2", "new_3"]
+```
+
+---
+
+With arguments <tt>start</tt> and <tt>length</tt>,
+and block given,
+calls the block for each <tt>index</tt> specified by <tt>start</tt> <tt>length</tt>;
+replaces the element at offset <tt>index</tt> with the block's return value.
+
+If <tt>start</tt> is in range,
+replaces <tt>length</tt> elements beginning at offset <tt>start</tt>:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(1, 1) { |index| "new_#{index}" } # => ["a", "new_1", "c", "d"]
+```
+
+If <tt>start</tt> is negative, counts from the end:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(-2, 1) { |index| "new_#{index}" } # => ["a", "b", "new_2", "d"]
+```
+
+If <tt>start >= ary.size</tt>, extends <tt>self</tt> with <tt>nil</tt>:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(5, 0) { |index| "new_#{index}" } # => ["a", "b", "c", "d", nil]
+a = ['a', 'b', 'c', 'd']
+a.fill(5, 2) { |index| "new_#{index}" } # => ["a", "b", "c", "d", nil, "new_5", "new_6"]
+```
+
+If <tt>length <= 0</tt> replaces no elements:
+
+```ruby
+a = ['a', 'b', 'c', 'd']
+a.fill(1, 0) { |index| "new_#{index}" } # => ["a", "b", "c", "d"]
+a.fill(1, -1) { |index| "new_#{index}" } # => ["a", "b", "c", "d"]
 ```
 
 #### filter
