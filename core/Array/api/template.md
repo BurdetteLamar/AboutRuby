@@ -1881,6 +1881,38 @@ a.freeze
 a[3] = :bat # Raises FrozenError (can't modify frozen Array: [:foo, "bar", 2])
 ```
 
+#### hash
+
+```
+ary.hash → integer
+```
+
+Returns the integer hash value for <tt>ary</tt>:
+
+```ruby
+[].hash.class # => Integer
+```
+
+Two arrays have the same hash value if and only if they have the same content:
+
+```ruby
+[0, 1, 2].hash == [0, 1, 2].hash # => true
+[0, 1, 2].hash == [0, 1, ].hash # => false
+```
+
+#### include?
+
+```
+ary.include?(obj) → true or false
+```
+
+Returns <tt>true</tt> if <tt>obj == ary[n]</tt> for some index <tt>n</tt>:
+
+```ruby
+[0, 1, 2].include?(2) # => true
+[0, 1, 2].include?(3) # => false
+```
+
 #### index
 
 ```
