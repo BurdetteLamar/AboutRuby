@@ -196,9 +196,9 @@ Argument <tt>other_array</tt> must be an
 [Array-convertible object](../../../doc/convertibles.md#array-convertible-objects).
 
 ---
+Returns a new Array containing each element found in both in <tt>ary</tt>
+and in <tt>other_array</tt>; duplicates are omitted; comparisons use <tt>eql?</tt>:
 
-Returns a new Array containing unique elements found in both <tt>ary</tt>
-and <tt>other_array</tt>; comparisons use <tt>eql?</tt>:
 
 ```ruby
 [0, 1, 2, 3] & [1, 2] # => [1, 2]
@@ -1084,7 +1084,7 @@ a1 # => [0, 1, 2, 3, 4, 5]
 a1.object_id == a.object_id # => true 
 ```
 
-Does nothing if no arguments given:
+Returns <tt>self</tt> unmodified if no arguments given:
 
 ```ruby
 a = [0, 1]
@@ -1253,6 +1253,12 @@ that are not <tt>eql?</tt> some element in any <tt>*other_arrays</tt>:
 [0, 1, 1, 2, 1, 1, 3, 1, 1].difference([1]) # => [0, 2, 3]
 [0, 1, 2, 3].difference([3, 0], [1, 3]) # => [2]
 [0, 1, 2].difference([4]) # => [0, 1, 2]
+```
+
+Returns <tt>self</tt> unmodified if no arguments given:
+
+```ruby
+[0, 1].difference # => [0, 1]
 ```
 
 ---
@@ -2223,6 +2229,41 @@ Raises an exception if any element lacks instance method <tt>inspect</tt>:
 ```ruby
 a = [:foo, 'bar', baz = 2, BasicObject.new]
 a.inspect  # Raises NoMethodError (undefined method `inspect' for #<BasicObject:0x0000000006b69d28>)
+```
+
+#### intersection
+
+```
+ary.intersection(*other_arrays) → new_array
+```
+
+Each object in <tt>*other_arrays</tt> must be an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects),
+which will be converted to an Array.
+
+---
+
+Returns a new Array containing each element found in both in <tt>ary</tt>
+and in all of the given <tt>*other_arrays</tt>; duplicates are omitted; comparisons use <tt>eql?</tt>:
+
+```ruby
+[0, 1, 2, 3].intersection([0, 1, 2], [0, 1, 3]) # => [0, 1]
+[0, 0, 1, 1, 2, 3].intersection([0, 1, 2], [0, 1, 3]) # => [0, 1]
+```
+
+Preserves order from <tt>ary</tt>:
+
+```ruby
+[0, 1, 2].intersection([2, 1, 0]) # => [0, 1, 2]
+```
+
+---
+
+Raises an exception if any of the given <tt>*other_arrays</tt> is not an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects):
+
+```ruby
+[].intersection([0, 1], :foo) # Raises TypeError (no implicit conversion of Symbol into Array)
 ```
 
 #### join
