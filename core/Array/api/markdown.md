@@ -5,6 +5,7 @@
   - [::new](#new)
   - [::try_convert](#try_convert)
 - [Public Instance Methods](#public-instance-methods)
+  - [& (Intersection)](#-intersection)
   - [* (Repetition)](#-repetition)
   - [+ (Concatenation)](#-concatenation)
   - [- (Difference)](#--difference)
@@ -260,6 +261,40 @@ Array.try_convert(ToAryTakesArgument.new) # Raises TypeError (can't convert ToAr
 ```
 
 ### Public Instance Methods
+
+#### & (Intersection)
+
+```
+ary & other_array→ new_array
+```
+
+Argument <tt>other_array</tt> must be an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects).
+
+---
+
+Returns a new Array containing unique elements found in both <tt>ary</tt>
+and <tt>other_array</tt>; comparisons use <tt>eql?</tt>:
+
+```ruby
+[0, 1, 2, 3] & [1, 2] # => [1, 2]
+[0, 1, 0, 1] & [0, 1] # => [0, 1]
+```
+
+Preserves order from <tt>ary</tt>:
+
+```ruby
+[0, 1, 2] & [3, 2, 1, 0] # => [0, 1, 2]
+```
+
+---
+
+Raises an exception if <tt>other_array</tt> is not an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects):
+
+```ruby
+[] & :foo # Raises TypeError (no implicit conversion of Symbol into Array)
+```
 
 #### * (Repetition)
 
