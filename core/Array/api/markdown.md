@@ -7,6 +7,7 @@
 - [Public Instance Methods](#public-instance-methods)
   - [* (Repetition)](#-repetition)
   - [+ (Concatenation)](#-concatenation)
+  - [- (Difference)](#--difference)
   - [<< (Append)](#-append)
   - [<=> (Comparison)](#-comparison)
   - [== (Equality)](#-equality)
@@ -356,6 +357,35 @@ Raises an exception if <tt>other_array</tt> is not an
 
 ```ruby
 [] + :foo # Raises TypeError (no implicit conversion of Symbol into Array)
+```
+
+#### - (Difference)
+
+```
+ary - other_array → new_array
+```
+
+Argument <tt>other_array</tt> must be an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects).
+
+---
+
+Returns a new Array containing only those elements from <tt>ary</tt>
+that are not <tt>==</tt> some element in <tt>other_array</tt>:
+
+```ruby
+[0, 1, 1, 2, 1, 1, 3, 1, 1] - [1] # => [2, 3]
+[0, 1, 2, 3] - [3, 0] # => [1, 2]
+[0, 1, 2] - [4] # => [0, 1, 2]
+```
+
+---
+
+Raises an exception if <tt>other_array</tt> is not an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects):
+
+```ruby
+[] - :foo # Raises TypeError (no implicit conversion of Symbol into Array)
 ```
 
 #### << (Append)
