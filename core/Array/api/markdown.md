@@ -8,6 +8,7 @@
   - [* (Repetition)](#-repetition)
   - [+ (Concatenation)](#-concatenation)
   - [<< (Append)](#-append)
+  - [<=> (Comparison)](#-comparison)
   - [== (Equality)](#-equality)
   - [[] (Element Reference)](#-element-reference)
   - [[]= (Element Assignment)](#-element-assignment)
@@ -371,6 +372,66 @@ a = [:foo, 'bar', baz = 2]
 a1 = a << :bam
 a1 # => [:foo, "bar", 2, :bam]
 a1.object_id == a.object_id # => true
+```
+
+#### <=> (Comparison)
+
+```
+ary <=> other_array → -1, 0, or 1
+```
+
+Returns <tt>-1</tt>, <tt>0</tt>, or <tt>1</tt>
+as <tt>ary</tt> is less than, equal to, or greater than
+<tt>other_array</tt>.
+
+For each index <tt>n</tt> in <tt>ary</tt>,
+evaluates <tt>result = ary[n] <=> other_ary[n]</tt>.
+
+Returns <tt>-1</tt> for the first <tt>result</tt> of <tt>-1</tt>:
+
+```ruby
+[0, 1, 2] <=> [0, 1, 3] # => -1
+```
+
+Returns <tt>1</tt> for the first <tt>result</tt> of <tt>1</tt>:
+
+```ruby
+[0, 1, 2] <=> [0, 1, 1] # => 1
+```
+
+Returns <tt>-1</tt> if the <tt>result</tt> for each element in <tt>ary</tt>
+is <tt>0</tt>, and <tt>ary.size < other_array.size</tt>:
+
+```ruby
+[0, 1, 2] <=> [0, 1, 2, 3] # => -1
+```
+Returns <tt>1</tt> if the <tt>result</tt> for each element in <tt>other_array</tt>
+is <tt>0</tt>, and <tt>ary.size > other_array.size</tt>:
+
+```ruby
+[0, 1, 2] <=> [0, 1] # => 1
+```
+
+Returns <tt>0</tt> if each <tt>result</tt> is <tt>0<tt>,
+and <tt>ary.size == other_array.size</tt>:
+
+```ruby
+[0, 1, 2] <=> [0, 1, 2] # => 0
+```
+
+Argument <tt>other_array</tt> may be an
+[Array-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+require 'csv'
+[] <=> CSV::Row.new([], []) # => 0
+```
+
+Returns <tt>nil</tt> if <tt>other_array</tt> is not an
+[Array-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+[] <=> 0 # => nil
 ```
 
 #### == (Equality)
