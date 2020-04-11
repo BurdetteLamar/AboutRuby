@@ -75,9 +75,11 @@
   - [to_h](#to_h)
   - [to_s](#to_s)
   - [transpose](#transpose)
+  - [union](#union)
   - [unshift](#unshift)
   - [values_at](#values_at)
   - [zip](#zip)
+  - [| (Union)](#-union)
 
 ### Public Class Methods
 
@@ -3812,6 +3814,36 @@ a = [[:a0, :a1], [:b0, :b1], [:c0, :c1, :c2]]
 a.transpose # Raises IndexError (element size differs (3 should be 2))
 ```
 
+#### union
+
+```
+ary.union(*other_arrays) → new_array
+```
+
+Each argument must be an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects).
+
+---
+
+Returns a new Array that is the union of <tt>ary</tt> and all arguments,
+with duplicates removed and order preserved;
+compares using <tt>eql?</tt>:
+
+```ruby
+[0, 1, 2, 3].union([4, 5], [6, 7]) # => [0, 1, 2, 3, 4, 5, 6, 7]
+[0, 1, 1].union([2, 1], [3, 1]) # => [0, 1, 2, 3]
+[0, 1, 2, 3].union([3, 2], [1, 0]) # => [0, 1, 2, 3]
+```
+
+---
+
+Raises an exeption if any argument is not an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects):
+
+```ruby
+[].union([], :foo) # Raises TypeError (no implicit conversion of Symbol into Array)
+```
+
 #### unshift
 
 ```
@@ -3979,4 +4011,33 @@ a = [:a0, :a1, :a2, :a3]
 b = [:b0, :b1, :b2, :b3]
 c = [:c0, :c1, :c2, :c3]
 d = a.zip(b, c, :foo) # Raises TypeError (wrong argument type Symbol (must respond to :each))
+```
+
+#### | (Union)
+
+```
+ary | other_array → new_array
+```
+
+Argument <tt>other_array</tt> must be an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects).
+
+---
+
+Returns the union of <tt>ary</tt> and <tt>other_array</tt>,
+with duplicates removed and order preserved:
+
+```ruby
+[0, 1] | [2, 3] # => [0, 1, 2, 3]
+[0, 1, 1] | [2, 2, 3] # => [0, 1, 2, 3]
+[0, 1, 2] | [3, 2, 1, 0] # => [0, 1, 2, 3]
+```
+
+---
+
+Raises an exception if <tt>other_array</tt> is no an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects):
+
+```ruby
+[] | :foo # Raises TypeError (no implicit conversion of Symbol into Array)
 ```
