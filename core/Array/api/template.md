@@ -1,5 +1,7 @@
 ## Array API
 
+[Not yet complete. A few methods still to go.]
+
 @[:page_toc](### Contents)
 
 ### Public Class Methods

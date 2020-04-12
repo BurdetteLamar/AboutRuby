@@ -1,5 +1,7 @@
 ## Array API
 
+[Not yet complete. A few methods still to go.]
+
 ### Contents
 - [Public Class Methods](#public-class-methods)
   - [::new](#new)
