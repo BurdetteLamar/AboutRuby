@@ -275,7 +275,7 @@ When the only argument is an array of 2-element arrays, returns a new hash where
 Hash[ [ [:foo, 0], [:bar, 1] ] ] # => {:foo=>0, :bar=>1}
 ```
 
-When the only argument is a [Hash-convertible object](../../doc/convertibles.md#hash-convertible-objects),
+When the only argument is a [Hash-convertible object](../../../doc/convertibles.md#hash-convertible-objects),
 converts the object and returns the resulting Hash:
 
 ```ruby
@@ -433,7 +433,7 @@ h1 < h1 # => false
 ```
 
 Raises an exception if <tt>other_hash</tt>
-is not a [Hash-convertible object](../../doc/convertibles.md#hash-convertible-objects):
+is not a [Hash-convertible object](../../../doc/convertibles.md#hash-convertible-objects):
 
 ```ruby
 h = {}
@@ -458,7 +458,7 @@ h1 <= h1 # => true
 ```
 
 Raises an exception if <tt>other_hash</tt>
-is not a [Hash-convertible object](../../doc/convertibles.md#hash-convertible-objects)
+is not a [Hash-convertible object](../../../doc/convertibles.md#hash-convertible-objects)
 
 ```ruby
 h = {}
@@ -531,7 +531,7 @@ h1 > h1 # => false
 ```
 
 Raises an exception if <tt>other_hash</tt>
- is not a [Hash-convertible object](../../doc/convertibles.md#hash-convertible-objects):
+ is not a [Hash-convertible object](../../../doc/convertibles.md#hash-convertible-objects):
 
 ```ruby
 h = {}
@@ -556,7 +556,7 @@ h1 >= h1 # => true
 ```
 
 Raises an exception if <tt>other_hash</tt>
-is not a [Hash-convertible object](../../doc/convertibles.md#hash-convertible-objects):
+is not a [Hash-convertible object](../../../doc/convertibles.md#hash-convertible-objects):
 
 ```ruby
 h = {}
@@ -1446,7 +1446,7 @@ hash.flatten(level = 1) → new_array
 ```
 
 Accepts optional argument <tt>level</tt>,
-which must be an [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects)
+which must be an [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects)
 
 Returns a new Array object wherein each key and each value of from <tt>self</tt> is an array element:
 
@@ -1490,7 +1490,7 @@ h.flatten(Complex(2, 0)) # => [:foo, 0, :bar, :bat, 3, :baz, 2]
 ```
 
 Raises an exception if <tt>level</tt> is not
-an [Integer-convertible object](../../doc/convertibles.md#integer-convertible-objects):
+an [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
 
 ```ruby
 h = {foo: 0, bar: [:bat, 3], baz: 2}
@@ -1808,7 +1808,7 @@ h2.object_id == h.object_id # => false
 ```
 
 Raises an exception if any given argument
-is not a [Hash-convertible object](../../doc/convertibles.md#hash-convertible-objects):
+is not a [Hash-convertible object](../../../doc/convertibles.md#hash-convertible-objects):
 
 ```ruby
 h = {}
@@ -1878,7 +1878,7 @@ h1.object_id == h.object_id # => true
 ```
 
 Raises an exception if any given argument
-is not a [Hash-convertible object](../../doc/convertibles.md#hash-convertible-objects):
+is not a [Hash-convertible object](../../../doc/convertibles.md#hash-convertible-objects):
 
 ```ruby
 h = {}
@@ -2042,7 +2042,7 @@ h1.object_id == h.object_id # => true
 ```
 
 Raises an exception if <tt>other_hash</tt>
-is not a [Hash-convertible object](../../doc/convertibles.md#hash-convertible-objects):
+is not a [Hash-convertible object](../../../doc/convertibles.md#hash-convertible-objects):
 
 ```ruby
 h = {}
@@ -2559,7 +2559,7 @@ h1.object_id == h.object_id # => true
 ```
 
 Raises an exception if any given argument
-is not a [Hash-convertible object](../../doc/convertibles.md#hash-convertible-objects):
+is not a [Hash-convertible object](../../../doc/convertibles.md#hash-convertible-objects):
 
 ```ruby
 h = {}
