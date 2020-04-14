@@ -3998,6 +3998,56 @@ Raises an exeption if any argument is not an
 [].union([], :foo) # Raises TypeError (no implicit conversion of Symbol into Array)
 ```
 
+#### uniq!
+
+```
+ary.uniq! → self or nil
+ary.uniq! { |element| ... } → self or nil
+```
+
+Removes duplicate elements from <tt>ary</tt>,
+the first occurrence always being retained.
+Returns <tt>self</tt> if any elements removed,
+<tt>nil</tt> otherwise.
+
+With no block, removes duplicate elements identified
+by comparing elements with <tt>eql?</tt>:
+
+```ruby
+a = [0, 0, 1, 1, 2, 2]
+a1 = a.uniq!
+a1 # => [0, 1, 2]
+a1.equal?(a) # => true # Identity check
+[0, 1, 2].uniq! # => nil
+```
+
+With a block, calls the block for each element;
+removes duplicate elements identified
+by comparing block return values with <tt>eql?</tt>:
+
+```ruby
+a = ['a', 'aa', 'aaa', 'b', 'bb', 'bbb']
+a.uniq! { |element| element.size } # => ["a", "aa", "aaa"]
+a = ['a', 'aa', 'aaa']
+a.uniq! { |element| element.size } # => nil
+```
+
+---
+
+Raises an exception if any element does not respond to
+instance method <tt>hash</tt>:
+
+```ruby
+[BasicObject.new, BasicObject.new].uniq! # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+```
+
+Raises an exception if the block returns an element
+that does not respond to method <tt>hash</tt>:
+
+```ruby
+[0, 1].uniq! { |x| BasicObject.new } # Raises NoMethodError (undefined method `hash' for #<BasicObject:0x0000000006baaf08>)
+```
+
 #### unshift
 
 ```
