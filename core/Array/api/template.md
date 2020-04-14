@@ -2723,6 +2723,49 @@ end
 [Integer(0)].min # Raises ArgumentError (comparison of Symbol with 0 failed)
 ```
 
+#### minmax
+
+```
+ary.minmax → [min_val, max_val]
+ary.minmax { |a, b| ... } → [min_val, max_val]
+```
+
+Each element in <tt>ary</tt> must respond to method <tt><=></tt>
+with <tt>-1</tt>, <tt>0</tt>, or <tt>1</tt>.
+
+The block, if given, must return an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
+
+---
+
+With no argument and no block, returns the two elements in <tt>ary</tt>
+having the minimum and maximum values per <tt><=></tt>:
+
+```ruby
+[2, 1, 0].minmax # => [0, 2]
+```
+
+---
+
+With a block and no argument,
+calls the block <tt>ary.size-1</tt> times
+to compare elements;
+returns the two elements having the minimum and maximuum values
+per the block.
+
+```ruby
+['0', '00', '000'].minmax { |a, b| a.size <=> b.size } # => ["0", "000"]
+```
+
+---
+
+Raises an exception if an element in <tt>ary</tt>
+does not to method <tt><=></tt>:
+
+```ruby
+[0, :foo].min # Raises ArgumentError (comparison of Symbol with 0 failed)
+```
+
 #### pop
 
 ```
