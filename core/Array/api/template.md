@@ -1140,6 +1140,32 @@ Raises an exception if any argument is not an
 [].concat([], :foo) # Raises TypeError (no implicit conversion of Symbol into Array)
 ```
 
+#### count
+
+```
+ary.count → an_integer
+ary.count(obj) → an_integer
+ary.count { |element| ... } → an_integer
+```
+
+Returns a count of specified elements.
+
+With no argument and no block,
+returns the count of all elements:
+
+```ruby
+[0, 1, 2].count # => 3
+[].count # => 0
+```
+
+With argument <tt>obj</tt>,
+returns the count of elements <tt>eql?</tt> to <tt>obj</tt>:
+
+```ruby
+[0, 1, 2, 0].count(0) # => 2
+[0, 1, 2].count(3) # => 0
+```
+
 #### delete
 
 ```
