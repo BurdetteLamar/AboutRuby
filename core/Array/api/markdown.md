@@ -41,6 +41,8 @@
   - [filter!](#filter-1)
   - [find_index](#find_index)
   - [first](#first)
+  - [flatten](#flatten)
+  - [flatten!](#flatten-1)
   - [freeze](#freeze)
   - [hash](#hash)
   - [include?](#include)
@@ -90,9 +92,6 @@
   - [values_at](#values_at)
   - [zip](#zip)
   - [| (Union)](#-union)
-
-Some methods in \Array will call the <i>combined comparison operator</i>,
-<tt><=></tt> on \Array elements.
 
 ### Public Class Methods
 
@@ -2164,6 +2163,128 @@ an [Integer-convertible object](../../../doc/convertibles.md#integer-convertible
 ```ruby
 a = [:foo, 'bar', baz = 2]
 a.first(:X) # Raises TypeError (no implicit conversion of String into Integer)
+```
+
+#### flatten
+
+```
+ary.flatten → self or nil
+ary.flatten(level) → self or nil
+```
+
+Replaces each Array object in <tt>ary</tt> with
+the elements from that object; returns <tt>self</tt>
+if any changes, <tt>nil<tt> otherwise.
+
+Argument <tt>level</tt>, if given must be an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
+
+---
+
+With no argument, flattens all levels:
+
+```ruby
+a = [ 0, [ 1, [2, 3], 4 ], 5 ]
+a1 = a.flatten
+a1 # => [0, 1, 2, 3, 4, 5]
+a1.equal?(a) # => true # Identity check
+[0, 1, 2].flatten # => nil
+```
+
+With non-negative argument <tt>level</tt>,
+flattens recursively through <tt>level</tt> levels:
+
+```ruby
+a = [ 0, [ 1, [2, 3], 4 ], 5 ]
+a.flatten(0) # => nil
+a = [ 0, [ 1, [2, 3], 4 ], 5 ]
+a.flatten(1) # => [0, 1, [2, 3], 4, 5]
+a = [ 0, [ 1, [2, 3], 4 ], 5 ]
+a.flatten(2) # => [0, 1, 2, 3, 4, 5]
+a = [ 0, [ 1, [2, 3], 4 ], 5 ]
+a.flatten(3) # => [0, 1, 2, 3, 4, 5]
+[0, 1, 2].flatten(1) # => nil
+```
+
+With negative argument <tt>level</tt>,
+flattens all levels:
+
+```ruby
+a = [ 0, [ 1, [2, 3], 4 ], 5 ]
+a.flatten(-1) # => [0, 1, 2, 3, 4, 5]
+a = [ 0, [ 1, [2, 3], 4 ], 5 ]
+a.flatten(-2) # => [0, 1, 2, 3, 4, 5]
+[0, 1, 2].flatten(-1) # => nil
+```
+
+---
+
+Raises an exception if <tt>level</tt> is no an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+[].flatten(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer) 
+```
+
+#### flatten!
+
+```
+ary.flatten! → self or nil
+ary.flatten!(level) → self or nil
+```
+
+Replaces each Array object in <tt>ary</tt> with
+the elements from that object; returns <tt>self</tt>
+if any changes, <tt>nil<tt> otherwise.
+
+Argument <tt>level</tt>, if given must be an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
+
+---
+
+With no argument, flattens all levels:
+
+```ruby
+a = [ 0, [ 1, [2, 3], 4 ], 5 ]
+a1 = a.flatten!
+a1 # => [0, 1, 2, 3, 4, 5]
+a1.equal?(a) # => true # Identity check
+[0, 1, 2].flatten! # => nil
+```
+
+With non-negative argument <tt>level</tt>,
+flattens recursively through <tt>level</tt> levels:
+
+```ruby
+a = [ 0, [ 1, [2, 3], 4 ], 5 ]
+a.flatten!(0) # => nil
+a = [ 0, [ 1, [2, 3], 4 ], 5 ]
+a.flatten!(1) # => [0, 1, [2, 3], 4, 5]
+a = [ 0, [ 1, [2, 3], 4 ], 5 ]
+a.flatten!(2) # => [0, 1, 2, 3, 4, 5]
+a = [ 0, [ 1, [2, 3], 4 ], 5 ]
+a.flatten!(3) # => [0, 1, 2, 3, 4, 5]
+[0, 1, 2].flatten!(1) # => nil
+```
+
+With negative argument <tt>level</tt>,
+flattens all levels:
+
+```ruby
+a = [ 0, [ 1, [2, 3], 4 ], 5 ]
+a.flatten!(-1) # => [0, 1, 2, 3, 4, 5]
+a = [ 0, [ 1, [2, 3], 4 ], 5 ]
+a.flatten!(-2) # => [0, 1, 2, 3, 4, 5]
+[0, 1, 2].flatten!(-1) # => nil
+```
+
+---
+
+Raises an exception if <tt>level</tt> is no an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+[].flatten!(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer) 
 ```
 
 #### freeze
