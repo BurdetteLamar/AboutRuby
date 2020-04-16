@@ -23,6 +23,8 @@
   - [bsearch_index](#bsearch_index)
   - [collect](#collect)
   - [collect!](#collect-1)
+  - [compact](#compact)
+  - [compact!](#compact-1)
   - [concat](#concat)
   - [delete](#delete)
   - [delete_at](#delete_at)
@@ -53,6 +55,7 @@
   - [map!](#map-1)
   - [max](#max)
   - [min](#min)
+  - [minmax](#minmax)
   - [pop](#pop)
   - [prepend](#prepend)
   - [push](#push)
@@ -80,10 +83,15 @@
   - [to_s](#to_s)
   - [transpose](#transpose)
   - [union](#union)
+  - [uniq](#uniq)
+  - [uniq!](#uniq-1)
   - [unshift](#unshift)
   - [values_at](#values_at)
   - [zip](#zip)
   - [| (Union)](#-union)
+
+Some methods in \Array will call the <i>combined comparison operator</i>,
+<tt><=></tt> on \Array elements.
 
 ### Public Class Methods
 
@@ -1143,6 +1151,40 @@ Returns a new Enumerator if no block given:
 a = [:foo, 'bar', baz = 2]
 a1 = a.collect!
 a1 # => #<Enumerator: [:foo, "bar", 2]:collect!>
+```
+
+#### compact
+
+```
+ary.compact → self or nil
+```
+Returns a new Array containing all non-<tt>nil</tt>
+from <tt>ary</tt>:
+
+```ruby
+a = [nil, 0, nil, 1, nil, 2, nil]
+a.compact # => [0, 1, 2]
+```
+
+#### compact!
+
+```
+ary.compact! → self or nil
+```
+
+Removes all <tt>nil</tt> elements from <tt>ary</tt>.
+
+Returns <tt>self</tt> if any elements removed:
+
+```ruby
+a = [nil, 0, nil, 1, nil, 2, nil]
+a.compact! # => [0, 1, 2]
+```
+
+Returns <tt>nil</tt> if no elements removed:
+
+```ruby
+[0, 1, 2].compact! # => nil
 ```
 
 #### concat
@@ -2571,8 +2613,8 @@ ary.max(n) → new_array
 ary.max(n) { |a, b| ... } → new_array
 ```
 
-Each element in <tt>ary</tt> must respond to method <tt><=></tt>
-with <tt>-1</tt>, <tt>0</tt>, or <tt>1</tt>.
+If no block given, each element in <tt>ary</tt> must respond to method <tt><=></tt> with an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
 
 Argument <tt>n</tt>, if given, must be an
 [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects),
@@ -2590,8 +2632,6 @@ having the maximum value per <tt><=></tt>:
 [0, 1, 2].max # => 2
 ```
 
----
-
 With an argument <tt>n</tt> and no block,
 returns a new Array with at most <tt>n</tt> elements:
 
@@ -2600,8 +2640,6 @@ returns a new Array with at most <tt>n</tt> elements:
 [0, 1, 2, 3].max(6) # => [3, 2, 1]
 [0, 1, 2, 3].max(0) # => []
 ```
-
----
 
 With a block and no argument,
 calls the block <tt>ary.size-1</tt> times
@@ -2612,8 +2650,6 @@ returns the element having the maximum value per the block.
 ['0', '00', '000'].max { |a, b| a.size <=> b.size } # => "000" 
 ```
 
----
-
 With an argument <tt>n</tt> and a block,
 returns a new Array with at most <tt>n</tt> elements:
 
@@ -2623,6 +2659,19 @@ returns a new Array with at most <tt>n</tt> elements:
 ```
 
 ---
+
+Raises an exception on encountering elements that are not comparable:
+
+```ruby
+[0, 1, :foo].max # Raises ArgumentError (comparison of Symbol with 1 failed)
+```
+
+Raises an exception if argument <tt>n</tt> is not an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+[0, 1].max(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
 
 Raises an exception if argument <tt>n</tt> is negative:
 
@@ -2637,52 +2686,6 @@ Raises an exception if the block returns an object that is not an
 [0, 1, 2].max { |a, b| :foo } # Raises ArgumentError (comparison of Symbol with 0 failed)
 ```
 
-Raises an exception if argument <tt>n</tt> is not an
-[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
-
-```ruby
-[0, 1].max(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
-```
-
-Raises an exception if an element in <tt>ary</tt>
-does not to method <tt><=></tt>:
-
-```ruby
-[0, :foo].max # Raises ArgumentError (comparison of Symbol with 0 failed)
-```
-
-Raises an exception if an element in <tt>ary</tt>
-does not respond to method <tt><=></tt>:
-
-```ruby
-[0, 1, :foo].max # Raises ArgumentError (comparison of Symbol with 1 failed)
-```
-
-Raises an exception if an element in <tt>ary</tt>
-accepts an argument count different from <tt>1</tt>:
-
-```ruby
-class Integer
-  def <=>
-    :foo
-  end
-end
-[Integer(0)].max # Raises ArgumentError (wrong number of arguments (given 1, expected 0))
-```
-
-Raises an exception if an element in <tt>ary</tt>
-responds to method <tt><=></tt> with an object
-not in range <tt>(-1..1)</tt>
-
-```ruby
-class Integer
-  def <=>(obj)
-    :foo
-  end
-end
-[Integer(0)].max # Raises ArgumentError (comparison of Symbol with 0 failed)
-```
-
 #### min
 
 ```
@@ -2692,8 +2695,8 @@ ary.min(n) → new_array
 ary.min(n) { |a, b| ... } → new_array
 ```
 
-Each element in <tt>ary</tt> must respond to method <tt><=></tt>
-with <tt>-1</tt>, <tt>0</tt>, or <tt>1</tt>.
+If no block given, each element in <tt>ary</tt> must respond to method <tt><=></tt> with an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
 
 Argument <tt>n</tt>, if given, must be an
 [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects),
@@ -2744,6 +2747,18 @@ returns a new Array with at most <tt>n</tt> elements:
 ```
 
 ---
+Raises an exception on encountering elements that are not comparable:
+
+```ruby
+[0, 1, :foo].min # Raises ArgumentError (comparison of Symbol with 1 failed)
+```
+
+Raises an exception if argument <tt>n</tt> is not an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+[0, 1].min(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
 
 Raises an exception if argument <tt>n</tt> is negative:
 
@@ -2755,7 +2770,45 @@ Raises an exception if the block returns an object that is not an
 [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
 
 ```ruby
-[0, 1, 2].min { |a, b| :foo } # Raises ArgumentError (comparison of Symbol with 1 failed)
+[0, 1, 2].max { |a, b| :foo } # Raises ArgumentError (comparison of Symbol with 0 failed)
+```
+
+#### minmax
+
+```
+ary.minmax → [min_val, max_val]
+ary.min { |a, b| ... } → [min_val, max_val]
+```
+
+If no block given, each element in <tt>ary</tt> must respond to method <tt><=></tt> with an
+Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
+
+The block, if given, must return an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
+
+---
+
+With no block, returns the elements in <tt>ary</tt>
+having the minimum and maximum values per <tt><=></tt>:
+
+```ruby
+[0, 1, 2].min_max # => [0, 2]
+```
+
+With a block, calls the block <tt>ary.size-1</tt> times
+to compare elements;
+returns the elements in <tt>ary</tt>
+having the minimum and maximum values per <tt><=></tt>:
+
+```ruby
+['0', '00', '000'].min_max { |a, b| a.size <=> b.size } # => ["0", "000"]
+```
+
+---
+Raises an exception on encountering elements that are not comparable:
+
+```ruby
+[0, 1, :foo].min # Raises ArgumentError (comparison of Symbol with 1 failed)
 ```
 
 Raises an exception if argument <tt>n</tt> is not an
@@ -2765,43 +2818,17 @@ Raises an exception if argument <tt>n</tt> is not an
 [0, 1].min(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
 ```
 
-Raises an exception if an element in <tt>ary</tt>
-does not to method <tt><=></tt>:
+Raises an exception if argument <tt>n</tt> is negative:
 
 ```ruby
-[0, :foo].min # Raises ArgumentError (comparison of Symbol with 0 failed)
+[0, 1].min(-1) # Raises ArgumentError (negative size (-1))
 ```
 
-Raises an exception if an element in <tt>ary</tt>
-does not respond to method <tt><=></tt>:
+Raises an exception if the block returns an object that is not an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
 
 ```ruby
-[0, 1, :foo].min # Raises ArgumentError (comparison of Symbol with 0 failed)
-```
-
-Raises an exception if an element in <tt>ary</tt>
-accepts an argument count different from <tt>1</tt>:
-
-```ruby
-class Integer
-  def <=>
-    :foo
-  end
-end
-[Integer(0)].min # Raises ArgumentError (wrong number of arguments (given 1, expected 0))
-```
-
-Raises an exception if an element in <tt>ary</tt>
-responds to method <tt><=></tt> with an object
-not in range <tt>(-1..1)</tt>
-
-```ruby
-class Integer
-  def <=>(obj)
-    :foo
-  end
-end
-[Integer(0)].min # Raises ArgumentError (comparison of Symbol with 0 failed)
+[0, 1, 2].max { |a, b| :foo } # Raises ArgumentError (comparison of Symbol with 0 failed)
 ```
 
 #### pop
@@ -4089,6 +4116,99 @@ Raises an exeption if any argument is not an
 
 ```ruby
 [].union([], :foo) # Raises TypeError (no implicit conversion of Symbol into Array)
+```
+
+#### uniq
+
+```
+ary.uniq → new_array
+ary.uniq { |element| ... } → new_array
+```
+
+Returns a new Array containing those elements from <tt>ary</tt>
+that are not duplicates, the first occurrence always being retained.
+
+With no block, identifies duplicates
+by comparing elements with <tt>eql?</tt>:
+
+```ruby
+a = [0, 0, 1, 1, 2, 2]
+a.uniq # => [0, 1, 2]
+```
+
+With a block, calls the block for each element;
+identifies duplicates
+by comparing block return values with <tt>eql?</tt>:
+
+```ruby
+a = ['a', 'aa', 'aaa', 'b', 'bb', 'bbb']
+a.uniq { |element| element.size } # => ["a", "aa", "aaa"]
+```
+
+---
+
+Raises an exception if any element does not respond to
+instance method <tt>hash</tt>:
+
+```ruby
+[BasicObject.new, BasicObject.new].uniq # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+```
+
+Raises an exception if the block returns an element
+that does not respond to method <tt>hash</tt>:
+
+```ruby
+[0, 1].uniq { |x| BasicObject.new } # Raises NoMethodError (undefined method `hash' for #<BasicObject:0x0000000006baaf08>)
+```
+
+#### uniq!
+
+```
+ary.uniq! → self or nil
+ary.uniq! { |element| ... } → self or nil
+```
+
+Removes duplicate elements from <tt>ary</tt>,
+the first occurrence always being retained.
+Returns <tt>self</tt> if any elements removed,
+<tt>nil</tt> otherwise.
+
+With no block, removes duplicate elements identified
+by comparing elements with <tt>eql?</tt>:
+
+```ruby
+a = [0, 0, 1, 1, 2, 2]
+a1 = a.uniq!
+a1 # => [0, 1, 2]
+a1.equal?(a) # => true # Identity check
+[0, 1, 2].uniq! # => nil
+```
+
+With a block, calls the block for each element;
+removes duplicate elements identified
+by comparing block return values with <tt>eql?</tt>:
+
+```ruby
+a = ['a', 'aa', 'aaa', 'b', 'bb', 'bbb']
+a.uniq! { |element| element.size } # => ["a", "aa", "aaa"]
+a = ['a', 'aa', 'aaa']
+a.uniq! { |element| element.size } # => nil
+```
+
+---
+
+Raises an exception if any element does not respond to
+instance method <tt>hash</tt>:
+
+```ruby
+[BasicObject.new, BasicObject.new].uniq! # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+```
+
+Raises an exception if the block returns an element
+that does not respond to method <tt>hash</tt>:
+
+```ruby
+[0, 1].uniq! { |x| BasicObject.new } # Raises NoMethodError (undefined method `hash' for #<BasicObject:0x0000000006baaf08>)
 ```
 
 #### unshift

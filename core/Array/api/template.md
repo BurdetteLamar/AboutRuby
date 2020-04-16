@@ -1067,6 +1067,40 @@ a1 = a.collect!
 a1 # => #<Enumerator: [:foo, "bar", 2]:collect!>
 ```
 
+#### compact
+
+```
+ary.compact → self or nil
+```
+Returns a new Array containing all non-<tt>nil</tt>
+from <tt>ary</tt>:
+
+```ruby
+a = [nil, 0, nil, 1, nil, 2, nil]
+a.compact # => [0, 1, 2]
+```
+
+#### compact!
+
+```
+ary.compact! → self or nil
+```
+
+Removes all <tt>nil</tt> elements from <tt>ary</tt>.
+
+Returns <tt>self</tt> if any elements removed:
+
+```ruby
+a = [nil, 0, nil, 1, nil, 2, nil]
+a.compact! # => [0, 1, 2]
+```
+
+Returns <tt>nil</tt> if no elements removed:
+
+```ruby
+[0, 1, 2].compact! # => nil
+```
+
 #### concat
 
 ```
