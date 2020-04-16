@@ -2223,7 +2223,15 @@ Raises an exception if <tt>level</tt> is no an
 [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
 
 ```ruby
-[].flatten(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer) 
+[].flatten(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+Raises an exception if <tt>ary</tt> contains a circular reference:
+
+```ruby
+a = []
+a.push([a, a])
+a.flatten # Raises ArgumentError (tried to flatten recursive array)
 ```
 
 #### flatten!
@@ -2285,6 +2293,14 @@ Raises an exception if <tt>level</tt> is no an
 
 ```ruby
 [].flatten!(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer) 
+```
+
+Raises an exception if <tt>ary</tt> contains a circular reference:
+
+```ruby
+a = []
+a.push([a, a])
+a.flatten! # Raises ArgumentError (tried to flatten recursive array)
 ```
 
 #### freeze
