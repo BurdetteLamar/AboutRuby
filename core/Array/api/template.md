@@ -1163,6 +1163,72 @@ returns the count of elements <tt>eql?</tt> to <tt>obj</tt>:
 [0, 1, 2].count(3) # => 0
 ```
 
+#### cycle
+
+```
+ary.cycle { |element| ... } → nil
+ary.cycle(count) { |element| ... } → nil
+ary.cycle → nil
+ary.cycle(count) → nil
+```
+
+Argument <tt>count</tt>, if given, must be an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
+
+---
+
+When called with positive argument <tt>count</tt> and a block,
+calls the block with each element, then does so again,
+until it has done so <tt>count</tt> times returns <tt>nil</tt>:
+
+```ruby
+[0, 1].cycle(2) { |element| puts element } # => nil
+```
+
+Output:
+
+```
+0
+1
+0
+1
+```
+
+If <tt>count</tt> is zero or negative, does not call the block:
+
+```ruby
+[0, 1].cycle(0) { |element| fail 'Cannot happen' } # => nil
+[0, 1].cycle(-1) { |element| fail 'Cannot happen' } # => nil
+```
+
+---
+
+When a block is given, but no argument, cycles forever
+(output omitted):
+
+```
+[0, 1].cycle { |element| puts element }
+```
+
+---
+
+When a block is not given, returns a new Enumerator:
+
+```ruby
+[0, 1].cycle(2) # => #<Enumerator: [0, 1]:cycle(2)>
+[0, 1].cycle # => #<Enumerator: [0, 1]:cycle(2)> # => #<Enumerator: [0, 1]:cycle>
+```
+
+---
+
+Raises an exception if <tt>count</tt> is not an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+[0, 1].cycle(:foo) { |element| } # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+
 #### delete
 
 ```
