@@ -2174,7 +2174,7 @@ ary.flatten(level) → self or nil
 
 Replaces each Array object in <tt>ary</tt> with
 the elements from that object; returns <tt>self</tt>
-if any changes, <tt>nil<tt> otherwise.
+if any changes, <tt>nil</tt> otherwise.
 
 Argument <tt>level</tt>, if given must be an
 [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
@@ -2219,7 +2219,7 @@ a.flatten(-2) # => [0, 1, 2, 3, 4, 5]
 
 ---
 
-Raises an exception if <tt>level</tt> is no an
+Raises an exception if <tt>level</tt> is not an
 [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
 
 ```ruby
@@ -2234,6 +2234,16 @@ a.push([a, a])
 a.flatten # Raises ArgumentError (tried to flatten recursive array)
 ```
 
+Raises an exception if <tt>flatten</tt> reentered:
+
+```ruby
+require 'continuation'
+o = Object.new
+def o.to_ary() callcc {|k| @cont = k; [1,2,3]} end
+[10, 20, o, 30, o, 40].flatten
+o.instance_eval {@cont}.call # Raises RuntimeError (flatten reentered)
+```
+
 #### flatten!
 
 ```
@@ -2243,7 +2253,7 @@ ary.flatten!(level) → self or nil
 
 Replaces each Array object in <tt>ary</tt> with
 the elements from that object; returns <tt>self</tt>
-if any changes, <tt>nil<tt> otherwise.
+if any changes, <tt>nil</tt> otherwise.
 
 Argument <tt>level</tt>, if given must be an
 [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
@@ -2288,7 +2298,7 @@ a.flatten!(-2) # => [0, 1, 2, 3, 4, 5]
 
 ---
 
-Raises an exception if <tt>level</tt> is no an
+Raises an exception if <tt>level</tt> is not an
 [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
 
 ```ruby
@@ -2301,6 +2311,16 @@ Raises an exception if <tt>ary</tt> contains a circular reference:
 a = []
 a.push([a, a])
 a.flatten! # Raises ArgumentError (tried to flatten recursive array)
+```
+
+Raises an exception if <tt>flatten</tt> reentered:
+
+```ruby
+require 'continuation'
+o = Object.new
+def o.to_ary() callcc {|k| @cont = k; [1,2,3]} end
+[10, 20, o, 30, o, 40].flatten!
+o.instance_eval {@cont}.call # Raises RuntimeError (flatten reentered)
 ```
 
 #### freeze
@@ -3456,7 +3476,7 @@ a1 # => ["bar", 2, :foo]
 
 ---
 
-Raises an exception if <tt>count</tt> is no an
+Raises an exception if <tt>count</tt> is not an
 [Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
 
 ```ruby
@@ -4566,7 +4586,7 @@ with duplicates removed and order preserved:
 
 ---
 
-Raises an exception if <tt>other_array</tt> is no an
+Raises an exception if <tt>other_array</tt> is not an
 [Array-convertible object](../../../doc/convertibles.md#array-convertible-objects):
 
 ```ruby
