@@ -60,6 +60,7 @@
   - [max](#max)
   - [min](#min)
   - [minmax](#minmax)
+  - [permutation](#permutation)
   - [pop](#pop)
   - [prepend](#prepend)
   - [push](#push)
@@ -1258,8 +1259,8 @@ returns the count of elements <tt>eql?</tt> to <tt>obj</tt>:
 ```
 ary.cycle { |element| ... } → nil
 ary.cycle(count) { |element| ... } → nil
-ary.cycle → nil
-ary.cycle(count) → nil
+ary.cycle → new_enumerator
+ary.cycle(count) → new_enumerator
 ```
 
 Argument <tt>count</tt>, if given, must be an
@@ -3080,6 +3081,115 @@ Raises an exception if the block returns an object that is not an
 
 ```ruby
 [0, 1, 2].max { |a, b| :foo } # Raises ArgumentError (comparison of Symbol with 0 failed)
+```
+
+#### permutation
+
+```
+ary.permutation { |element| ... } → self
+ary.permutation(n) { |element| ... } → self
+ary.permutation → new_enumerator
+ary.permutation(n) → new_enumerator
+```
+Calls the block with permutations of elements of <tt>ary</tt>;
+returns <tt>self</tt>.  The order of permutations is indeterminate.
+
+Argument <tt>n</tt>, if given, must be an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
+
+---
+
+When a block and a zero-valued argument <tt>n</tt> are given,
+calls the block once with a new empty Array:
+
+```ruby
+a = [0, 1, 2]
+a1 = a.permutation(0) { |permutation| p permutation }
+a1.equal?(a) # => true # Identity check.
+```
+
+Output:
+
+```
+[]
+```
+
+If <tt>0 < n < ary.size</tt>,
+calls the block with all <tt>n</tt>-tuple permutations of <tt>ary</tt>:
+
+```ruby
+a = [0, 1, 2]
+a.permutation(2) { |permutation| p permutation }
+```
+
+Output:
+
+```
+[0, 1]
+[0, 2]
+[1, 0]
+[1, 2]
+[2, 0]
+[2, 1]
+```
+
+```ruby
+a = [0, 1, 2]
+a.permutation(3) { |permutation| p permutation }
+```
+
+Output:
+
+```
+[0, 1, 2]
+[0, 2, 1]
+[1, 0, 2]
+[1, 2, 0]
+[2, 0, 1]
+[2, 1, 0]
+```
+
+If <tt>n >= ary.size</tt>, does not call the block:
+
+```ruby
+a = [0, 1, 2]
+a.permutation(4) { |permutation| fail 'Cannot happen' }
+```
+
+If <tt>n</tt> is negative, does not call the block:
+
+```ruby
+a = [0, 1, 2]
+a.permutation(-1) { |permutation| fail 'Cannot happen' }
+a.permutation(-2) { |permutation| fail 'Cannot happen' }
+```
+
+When a block given but no argument,
+behaves the same as <tt>a.permutation(a.size)</tt>:
+
+```ruby
+a = [0, 1, 2]
+a.permutation { |permutation| p permutation }
+```
+
+Output:
+
+```
+[0, 1, 2]
+[0, 2, 1]
+[1, 0, 2]
+[1, 2, 0]
+[2, 0, 1]
+[2, 1, 0]
+```
+
+---
+
+Raises an exception if <tt>n</tt> is not an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+a.permutation(:foo) { } # Raises TypeError (no implicit conversion of Symbol into Integer)
 ```
 
 #### pop
