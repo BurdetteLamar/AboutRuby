@@ -27,7 +27,7 @@
   - [compact](#compact)
   - [compact!](#compact-1)
   - [compare_by_identity](#compare_by_identity)
-  - [compare_by_identity?](#compare_by_identity)
+  - [compare_by_identity?](#compare_by_identity-1)
   - [default](#default)
   - [default=](#default-1)
   - [default_proc](#default_proc)
