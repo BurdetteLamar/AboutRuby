@@ -26,7 +26,7 @@
   - [clear](#clear)
   - [compact](#compact)
   - [compact!](#compact-1)
-  - [compare_by_identiry](#compare_by_identiry)
+  - [compare_by_identity](#compare_by_identity)
   - [compare_by_identity?](#compare_by_identity)
   - [default](#default)
   - [default=](#default-1)
@@ -830,7 +830,7 @@ h.compact! # => nil
 h # => {:foo=>0, :bar=>1, :baz=>2}
 ```
 
-#### compare_by_identiry
+#### compare_by_identity
 
 ```
 hash.compare_by_identity → self
