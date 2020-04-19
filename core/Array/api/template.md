@@ -1064,6 +1064,93 @@ a1 = a.collect!
 a1 # => #<Enumerator: [:foo, "bar", 2]:collect!>
 ```
 
+#### combination
+
+```
+ary.combination(n) { |element| ... } → self
+ary.combination(n) → new_enumerator
+```
+Calls the block with combinations of elements of <tt>ary</tt>;
+returns <tt>self</tt>.  The order of combinations is indeterminate.
+
+Argument <tt>n</tt>, if given, must be an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
+
+---
+
+When a block and a zero-valued argument <tt>n</tt> are given,
+calls the block once with a new empty Array:
+
+```ruby
+a = [0, 1, 2]
+a1 = a.combination(0) { |combination| p combination }
+a1.equal?(a) # => true # Identity check.
+```
+
+Output:
+
+```
+[]
+```
+
+If <tt>0 < n < ary.size</tt>,
+calls the block with all <tt>n</tt>-tuple combinations of <tt>ary</tt>:
+
+```ruby
+a = [0, 1, 2]
+a.combination(2) { |combination| p combination }
+```
+
+Output:
+
+```
+[0, 1]
+[0, 2]
+[1, 2]```
+
+```ruby
+a = [0, 1, 2]
+a.combination(3) { |combination| p combination }
+```
+
+Output:
+
+```
+[0, 1, 2]```
+
+If <tt>n >= ary.size</tt>, does not call the block:
+
+```ruby
+a = [0, 1, 2]
+a.combination(4) { |combination| fail 'Cannot happen' }
+```
+
+If <tt>n</tt> is negative, does not call the block:
+
+```ruby
+a = [0, 1, 2]
+a.combination(-1) { |combination| fail 'Cannot happen' }
+a.combination(-2) { |combination| fail 'Cannot happen' }
+```
+
+---
+
+Returns a new Enumerator if no block given:
+
+```ruby
+a = [0, 1, 2]
+a.combination(2) # => #<Enumerator: [0, 1, 2]:combination(2)>
+```
+
+---
+
+Raises an exception if <tt>n</tt> is not an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+a.combination(:foo) { } # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
 #### compact
 
 ```
@@ -3090,6 +3177,15 @@ Output:
 [1, 2, 0]
 [2, 0, 1]
 [2, 1, 0]
+```
+
+---
+
+Returns a new Enumerator if no block given:
+
+```ruby
+a = [0, 1, 2]
+a.permutation(2) # => #<Enumerator: [0, 1, 2]:permutation(2)>
 ```
 
 ---
