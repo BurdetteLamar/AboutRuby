@@ -404,7 +404,7 @@ is <tt>0</tt>, and <tt>ary.size > other_array.size</tt>:
 [0, 1, 2] <=> [0, 1] # => 1
 ```
 
-Returns <tt>0</tt> if each <tt>result</tt> is <tt>0<tt>,
+Returns <tt>0</tt> if each <tt>result</tt> is <tt>0</tt>,
 and <tt>ary.size == other_array.size</tt>:
 
 ```ruby
@@ -2587,7 +2587,7 @@ a.join("\n") # => "foo\nbar\n2"
 ---
 
 Raises an exception if <tt>separator</tt> is not a
-[Sring-convertible object](../../../doc/convertibles.md#string-convertible-objects):
+[String-convertible object](../../../doc/convertibles.md#string-convertible-objects):
 
 
 ```ruby
