@@ -86,6 +86,7 @@
   - [sort](#sort)
   - [sort!](#sort-1)
   - [sort_by!](#sort_by)
+  - [take](#take)
   - [to_a](#to_a)
   - [to_ary](#to_ary)
   - [to_h](#to_h)
@@ -4672,6 +4673,43 @@ Returns a new Enumerator if no block given:
 ```ruby
 a = ['aaaa', 'bbb', 'cc', 'd']
 a.sort_by! # => #<Enumerator: ["aaaa", "bbb", "cc", "d"]:sort_by!>
+```
+
+#### take
+
+```
+ary.take(n) → new_array
+```
+
+Argument <tt>n</tt> must be an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
+
+---
+
+Returns a new Array containing the first <tt>n</tt> element of <tt>ary</tt>;  does not modify <tt>ary</tt>:
+
+```ruby
+a = [0, 1, 2, 3, 4, 5]
+a.take(0) # => []
+a.take(1) # => [0]
+a.take(2) # => [0, 1]
+a.take(50) # => [0, 1, 2, 3, 4, 5]
+a # => [0, 1, 2, 3, 4, 5]
+```
+
+---
+
+Raises an exception if <tt>n</tt> is negative:
+
+```ruby
+[0, 1].take(-1) # Raises ArgumentError (attempt to take negative size)
+```
+
+Argument <tt>n</tt> must be an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+[0, 1].take(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
 ```
 
 #### to_a
