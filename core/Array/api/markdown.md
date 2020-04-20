@@ -34,6 +34,7 @@
   - [delete_if](#delete_if)
   - [difference](#difference)
   - [drop](#drop)
+  - [drop_while](#drop_while)
   - [each](#each)
   - [each_index](#each_index)
   - [empty?](#empty)
@@ -1620,6 +1621,31 @@ Argument <tt>n</tt> must be an
 
 ```ruby
 [0, 1].drop(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
+#### drop_while
+
+```
+ary.drop_while { |element| ... } → new_array
+ary.drop_while → new_enumerator
+```
+
+With a block given, calls the block with each successive element;
+stops if the block returns <tt>nil</tt> or <tt>nil</tt>;
+returns a new Array omitting those elements for which the block
+returned a truthy value:
+
+```ruby
+a = [0, 1, 2, 3, 4, 5]
+a.drop_while { |element| element < 3 } # => [3, 4, 5]
+a.drop_while { |element| true } # => []
+a.drop_while { |element| false } # => [0, 1, 2, 3, 4, 5]
+```
+
+With no block given, returns a new Enumerator:
+
+```ruby
+[0, 1].drop_while # => # => #<Enumerator: [0, 1]:drop_while>
 ```
 
 #### each
