@@ -4616,6 +4616,31 @@ Argument <tt>n</tt> must be an
 [0, 1].take(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
 ```
 
+#### take_while
+
+```
+ary.take_while { |element| ... } → new_array
+ary.take_while → new_enumerator
+```
+
+With a block given, calls the block with each successive element;
+stops if the block returns <tt>nil</tt> or <tt>nil</tt>;
+returns a new Array containing those elements for which the block
+returned a truthy value:
+
+```ruby
+a = [0, 1, 2, 3, 4, 5]
+a.take_while { |element| element < 3 } # => [0, 1, 2]
+a.take_while { |element| true } # => [0, 1, 2, 3, 4, 5]
+a.take_while { |element| false } # => []
+```
+
+With no block given, returns a new Enumerator:
+
+```ruby
+[0, 1].take_while # => #<Enumerator: [0, 1]:take_while>
+```
+
 #### to_a
 
 ```
