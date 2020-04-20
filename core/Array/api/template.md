@@ -3388,6 +3388,121 @@ a = [:foo, 'bar', baz = 2]
 a.reject! # => #<Enumerator: [:foo, "bar", 2]:reject!>
 ```
 
+#### repeated_permutation
+
+```
+ary.repeated_permutation(n) { |element| ... } → self
+ary.repeated_permutation(n) → new_enumerator
+```
+Calls the block with repeated permutations of length <tt>n</tt>
+of the elements of <tt>ary</tt>;
+returns <tt>self</tt>.  The order of repeated permutations is indeterminate.
+
+Argument <tt>n</tt>, if given, must be an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
+
+---
+
+When a block and a zero-valued argument <tt>n</tt> are given,
+calls the block once with a new empty Array:
+
+```ruby
+a = [0, 1, 2]
+a1 = a.repeated_permutation(0) { |permutation| p permutation }
+a1.equal?(a) # => true # Identity check.
+```
+
+Output:
+
+```
+[]
+```
+
+If <tt>0 < n < ary.size</tt>,
+calls the block with all <tt>n</tt>-tuple repeated permutations of <tt>ary</tt>:
+
+```ruby
+a = [0, 1, 2]
+a.repeated_permutation(2) { |permutation| p permutation }
+```
+
+Output:
+
+```
+[0, 0]
+[0, 1]
+[0, 2]
+[1, 0]
+[1, 1]
+[1, 2]
+[2, 0]
+[2, 1]
+[2, 2]```
+
+```ruby
+
+a = [0, 1, 2]
+a.repeated_permutation(3) { |permutation| p permutation }
+```
+
+Output:
+
+```
+[0, 0, 0]
+[0, 0, 1]
+[0, 0, 2]
+[0, 1, 0]
+[0, 1, 1]
+[0, 1, 2]
+[0, 2, 0]
+[0, 2, 1]
+[0, 2, 2]
+[1, 0, 0]
+[1, 0, 1]
+[1, 0, 2]
+[1, 1, 0]
+[1, 1, 1]
+[1, 1, 2]
+[1, 2, 0]
+[1, 2, 1]
+[1, 2, 2]
+[2, 0, 0]
+[2, 0, 1]
+[2, 0, 2]
+[2, 1, 0]
+[2, 1, 1]
+[2, 1, 2]
+[2, 2, 0]
+[2, 2, 1]
+[2, 2, 2]
+```
+
+If <tt>n</tt> is negative, does not call the block:
+
+```ruby
+a = [0, 1, 2]
+a.repeated_permutation(-1) { |permutation| fail 'Cannot happen' }
+a.repeated_permutation(-2) { |permutation| fail 'Cannot happen' }
+```
+
+---
+
+Returns a new Enumerator if no block given:
+
+```ruby
+a = [0, 1, 2]
+a.repeated_permutation(2) # => #<Enumerator: [0, 1, 2]:repeated_permutation(2)>
+```
+
+---
+
+Raises an exception if <tt>n</tt> is not an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+a.repeated_permutation(:foo) { } # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
 #### replace
 
 ```
