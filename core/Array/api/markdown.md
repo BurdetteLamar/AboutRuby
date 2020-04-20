@@ -33,6 +33,7 @@
   - [delete_at](#delete_at)
   - [delete_if](#delete_if)
   - [difference](#difference)
+  - [drop](#drop)
   - [each](#each)
   - [each_index](#each_index)
   - [empty?](#empty)
@@ -1582,6 +1583,43 @@ Raises an exception if <tt>other_array</tt> is not an
 
 ```ruby
 [].difference(:foo) # Raises TypeError (no implicit conversion of Symbol into Array)
+```
+
+#### drop
+
+```
+ary.drop(n) → new_array
+```
+
+Argument <tt>n</tt> must be an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
+
+---
+
+Returns a new Array containing all but the first <tt>n</tt> element of <tt>ary</tt>;  does not modify <tt>ary</tt>:
+
+```ruby
+a = [0, 1, 2, 3, 4, 5]
+a.drop(0) # => [0, 1, 2, 3, 4, 5]
+a.drop(1) # => [1, 2, 3, 4, 5]
+a.drop(2) # => [2, 3, 4, 5]
+a.drop(50) # => []
+a # => [0, 1, 2, 3, 4, 5]
+```
+
+---
+
+Raises an exception if <tt>n</tt> is negative:
+
+```ruby
+[0, 1].drop(-1) # Raises ArgumentError (attempt to drop negative size)
+```
+
+Argument <tt>n</tt> must be an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+[0, 1].drop(:foo) # Raises TypeError (no implicit conversion of Symbol into Integer)
 ```
 
 #### each
