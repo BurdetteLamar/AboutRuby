@@ -68,6 +68,7 @@
   - [rassoc](#rassoc)
   - [reject](#reject)
   - [reject!](#reject-1)
+  - [repeated_combination](#repeated_combination)
   - [repeated_permutation](#repeated_permutation)
   - [replace](#replace)
   - [reverse](#reverse)
@@ -1199,7 +1200,8 @@ Output:
 ```
 [0, 1]
 [0, 2]
-[1, 2]```
+[1, 2]
+```
 
 ```ruby
 a = [0, 1, 2]
@@ -1209,7 +1211,8 @@ a.combination(3) { |combination| p combination }
 Output:
 
 ```
-[0, 1, 2]```
+[0, 1, 2]
+```
 
 If <tt>n >= ary.size</tt>, does not call the block:
 
@@ -3481,6 +3484,101 @@ a = [:foo, 'bar', baz = 2]
 a.reject! # => #<Enumerator: [:foo, "bar", 2]:reject!>
 ```
 
+#### repeated_combination
+
+```
+ary.repeated_combination(n) { |element| ... } → self
+ary.repeated_combination(n) → new_enumerator
+```
+Calls the block with repeated combinations of length <tt>n</tt>
+of the elements of <tt>ary</tt>;
+returns <tt>self</tt>.  The order of repeated combinations is indeterminate.
+
+Argument <tt>n</tt>, if given, must be an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects).
+
+---
+
+When a block and a zero-valued argument <tt>n</tt> are given,
+calls the block once with a new empty Array:
+
+```ruby
+a = [0, 1, 2]
+a1 = a.repeated_combination(0) { |combination| p combination }
+a1.equal?(a) # => true # Identity check.
+```
+
+Output:
+
+```
+[]
+```
+
+If <tt>0 < n < ary.size</tt>,
+calls the block with all <tt>n</tt>-tuple repeated combinations of <tt>ary</tt>:
+
+```ruby
+a = [0, 1, 2]
+a.repeated_combination(2) { |combination| p combination }
+```
+
+Output:
+
+```
+[0, 0]
+[0, 1]
+[0, 2]
+[1, 1]
+[1, 2]
+[2, 2]
+```
+
+```ruby
+
+a = [0, 1, 2]
+a.repeated_combination(3) { |combination| p combination }
+```
+
+Output:
+
+```
+[0, 0, 0]
+[0, 0, 1]
+[0, 0, 2]
+[0, 1, 1]
+[0, 1, 2]
+[0, 2, 2]
+[1, 1, 1]
+[1, 1, 2]
+[1, 2, 2]
+[2, 2, 2]```
+
+If <tt>n</tt> is negative, does not call the block:
+
+```ruby
+a = [0, 1, 2]
+a.repeated_combination(-1) { |combination| fail 'Cannot happen' }
+a.repeated_combination(-2) { |combination| fail 'Cannot happen' }
+```
+
+---
+
+Returns a new Enumerator if no block given:
+
+```ruby
+a = [0, 1, 2]
+a.repeated_combination(2) # => #<Enumerator: [0, 1, 2]:repeated_combination(2)>
+```
+
+---
+
+Raises an exception if <tt>n</tt> is not an
+[Integer-convertible object](../../../doc/convertibles.md#integer-convertible-objects):
+
+```ruby
+a.repeated_combination(:foo) { } # Raises TypeError (no implicit conversion of Symbol into Integer)
+```
+
 #### repeated_permutation
 
 ```
@@ -3530,7 +3628,8 @@ Output:
 [1, 2]
 [2, 0]
 [2, 1]
-[2, 2]```
+[2, 2]
+```
 
 ```ruby
 
