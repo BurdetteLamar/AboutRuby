@@ -807,6 +807,71 @@ a = [:foo, 'bar', baz = 2]
 a[1, -1] = 'foo' # Raises IndexError (negative length (-1))
 ```
 
+#### any?
+
+```
+ary.any? → true or false
+ary.any? { |element| ... } → true or false
+ary.any?(obj) → true or false
+```
+
+The argument, if given, must have instance method <tt>===</tt>.
+
+---
+
+With no argument and no block,
+returns <tt>true</tt> if <tt>any</tt> has any truthy elements,
+<tt>false</tt> otherwise:
+
+```ruby
+[nil, 0, false].any? # => true
+[nil, false].any? # => false
+[].any? # => false
+```
+
+With no argument and a block,
+calls the block with each element in <tt>ary</tt>;
+returns <tt>true</tt> if the block returns any truthy value,
+<tt>false</tt> otherwise:
+
+```ruby
+[0, 1, 2].any? { |element| element > 1 } # => true
+[0, 1, 2].any? { |element| element > 2 } # => false
+```
+
+Does not call the block if <tt>ary</tt> is empty:
+
+```ruby
+[].any? { |element| fail 'Cannot happen' } # => false
+```
+
+If argument <tt>obj</tt> is given,
+returns <tt>true</tt> if <tt>obj.===</tt> any element,
+<tt>false</tt> otherwise:
+
+```ruby
+['food', 'drink'].any?(/foo/) # => true
+['food', 'drink'].any?(/bar/) # => false
+[].any?(/foo/) # => false 
+[0, 1, 2].any?(1) # => true
+[0, 1, 2].any?(3) # => false
+```
+
+Issues a warniing ('(irb):161: warning: given block not used')
+ if both an argument and a block given:
+
+```ruby
+[0, 1, 2].any?(/foo/) { |element|} # => false
+```
+
+---
+
+Raises an exception if the argument does not have instanc method <tt>===</tt>:
+
+```ruby
+[0, 1, 2].any?(BasicObject.new) # Raises NoMethodError (undefined method `===' for #<BasicObject:>)
+```
+
 #### append
 
 ```
