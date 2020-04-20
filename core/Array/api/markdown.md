@@ -64,6 +64,7 @@
   - [permutation](#permutation)
   - [pop](#pop)
   - [prepend](#prepend)
+  - [product](#product)
   - [push](#push)
   - [rassoc](#rassoc)
   - [reject](#reject)
@@ -3387,6 +3388,67 @@ a = [:foo, 'bar', baz = 2]
 a1 = a.prepend(:bam, :bat)
 a1 # => [:bam, :bat, :foo, "bar", 2]
 a1.object_id == a.object_id # => true
+```
+
+#### product
+
+```
+ary.product(*other_arrays) → new_array
+ary.product(*other_arrays) { |combination| ... } → self
+```
+
+Each argument must be an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects).
+
+---
+
+Returns a new Array of all combinations of elements from all arrays,
+<tt>ary</tt> and <tt>*other_arrays</tt>:
+
+```ruby
+[0, 1].product([2, 3], [4, 5]).product # => [[[0, 2, 4]], [[0, 2, 5]], [[0, 3, 4]], [[0, 3, 5]], [[1, 2, 4]], [[1, 2, 5]], [[1, 3, 4]], [[1, 3, 5]]]
+```
+
+The size of the new Array is the product of the lengths of all arrays:
+
+```ruby
+[0, 1].product([2, 3, 4], [5, 6, 7, 8]).size # => 24
+```
+
+The size of each nested Array is the count of all arrays,
+<tt>ary</tt> and <tt>*other_arrays</tt>:
+
+```ruby
+[0, 1].product([2, 3, 4], [5, 6, 7, 8]).first.size # => 3
+```
+
+---
+
+If a block given, calls the block with each combination;
+returns <tt>self</tt>:
+
+```ruby
+a = [0, 1]
+a1 = a.product([2, 3]) { |combination| p combination }
+a. equal?(a) # => true # Identity check
+```
+
+Output:
+
+```
+[0, 2]
+[0, 3]
+[1, 2]
+[1, 3]
+```
+
+---
+
+Raises an exception if any argument is not an
+[Array-convertible object](../../../doc/convertibles.md#array-convertible-objects):
+
+```ruby
+[0, 1].product(:foo) # Raises TypeError (no implicit conversion of Symbol into Array)
 ```
 
 #### push
