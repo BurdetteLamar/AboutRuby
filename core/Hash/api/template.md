@@ -748,7 +748,7 @@ h # => {"x"=>1}
 ```
 
 After calling <tt>compare_by_identity</tt>, the keys are considered different,
-the therefore do not overwrite:
+and therefore do not overwrite:
 
 ```ruby
 s0 = 'x'
