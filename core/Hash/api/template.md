@@ -300,6 +300,27 @@ Raises an exception if the argument count is odd and greater than 1:
 Hash[0, 1, 2] # Raises ArgumentError (odd number of arguments for Hash)
 ```
 
+Raises an exception if the argument is an array containing an element
+that is not a 2-element array:
+
+```ruby
+Hash[ [ :foo ] ] # Raises ArgumentError (wrong element type Symbol at 0 (expected array))
+```
+
+Raises an exception if the argument is an array containing an element
+that is an array of size different from 2:
+
+```ruby
+Hash[ [ [0, 1, 2] ] ] # Raises ArgumentError (invalid number of elements (3 for 1..2))
+```
+
+Raises an exception if any proposed key is not a valid key:
+
+```ruby
+Hash[:foo, 0, BasicObject.new, 1] # Raises NoMethodError (undefined method `hash' for #<BasicObject:>)
+Hash[ [ [:foo, 0], [BasicObject.new, 1] ] ] # Raises NoMethodError (undefined method `hash' for #<BasicObject:>
+```
+
 Raises an exception if the only argument is an object whose instance method to_hash takes arguments:
 
 ```ruby
