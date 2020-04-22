@@ -807,6 +807,73 @@ a = [:foo, 'bar', baz = 2]
 a[1, -1] = 'foo' # Raises IndexError (negative length (-1))
 ```
 
+#### all?
+
+```
+ary.all? → true or false
+ary.all? { |element| ... } → true or false
+ary.all?(obj) → true or false
+```
+
+The argument, if given, must have instance method <tt>===</tt>.
+
+---
+
+With no argument and no block,
+returns <tt>true</tt> if <tt>any</tt> contains no <tt>nil</tt>
+or <tt>false</tt>,
+<tt>false</tt> otherwise:
+
+```ruby
+[0, 1, :foo].all? # => true
+[0, 1, 2].all? # => false
+[].all? # => true
+```
+
+With no argument and a block,
+calls the block with each element in <tt>ary</tt>;
+returns <tt>true</tt> if the block returns no <tt>nil</tt>
+or <tt>false</tt>,
+<tt>false</tt> otherwise:
+
+```ruby
+[0, 1, 2].all? { |element| element < 3 } # => true
+[0, 1, 2].all? { |element| element < 2 } # => false
+```
+
+Does not call the block if <tt>ary</tt> is empty:
+
+```ruby
+[].all? { |element| fail 'Cannot happen' } # => true
+```
+
+If argument <tt>obj</tt> is given,
+returns <tt>true</tt> if <tt>obj.===</tt> all elements,
+<tt>false</tt> otherwise:
+
+```ruby
+['food', 'fool', 'foot'].all?(/foo/) # => true
+['food', 'drink'].all?(/bar/) # => false
+[].all?(/foo/) # => true
+[0, 0, 0].all?(0) # => true
+[0, 1, 2].all?(1) # => false
+```
+
+Issues a warniing ('warning: given block not used')
+ if both an argument and a block given:
+
+```ruby
+[0, 1, 2].all?(/foo/) { |element|} # => false
+```
+
+---
+
+Raises an exception if the argument does not have instance method <tt>===</tt>:
+
+```ruby
+[0, 1, 2].all?(BasicObject.new) # Raises NoMethodError (undefined method `===' for #<BasicObject:>)
+```
+
 #### any?
 
 ```
@@ -866,7 +933,7 @@ Issues a warniing ('(irb):161: warning: given block not used')
 
 ---
 
-Raises an exception if the argument does not have instanc method <tt>===</tt>:
+Raises an exception if the argument does not have instance method <tt>===</tt>:
 
 ```ruby
 [0, 1, 2].any?(BasicObject.new) # Raises NoMethodError (undefined method `===' for #<BasicObject:>)
