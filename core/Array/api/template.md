@@ -821,19 +821,19 @@ The argument, if given, must have instance method <tt>===</tt>.
 
 With no argument and no block,
 returns <tt>true</tt> if <tt>any</tt> contains no <tt>nil</tt>
-or <tt>false</tt>,
+or <tt>false</tt> element,
 <tt>false</tt> otherwise:
 
 ```ruby
 [0, 1, :foo].all? # => true
-[0, 1, 2].all? # => false
+[0, nil, 2].all? # => false
 [].all? # => true
 ```
 
 With no argument and a block,
 calls the block with each element in <tt>ary</tt>;
 returns <tt>true</tt> if the block returns no <tt>nil</tt>
-or <tt>false</tt>,
+or <tt>false</tt> element,
 <tt>false</tt> otherwise:
 
 ```ruby
@@ -887,7 +887,7 @@ The argument, if given, must have instance method <tt>===</tt>.
 ---
 
 With no argument and no block,
-returns <tt>true</tt> if <tt>any</tt> has any truthy elements,
+returns <tt>true</tt> if <tt>any</tt> has any truthy element,
 <tt>false</tt> otherwise:
 
 ```ruby
@@ -3273,6 +3273,71 @@ Raises an exception if the block returns an object that is not an
 
 ```ruby
 [0, 1, 2].max { |a, b| :foo } # Raises ArgumentError (comparison of Symbol with 0 failed)
+```
+
+#### none?
+
+```
+ary.none? → true or false
+ary.none? { |element| ... } → true or false
+ary.none?(obj) → true or false
+```
+
+The argument, if given, must have instance method <tt>===</tt>.
+
+---
+
+With no argument and no block,
+returns <tt>true</tt> if <tt>any</tt> has no truthy elements,
+<tt>false</tt> otherwise:
+
+```ruby
+[nil, false].none? # => true
+[nil, 0, false].none? # => false
+[].none? # => true
+```
+
+With no argument and a block,
+calls the block with each element in <tt>ary</tt>;
+returns <tt>true</tt> if the block returns no truthy value,
+<tt>false</tt> otherwise:
+
+```ruby
+[0, 1, 2].none? { |element| element > 3 } # => true
+[0, 1, 2].none? { |element| element > 1 } # => false
+```
+
+Does not call the block if <tt>ary</tt> is empty:
+
+```ruby
+[].none? { |element| fail 'Cannot happen' } # => true
+```
+
+If argument <tt>obj</tt> is given,
+returns <tt>true</tt> unless <tt>obj.===</tt> any element,
+<tt>false</tt> otherwise:
+
+```ruby
+['food', 'drink'].none?(/bar/) # => true
+['food', 'drink'].none?(/foo/) # => false
+[].none?(/foo/) # => true
+[0, 1, 2].none?(3) # => true
+[0, 1, 2].none?(1) # => false
+```
+
+Issues a warniing ('(irb):161: warning: given block not used')
+ if both an argument and a block given:
+
+```ruby
+[0, 1, 2].none?(/foo/) { |element| } # => true
+```
+
+---
+
+Raises an exception if the argument does not have instance method <tt>===</tt>:
+
+```ruby
+[0, 1, 2].none?(BasicObject.new) # Raises NoMethodError (undefined method `===' for #<BasicObject:>)
 ```
 
 #### permutation
